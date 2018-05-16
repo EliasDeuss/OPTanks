@@ -18,6 +18,15 @@ public class Game implements ActionListener, KeyListener {
 	//Private Constants
 	private JFrame gameFrame = new JFrame("OP Tanks V0.1.0");
 	
+	//Stat's and game settings
+	private int GAMEMODE = 0; //What game mode you are in
+	private int PLAYERS = 1; //How many players are in the Game
+	private int MAP = 1; //What map the player is in
+	
+	
+	private int PLAYER1KILLS = 0;
+	private int PLAYER2KILLS = 0;
+	
 	
 	//JLable and Buttons
 	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle;
@@ -155,6 +164,12 @@ public class Game implements ActionListener, KeyListener {
 	
 	public void hidePlayerSelector()
 	{
+		lblGamePlayerSTitle.setVisible(false);
+		player1BTN.setVisible(false);
+	}
+	
+	public void map1()
+	{
 		
 	}
 	
@@ -182,8 +197,20 @@ public class Game implements ActionListener, KeyListener {
 		
 		if (event.getActionCommand().equals("normalGame"))
 		{
+			GAMEMODE = 0;
+			
+			System.out.println("Gamemode set to " + GAMEMODE);
+			
 			hideGamemodeSelector();
 			playerSelector();
+		}
+		
+		if (event.getActionCommand().equals("oneplayerGame"))
+		{
+			PLAYERS = 1;
+			
+			System.out.println("Selected " + PLAYERS + " player('s)");
+			
 		}
 		
 	}
