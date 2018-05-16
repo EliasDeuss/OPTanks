@@ -20,8 +20,8 @@ public class Game implements ActionListener, KeyListener {
 	
 	
 	//JLable and Buttons
-	public JLabel lblGameTitle, lblGameSelectorTitle;
-	public JButton startGame, leaderboardMainBTN, settingsMainBTN;
+	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle;
+	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN;
 	
 	public static void main(String[] args) 
 	{
@@ -112,15 +112,48 @@ public class Game implements ActionListener, KeyListener {
 		lblGameSelectorTitle.setOpaque(false);
 		lblGameSelectorTitle.setVisible(true);
 		
+		normalGamemodeBTN = new JButton("Normal");
+		normalGamemodeBTN.setSize(179, 40);
+		normalGamemodeBTN.setFont(new Font("Serif", Font.PLAIN, 25));
+		normalGamemodeBTN.setLocation(345, 170);
+		normalGamemodeBTN.setFocusable(false);
+		normalGamemodeBTN.setActionCommand("normalGame");
+		normalGamemodeBTN.addActionListener(this);
+		normalGamemodeBTN.setVisible(true);
+		
 		gameFrame.add(lblGameSelectorTitle);
+		gameFrame.add(normalGamemodeBTN);
 	}
 	
 	public void hideGamemodeSelector()
 	{
-		
+		lblGameSelectorTitle.setVisible(false);
+		normalGamemodeBTN.setVisible(false);
 	}
 	
 	public void playerSelector()
+	{
+		lblGamePlayerSTitle = new JLabel("How many Players?");
+		lblGamePlayerSTitle.setSize(300, 45);
+		lblGamePlayerSTitle.setFont(new Font("Serif", Font.PLAIN, 35));
+		lblGamePlayerSTitle.setLocation(310, 100);
+		lblGamePlayerSTitle.setOpaque(false);
+		lblGamePlayerSTitle.setVisible(true);
+		
+		player1BTN = new JButton("One Player");
+		player1BTN.setSize(179, 40);
+		player1BTN.setFont(new Font("Serif", Font.PLAIN, 25));
+		player1BTN.setLocation(345, 170);
+		player1BTN.setFocusable(false);
+		player1BTN.setActionCommand("oneplayerGame");
+		player1BTN.addActionListener(this);
+		player1BTN.setVisible(true);
+		
+		gameFrame.add(lblGamePlayerSTitle);
+		gameFrame.add(player1BTN);
+	}
+	
+	public void hidePlayerSelector()
 	{
 		
 	}
@@ -145,6 +178,12 @@ public class Game implements ActionListener, KeyListener {
 		{
 			hideStartScreen();
 			gamemodeSelector();
+		}
+		
+		if (event.getActionCommand().equals("normalGame"))
+		{
+			hideGamemodeSelector();
+			playerSelector();
 		}
 		
 	}
