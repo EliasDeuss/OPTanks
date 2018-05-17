@@ -1,12 +1,12 @@
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,12 +14,17 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.Timer;
 
 public class Game implements ActionListener, KeyListener {
 	
 	// Global Constants
 	public static final int FIELD_WIDTH = 900;
 	public static final int FIELD_HEIGHT = 600;
+	
+	//Timer
+	private final int TIMER_SPEED = 10;
+	private Timer timer;
 	
 	//Private Constants
 	private JFrame gameFrame = new JFrame("OP Tanks V0.1.0");
@@ -33,11 +38,21 @@ public class Game implements ActionListener, KeyListener {
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
 	
+	//Players
+	private ImageIcon imgTank1 = new ImageIcon(getClass().getResource("tank1.png"));
+	private JLabel lblTank1 = new JLabel(imgTank1);
+	
+	private ImageIcon imgTank2 = new ImageIcon(getClass().getResource("tank2.png"));
+	private JLabel lblTank2 = new JLabel(imgTank2);
+	
+	private int tank1X, tank1Y, tank2X, tank2Y;
+	
 	
 	//JLable and Buttons
 	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle;
 	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN;
 	
+	//Menu Bar
 	private JMenuBar menuBar;
 	private JMenu menu, menu2;
 	private JRadioButtonMenuItem rbMenuItem1, rbMenuItem2;
@@ -53,6 +68,11 @@ public class Game implements ActionListener, KeyListener {
 		MenuBar();
 		setUpGameFrame();
 		StartScreen();
+		
+		//Set up / start timer
+		//timer = new Timer(TIMER_SPEED, this);
+		//timer.setInitialDelay(TIMER_DELAY);
+		//timer.start();
 	}
 	
 	public void setUpGameFrame()
@@ -142,6 +162,22 @@ public class Game implements ActionListener, KeyListener {
 						  }
 						);
 		menu.add(menuItem);
+		
+		menuItem = new JMenuItem("Map1");
+		menuItem.setActionCommand("map1");
+		menuItem.addActionListener(
+						  new ActionListener() 
+						  {
+						    public void actionPerformed(ActionEvent e)
+						    {
+						    	if (e.getActionCommand().equals("map1"))
+								{
+						    		setUpMap1();
+								}
+						    }
+						  }
+						);
+		menu.add(menuItem);
 		gameFrame.setJMenuBar(menuBar);
 		rbMenuItem2.setEnabled(true);
 	}
@@ -161,7 +197,19 @@ public class Game implements ActionListener, KeyListener {
 		startGame.setLocation(345, 170);
 		startGame.setFocusable(false);
 		startGame.setActionCommand("startGame");
-		startGame.addActionListener(this);
+		startGame.addActionListener(
+				  new ActionListener() 
+						{
+					    public void actionPerformed(ActionEvent e) 
+					    {
+					    	if (e.getActionCommand().equals("startGame"))
+							{
+					    		hideStartScreen();
+								gamemodeSelector();
+							}
+						}
+				  }
+				);
 		startGame.setVisible(true);
 		
 		leaderboardMainBTN = new JButton("LeaderBoard");
@@ -212,7 +260,23 @@ public class Game implements ActionListener, KeyListener {
 		normalGamemodeBTN.setLocation(345, 170);
 		normalGamemodeBTN.setFocusable(false);
 		normalGamemodeBTN.setActionCommand("normalGame");
-		normalGamemodeBTN.addActionListener(this);
+		normalGamemodeBTN.addActionListener(
+				  new ActionListener() 
+						{
+					    public void actionPerformed(ActionEvent e) 
+					    {
+					    	if (e.getActionCommand().equals("normalGame"))
+							{
+					    		GAMEMODE = 0;
+								
+								System.out.println("Gamemode set to " + GAMEMODE);
+								
+								hideGamemodeSelector();
+								playerSelector();
+							}
+						}
+				  }
+				);
 		normalGamemodeBTN.setVisible(true);
 		
 		gameFrame.add(lblGameSelectorTitle);
@@ -240,7 +304,20 @@ public class Game implements ActionListener, KeyListener {
 		player1BTN.setLocation(345, 170);
 		player1BTN.setFocusable(false);
 		player1BTN.setActionCommand("oneplayerGame");
-		player1BTN.addActionListener(this);
+		player1BTN.addActionListener(
+				  new ActionListener() 
+						{
+					    public void actionPerformed(ActionEvent e) 
+					    {
+					    	if (e.getActionCommand().equals("oneplayerGame"))
+							{
+					    		PLAYERS = 1;
+								
+								System.out.println("Selected " + PLAYERS + " player('s)");
+							}
+						}
+				  }
+				);
 		player1BTN.setVisible(true);
 		
 		player2BTN = new JButton("Two Player's");
@@ -249,7 +326,20 @@ public class Game implements ActionListener, KeyListener {
 		player2BTN.setLocation(345, 220);
 		player2BTN.setFocusable(false);
 		player2BTN.setActionCommand("twoplayersGame");
-		player2BTN.addActionListener(this);
+		player2BTN.addActionListener(
+				  new ActionListener() 
+						{
+					    public void actionPerformed(ActionEvent e) 
+					    {
+					    	if (e.getActionCommand().equals("twoplayersGame"))
+							{
+					    		PLAYERS = 2;
+								
+								System.out.println("Selected " + PLAYERS + " player('s)");
+							}
+						}
+				  }
+				);
 		player2BTN.setVisible(true);
 		
 		gameFrame.add(lblGamePlayerSTitle);
@@ -262,6 +352,15 @@ public class Game implements ActionListener, KeyListener {
 		lblGamePlayerSTitle.setVisible(false);
 		player1BTN.setVisible(false);
 		player2BTN.setVisible(false);
+	}
+	
+	public void setUpMap1()
+	{
+		hideStartScreen();
+		hideGamemodeSelector();
+		hidePlayerSelector();
+		
+		map1();
 	}
 	
 	public void map1()
@@ -285,37 +384,14 @@ public class Game implements ActionListener, KeyListener {
 	}
 
 	public void actionPerformed(ActionEvent event) {
-		if (event.getActionCommand().equals("startGame"))
-		{
-			hideStartScreen();
-			gamemodeSelector();
-		}
 		
-		if (event.getActionCommand().equals("normalGame"))
-		{
-			GAMEMODE = 0;
-			
-			System.out.println("Gamemode set to " + GAMEMODE);
-			
-			hideGamemodeSelector();
-			playerSelector();
-		}
 		
-		if (event.getActionCommand().equals("oneplayerGame"))
-		{
-			PLAYERS = 1;
-			
-			System.out.println("Selected " + PLAYERS + " player('s)");
-			
-		}
 		
-		if (event.getActionCommand().equals("twoplayersGame"))
-		{
-			PLAYERS = 2;
-			
-			System.out.println("Selected " + PLAYERS + " player('s)");
-			
-		}
+		checkCollisions();
+	}
+	
+	public void checkCollisions()
+	{
 		
 	}
 }
