@@ -1,13 +1,19 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 
 public class Game implements ActionListener, KeyListener {
 	
@@ -30,7 +36,12 @@ public class Game implements ActionListener, KeyListener {
 	
 	//JLable and Buttons
 	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle;
-	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN;
+	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN;
+	
+	private JMenuBar menuBar;
+	private JMenu menu, menu2;
+	private JRadioButtonMenuItem rbMenuItem1, rbMenuItem2;
+	private JMenuItem menuItem, menuItem2;
 	
 	public static void main(String[] args) 
 	{
@@ -58,7 +69,81 @@ public class Game implements ActionListener, KeyListener {
 	
 	public void MenuBar()
 	{
+
+		//Create the menu bar.
+		menuBar = new JMenuBar();
+
+		//Build the first menu.
+		menu = new JMenu("File");
+		menu.setMnemonic(KeyEvent.VK_A);
+		menu.getAccessibleContext().setAccessibleDescription("File");
+		menuBar.add(menu);
 		
+		menu2 = new JMenu("Difficulty");
+		menu2.setMnemonic(KeyEvent.VK_A);
+		menu2.getAccessibleContext().setAccessibleDescription("Game Difficulty");
+		menuBar.add(menu2);		
+		
+		//a group of JMenuItems
+		menuItem = new JMenuItem("Reset");
+		menuItem.setActionCommand("reset");
+		
+		menu.add(menuItem);
+		menu.addSeparator();
+		
+		menuItem2 = new JMenuItem("Reset HighScore");
+		menuItem2.setActionCommand("resetScore");
+		menuItem2.addActionListener(
+		  new ActionListener() 
+				{
+			    public void actionPerformed(ActionEvent e) 
+			    {
+			    	if (e.getActionCommand().equals("resetScore"))
+					{
+			    		
+					}
+				}
+		  }
+		);
+		menu.add(menuItem2);
+	
+		//Difficulty Selector
+		menu.addSeparator();
+		
+		ButtonGroup group = new ButtonGroup();
+		rbMenuItem1 = new JRadioButtonMenuItem("Normal");
+		rbMenuItem1.setSelected(true);
+		rbMenuItem1.setMnemonic(KeyEvent.VK_R);
+		group.add(rbMenuItem1);
+			
+		menu2.add(rbMenuItem1);
+
+		rbMenuItem2 = new JRadioButtonMenuItem("Hard");
+		rbMenuItem2.setMnemonic(KeyEvent.VK_O);
+		group.add(rbMenuItem2);
+		rbMenuItem2.setActionCommand("hard");
+		menu2.add(rbMenuItem2);
+		
+		//Exit Menu
+		//menu.addSeparator();
+		menuItem = new JMenuItem("Exit");
+		menuItem.setActionCommand("Exit");
+		menuItem.addActionListener(
+						  new ActionListener() 
+						  {
+						    public void actionPerformed(ActionEvent e)
+						    {
+						    	if (e.getActionCommand().equals("Exit"))
+								{
+						    		gameFrame.dispose();
+									System.exit(0);
+								}
+						    }
+						  }
+						);
+		menu.add(menuItem);
+		gameFrame.setJMenuBar(menuBar);
+		rbMenuItem2.setEnabled(true);
 	}
 	
 	public void StartScreen()
@@ -158,14 +243,25 @@ public class Game implements ActionListener, KeyListener {
 		player1BTN.addActionListener(this);
 		player1BTN.setVisible(true);
 		
+		player2BTN = new JButton("Two Player's");
+		player2BTN.setSize(179, 40);
+		player2BTN.setFont(new Font("Serif", Font.PLAIN, 25));
+		player2BTN.setLocation(345, 220);
+		player2BTN.setFocusable(false);
+		player2BTN.setActionCommand("twoplayersGame");
+		player2BTN.addActionListener(this);
+		player2BTN.setVisible(true);
+		
 		gameFrame.add(lblGamePlayerSTitle);
 		gameFrame.add(player1BTN);
+		gameFrame.add(player2BTN);
 	}
 	
 	public void hidePlayerSelector()
 	{
 		lblGamePlayerSTitle.setVisible(false);
 		player1BTN.setVisible(false);
+		player2BTN.setVisible(false);
 	}
 	
 	public void map1()
@@ -208,6 +304,14 @@ public class Game implements ActionListener, KeyListener {
 		if (event.getActionCommand().equals("oneplayerGame"))
 		{
 			PLAYERS = 1;
+			
+			System.out.println("Selected " + PLAYERS + " player('s)");
+			
+		}
+		
+		if (event.getActionCommand().equals("twoplayersGame"))
+		{
+			PLAYERS = 2;
 			
 			System.out.println("Selected " + PLAYERS + " player('s)");
 			
