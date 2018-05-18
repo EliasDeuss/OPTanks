@@ -32,7 +32,7 @@ public class Game implements ActionListener, KeyListener {
 	
 	//Stat's and game settings
 	private int GAMEMODE = 0; //What game mode you are in
-	private int PLAYERS = 1; //How many players are in the Game
+	private int PLAYERS = 2; //How many players are in the Game
 	private int MAP = 1; //What map the player is in
 	
 	
@@ -194,7 +194,7 @@ public class Game implements ActionListener, KeyListener {
 								System.out.println("Gamemode set to " + GAMEMODE);
 								
 								hideGamemodeSelector();
-								playerSelector();
+								//playerSelector();
 							}
 						}
 				  }
@@ -291,6 +291,8 @@ public class Game implements ActionListener, KeyListener {
 		
 		//Map Setup
 		
+		
+		
 	}
 	
 	public void keyPressed(KeyEvent arg0) {
@@ -310,6 +312,22 @@ public class Game implements ActionListener, KeyListener {
 
 	public void actionPerformed(ActionEvent event) {
 		
+		if (Map1Build == true)
+		{
+			WallX tempBunker = new WallX(0, 0);
+			int bunkerWidth = tempBunker.getWidth();
+			int bunkerHeight = tempBunker.getHeight();
+
+			for (int i = 0; i < NUM_WallXs; i++)
+			{
+				// Set the starting positions of each of the bunkers being placed
+				int x = (int) (Math.random() * (FIELD_WIDTH - bunkerWidth - 7) + 1);
+				int y = (int) ((Math.random() * (FIELD_HEIGHT/3 - bunkerHeight - 26 - lblShooter.getHeight() - 60))) + FIELD_HEIGHT*2/3;
+
+				// Create a new 'Bunker' object and add it to the 'bunker' ArrayList 
+				bunkers.add(new Bunker(x, y));
+			}
+		}
 		
 		
 		checkCollisions();
