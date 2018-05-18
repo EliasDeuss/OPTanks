@@ -38,6 +38,12 @@ public class Game implements ActionListener, KeyListener {
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
 	
+	//Images
+	private ImageIcon imgLogoMain = new ImageIcon(getClass().getResource("logo.png"));
+	private ImageIcon imgStartMain = new ImageIcon(getClass().getResource("startMain.png"));
+	private ImageIcon imgLeadMain = new ImageIcon(getClass().getResource("leadMain.png"));
+	private ImageIcon imgSettMain = new ImageIcon(getClass().getResource("settMain.png"));
+	
 	//Players
 	private ImageIcon imgTank1 = new ImageIcon(getClass().getResource("tank1.png"));
 	private JLabel lblTank1 = new JLabel(imgTank1);
@@ -184,15 +190,15 @@ public class Game implements ActionListener, KeyListener {
 	
 	public void StartScreen()
 	{
-		lblGameTitle = new JLabel("OP Tanks");
-		lblGameTitle.setSize(210, 65);
+		lblGameTitle = new JLabel(imgLogoMain);
+		lblGameTitle.setSize(310, 70);
 		lblGameTitle.setFont(new Font("Serif", Font.PLAIN, 39));
-		lblGameTitle.setLocation(360, 100);
+		lblGameTitle.setLocation(280, 100);
 		lblGameTitle.setOpaque(false);
 		lblGameTitle.setVisible(true);
 		
-		startGame = new JButton("Start Game");
-		startGame.setSize(179, 40);
+		startGame = new JButton(imgStartMain);
+		startGame.setSize(181, 46);
 		startGame.setFont(new Font("Serif", Font.PLAIN, 25));
 		startGame.setLocation(345, 170);
 		startGame.setFocusable(false);
@@ -212,19 +218,19 @@ public class Game implements ActionListener, KeyListener {
 				);
 		startGame.setVisible(true);
 		
-		leaderboardMainBTN = new JButton("LeaderBoard");
+		leaderboardMainBTN = new JButton(imgLeadMain);
 		leaderboardMainBTN.setFont(new Font("Serif", Font.PLAIN, 25));
-		leaderboardMainBTN.setSize(179, 40);
-		leaderboardMainBTN.setLocation(345, 215);
+		leaderboardMainBTN.setSize(181, 46);
+		leaderboardMainBTN.setLocation(345, 219);
 		leaderboardMainBTN.setFocusable(false);
 		leaderboardMainBTN.setActionCommand("leaderBoard");
 		//startGame.addActionListener(this);
 		leaderboardMainBTN.setVisible(true);
 		
-		settingsMainBTN = new JButton("Settings");
+		settingsMainBTN = new JButton(imgSettMain);
 		settingsMainBTN.setFont(new Font("Serif", Font.PLAIN, 25));
 		settingsMainBTN.setSize(179, 40);
-		settingsMainBTN.setLocation(345, 260);
+		settingsMainBTN.setLocation(345, 269);
 		settingsMainBTN.setFocusable(false);
 		settingsMainBTN.setActionCommand("settings");
 		//startGame.addActionListener(this);
