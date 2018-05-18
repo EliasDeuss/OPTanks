@@ -49,6 +49,8 @@ public class Game implements ActionListener, KeyListener {
 	private ImageIcon imgPlMain = new ImageIcon(getClass().getResource("plMain.png"));
 	private ImageIcon imgOnePlMain = new ImageIcon(getClass().getResource("OnePlMain.png"));
 	private ImageIcon imgTwoPlMain = new ImageIcon(getClass().getResource("TwoPlMain.png"));
+	private ImageIcon imgTank1Score = new ImageIcon(getClass().getResource("tank1score.png"));
+	private ImageIcon imgTank2Score = new ImageIcon(getClass().getResource("tank2score.png"));
 	
 	//Players
 	private ImageIcon imgTank1 = new ImageIcon(getClass().getResource("tank1.png"));
@@ -57,11 +59,10 @@ public class Game implements ActionListener, KeyListener {
 	private ImageIcon imgTank2 = new ImageIcon(getClass().getResource("tank2.png"));
 	private JLabel lblTank2 = new JLabel(imgTank2);
 	
-	private int tank1X, tank1Y, tank2X, tank2Y;
-	
+	private int tank1X, tank1Y, tank2X, tank2Y;	
 	
 	//JLable and Buttons
-	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle;
+	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1;
 	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN;
 	
 	//Menu Bar
@@ -85,6 +86,7 @@ public class Game implements ActionListener, KeyListener {
 		MenuBar();
 		setUpGameFrame();
 		StartScreen();
+		infoBoard();
 		
 		//Set up / start timer
 		//timer = new Timer(TIMER_SPEED, this);
@@ -102,6 +104,26 @@ public class Game implements ActionListener, KeyListener {
 		gameFrame.getContentPane().setBackground(Color.WHITE);
 		
 		gameFrame.setVisible(true);
+	}
+	
+	public void infoBoard()
+	{
+		lblKillsTank1 = new JLabel(imgTank1Score);
+		lblKillsTank1.setSize(35, 45);
+		lblKillsTank1.setFont(new Font("Serif", Font.PLAIN, 39));
+		lblKillsTank1.setLocation(1, 1);
+		lblKillsTank1.setOpaque(false);
+		lblKillsTank1.setVisible(true);
+		
+		lblKillsTank2 = new JLabel(imgTank2Score);
+		lblKillsTank2.setSize(35, 45);
+		lblKillsTank2.setFont(new Font("Serif", Font.PLAIN, 39));
+		lblKillsTank2.setLocation(1, 1);
+		lblKillsTank2.setOpaque(false);
+		lblKillsTank2.setVisible(true);
+		
+		gameFrame.add(lblKillsTank1);
+		gameFrame.add(lblKillsTank2);
 	}
 	
 	public void StartScreen()
@@ -209,6 +231,9 @@ public class Game implements ActionListener, KeyListener {
 	{
 		lblGameSelectorTitle.setVisible(false);
 		normalGamemodeBTN.setVisible(false);
+		
+		
+		
 	}
 	
 	public void playerSelector()
@@ -292,7 +317,6 @@ public class Game implements ActionListener, KeyListener {
 		//Map Setup
 		
 		
-		
 	}
 	
 	public void keyPressed(KeyEvent arg0) {
@@ -311,23 +335,23 @@ public class Game implements ActionListener, KeyListener {
 	}
 
 	public void actionPerformed(ActionEvent event) {
-		
-		if (Map1Build == true)
-		{
-			WallX tempBunker = new WallX(0, 0);
-			int bunkerWidth = tempBunker.getWidth();
-			int bunkerHeight = tempBunker.getHeight();
-
-			for (int i = 0; i < NUM_WallXs; i++)
-			{
-				// Set the starting positions of each of the bunkers being placed
-				int x = (int) (Math.random() * (FIELD_WIDTH - bunkerWidth - 7) + 1);
-				int y = (int) ((Math.random() * (FIELD_HEIGHT/3 - bunkerHeight - 26 - lblShooter.getHeight() - 60))) + FIELD_HEIGHT*2/3;
-
-				// Create a new 'Bunker' object and add it to the 'bunker' ArrayList 
-				bunkers.add(new Bunker(x, y));
-			}
-		}
+//		
+//		if (Map1Build == true)
+//		{
+//			WallX tempBunker = new WallX(0, 0);
+//			int bunkerWidth = tempBunker.getWidth();
+//			int bunkerHeight = tempBunker.getHeight();
+//
+//			for (int i = 0; i < NUM_WallXs; i++)
+//			{
+//				// Set the starting positions of each of the bunkers being placed
+//				int x = (int) (Math.random() * (FIELD_WIDTH - bunkerWidth - 7) + 1);
+//				int y = (int) ((Math.random() * (FIELD_HEIGHT/3 - bunkerHeight - 26 - lblShooter.getHeight() - 60))) + FIELD_HEIGHT*2/3;
+//
+//				// Create a new 'Bunker' object and add it to the 'bunker' ArrayList 
+//				bunkers.add(new Bunker(x, y));
+//			}
+//		}
 		
 		
 		checkCollisions();
