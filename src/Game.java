@@ -1,9 +1,16 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
@@ -15,9 +22,24 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JTextField;
 import javax.swing.Timer;
 
 public class Game implements ActionListener, KeyListener {
+	
+	//Sever
+	private String ip = "localhost";
+	private int port = 12345;
+	
+	private Socket socket;
+	private DataOutputStream dos;
+	private DataInputStream dis;
+	private ServerSocket serverSocket;
+	
+	private boolean accepted = false;
+	private boolean unableToCommunicateWithOpponent = false;
+	
+	private JTextField portPicker;
 	
 	// Global Constants
 	public static final int FIELD_WIDTH = 900;
@@ -35,7 +57,7 @@ public class Game implements ActionListener, KeyListener {
 	private int PLAYERS = 2; //How many players are in the Game
 	private int MAP = 1; //What map the player is in
 	
-	
+ 	
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
 	
@@ -69,7 +91,7 @@ public class Game implements ActionListener, KeyListener {
 	private JMenuBar menuBar;
 	private JMenu menu, menu2;
 	private JRadioButtonMenuItem rbMenuItem1, rbMenuItem2;
-	private JMenuItem menuItem, menuItem2;
+	private JMenuItem menuItem, menuItem2, menuItem3;
 	
 	//Array List
 	ArrayList<Missile> missiles = new ArrayList<Missile>();
@@ -86,7 +108,7 @@ public class Game implements ActionListener, KeyListener {
 		MenuBar();
 		setUpGameFrame();
 		StartScreen();
-		infoBoard();
+		//infoBoard();
 		
 		//Set up / start timer
 		//timer = new Timer(TIMER_SPEED, this);
@@ -106,6 +128,17 @@ public class Game implements ActionListener, KeyListener {
 		gameFrame.setVisible(true);
 	}
 	
+	//Server Stuff
+	
+	
+	public void waitingLobby()
+	{
+		
+	}
+	
+	
+	
+	//Info of player kills in game
 	public void infoBoard()
 	{
 		lblKillsTank1 = new JLabel(imgTank1Score);
@@ -232,7 +265,7 @@ public class Game implements ActionListener, KeyListener {
 		lblGameSelectorTitle.setVisible(false);
 		normalGamemodeBTN.setVisible(false);
 		
-		
+		setUpMap1();
 		
 	}
 	
@@ -303,19 +336,13 @@ public class Game implements ActionListener, KeyListener {
 	
 	public void setUpMap1()
 	{
-		//Hides all menus
-		lblGameSelectorTitle.setVisible(false);
-		normalGamemodeBTN.setVisible(false);
-		lblGamePlayerSTitle.setVisible(false);
-		player1BTN.setVisible(false);
-		player2BTN.setVisible(false);
-		lblGameTitle.setVisible(false);
-		startGame.setVisible(false);
-		leaderboardMainBTN.setVisible(false);
-		settingsMainBTN.setVisible(false);
-		
+		WallY tempY = new WallY(0, 0);
 		//Map Setup
-		
+		for (int i = 0; i < 1; i++)
+		{
+			wallYs.add(new WallY(15,15));
+			wallYs.add(new WallY(95,65));
+		}
 		
 	}
 	
@@ -335,24 +362,6 @@ public class Game implements ActionListener, KeyListener {
 	}
 
 	public void actionPerformed(ActionEvent event) {
-//		
-//		if (Map1Build == true)
-//		{
-//			WallX tempBunker = new WallX(0, 0);
-//			int bunkerWidth = tempBunker.getWidth();
-//			int bunkerHeight = tempBunker.getHeight();
-//
-//			for (int i = 0; i < NUM_WallXs; i++)
-//			{
-//				// Set the starting positions of each of the bunkers being placed
-//				int x = (int) (Math.random() * (FIELD_WIDTH - bunkerWidth - 7) + 1);
-//				int y = (int) ((Math.random() * (FIELD_HEIGHT/3 - bunkerHeight - 26 - lblShooter.getHeight() - 60))) + FIELD_HEIGHT*2/3;
-//
-//				// Create a new 'Bunker' object and add it to the 'bunker' ArrayList 
-//				bunkers.add(new Bunker(x, y));
-//			}
-//		}
-		
 		
 		checkCollisions();
 	}
@@ -447,18 +456,7 @@ public class Game implements ActionListener, KeyListener {
 						    {
 						    	if (e.getActionCommand().equals("map1"))
 								{
-						    		//Hides all menus
-						    		lblGameSelectorTitle.setVisible(false);
-						    		normalGamemodeBTN.setVisible(false);
-						    		lblGamePlayerSTitle.setVisible(false);
-						    		player1BTN.setVisible(false);
-						    		player2BTN.setVisible(false);
-						    		lblGameTitle.setVisible(false);
-						    		startGame.setVisible(false);
-						    		leaderboardMainBTN.setVisible(false);
-						    		settingsMainBTN.setVisible(false);
-						    		
-						    		
+						    		setUpMap1();
 								}
 						    }
 						  }
