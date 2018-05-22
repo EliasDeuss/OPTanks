@@ -75,11 +75,18 @@ public class Game implements ActionListener, KeyListener {
 	private ImageIcon imgTank2Score = new ImageIcon(getClass().getResource("tank2score.png"));
 	
 	//Players
-	private ImageIcon imgTank1 = new ImageIcon(getClass().getResource("tank1.png"));
-	private JLabel lblTank1 = new JLabel(imgTank1);
+	private ImageIcon imgTank1down = new ImageIcon(getClass().getResource("tank1down.png"));
+	private ImageIcon imgTank1up = new ImageIcon(getClass().getResource("tank1up.png"));
+	private ImageIcon imgTank1left = new ImageIcon(getClass().getResource("tank1left.png"));
+	private ImageIcon imgTank1right = new ImageIcon(getClass().getResource("tank1right.png"));
 	
-	private ImageIcon imgTank2 = new ImageIcon(getClass().getResource("tank2.png"));
-	private JLabel lblTank2 = new JLabel(imgTank2);
+	private JLabel lblTank1 = new JLabel(imgTank1right);
+	
+	private ImageIcon imgTank2down = new ImageIcon(getClass().getResource("tank2down.png"));
+	private ImageIcon imgTank2up = new ImageIcon(getClass().getResource("tank2up.png"));
+	private ImageIcon imgTank2left = new ImageIcon(getClass().getResource("tank2left.png"));
+	private ImageIcon imgTank2right = new ImageIcon(getClass().getResource("tank2right.png"));
+	private JLabel lblTank2 = new JLabel(imgTank2left);
 	
 	private int tank1X, tank1Y, tank2X, tank2Y;	
 	
@@ -354,7 +361,7 @@ public class Game implements ActionListener, KeyListener {
 	public void setUpTank1()
 	{
 		// Set the size of the JLabel that contains the shooter image
-		lblTank1.setSize(imgTank1.getIconWidth(), imgTank1.getIconHeight());
+		lblTank1.setSize(imgTank1right.getIconWidth(), imgTank1right.getIconHeight());
 
 		// Set the shooter's initial position 
 		tank1X = 15;
@@ -368,7 +375,7 @@ public class Game implements ActionListener, KeyListener {
 	public void setUpTank2()
 	{
 		// Set the size of the JLabel that contains the shooter image
-		lblTank2.setSize(imgTank2.getIconWidth(), imgTank2.getIconHeight());
+		lblTank2.setSize(imgTank2down.getIconWidth(), imgTank2down.getIconHeight());
 
 		// Set the shooter's initial position 
 		tank2X = 820;
@@ -495,25 +502,58 @@ public class Game implements ActionListener, KeyListener {
 		
 		//Tank1
 		if (onepressedLeft && tank1X > 4)
+		{
 			tank1X -= SHOOTER_SPEED;
+			
+			lblTank1.setIcon(imgTank1left);
+			lblTank1.setSize(imgTank1left.getIconWidth(), imgTank1left.getIconHeight());
+		}
 		if (onepressedRight && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
+		{
 			tank1X += SHOOTER_SPEED;
+			lblTank1.setIcon(imgTank1right);
+			lblTank1.setSize(imgTank1right.getIconWidth(), imgTank1right.getIconHeight());
+		}
 		if (onepressedUp && tank1X > 4)
+		{
 			tank1Y -= SHOOTER_SPEED;
+			lblTank1.setIcon(imgTank1up);
+			lblTank1.setSize(imgTank1up.getIconWidth(), imgTank1up.getIconHeight());
+		}
 		if (onepressedDown && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
+		{
 			tank1Y += SHOOTER_SPEED;
+			lblTank1.setIcon(imgTank1down);
+			lblTank1.setSize(imgTank1down.getIconWidth(), imgTank1down.getIconHeight());
+		}
 		
 		lblTank1.setLocation(tank1X, tank1Y);
 		
-		//Tank1
+		//Tank2
 		if (twopressedLeft && tank2X > 4)
+		{
 			tank2X -= SHOOTER_SPEED;
+			lblTank2.setIcon(imgTank2left);
+			lblTank2.setSize(imgTank2left.getIconWidth(), imgTank2left.getIconHeight());
+		}
 		if (twopressedRight && tank2X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
+		{
 			tank2X += SHOOTER_SPEED;
+			lblTank2.setIcon(imgTank2right);
+			lblTank2.setSize(imgTank2right.getIconWidth(), imgTank2right.getIconHeight());
+		}
 		if (twopressedUp && tank2X > 4)
+		{
 			tank2Y -= SHOOTER_SPEED;
+			lblTank2.setIcon(imgTank2up);
+			lblTank2.setSize(imgTank2up.getIconWidth(), imgTank2up.getIconHeight());
+		}
 		if (twopressedDown && tank2X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
+		{
 			tank2Y += SHOOTER_SPEED;
+			lblTank2.setIcon(imgTank2down);
+			lblTank2.setSize(imgTank2down.getIconWidth(), imgTank2down.getIconHeight());
+		}
 			
 		lblTank2.setLocation(tank2X, tank2Y);
 		
