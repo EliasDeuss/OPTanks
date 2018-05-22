@@ -1,10 +1,16 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.ImageObserver;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
@@ -76,9 +82,13 @@ public class Game implements ActionListener, KeyListener {
 	
 	//Players
 	private ImageIcon imgTank1down = new ImageIcon(getClass().getResource("tank1down.png"));
+	private ImageIcon imgTank1downthree = new ImageIcon(getClass().getResource("tank1downthree.png"));
 	private ImageIcon imgTank1up = new ImageIcon(getClass().getResource("tank1up.png"));
+	private ImageIcon imgTank1upthree = new ImageIcon(getClass().getResource("tank1upthree.png"));
 	private ImageIcon imgTank1left = new ImageIcon(getClass().getResource("tank1left.png"));
+	private ImageIcon imgTank1leftthree = new ImageIcon(getClass().getResource("tank1leftthree.png"));
 	private ImageIcon imgTank1right = new ImageIcon(getClass().getResource("tank1right.png"));
+	private ImageIcon imgTank1rightthree = new ImageIcon(getClass().getResource("tank1rightthree.png"));
 	
 	private JLabel lblTank1 = new JLabel(imgTank1right);
 	
@@ -89,6 +99,13 @@ public class Game implements ActionListener, KeyListener {
 	private JLabel lblTank2 = new JLabel(imgTank2left);
 	
 	private int tank1X, tank1Y, tank2X, tank2Y;	
+	
+	//Tank A
+	private int Tank1A = 3;
+	private Image imgTank1 = new ImageIcon("tank1up.png").getImage();
+	private double imageOrientation = 0, sizeX = 1.5, sizeY = 1.5;
+	private double offsetX = FIELD_WIDTH / 2 - imgTank1.getWidth(null) * sizeX / 2;
+	private double offsetY = FIELD_HEIGHT / 2 - imgTank1.getHeight(null) * sizeY / 2;
 	
 	//Tank1
 	private boolean onepressedLeft = false, onepressedRight = false, onepressedUp = false, onepressedDown = false, onepressedSpace = false;
@@ -350,13 +367,35 @@ public class Game implements ActionListener, KeyListener {
 		player2BTN.setVisible(false);
 	}
 	
+	public void paintTank1(Graphics g)
+	{
+		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		Graphics2D g2D = (Graphics2D) g;
+
+		AffineTransform at = AffineTransform.getRotateInstance(imageOrientation,
+				imgTank1.getWidth(null) * 41 / 2 + tank1X,
+				imgTank1.getHeight(null) * 57 / 2 + offsetY);
+
+		at.translate(tank1X, tank1Y);
+
+		at.scale(41, 57);
+
+		g2D.drawImage(imgTank1, at, (ImageObserver) this);
+
+		Toolkit.getDefaultToolkit().sync();
+	}
+	
 	public void setUpMap1()
 	{
 		setUpTank1();
 		setUpTank2();
+		infoBoard();
+		
 		
 	}
 	
+
 	// Set the size and starting position of the player's tank
 	public void setUpTank1()
 	{
