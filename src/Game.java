@@ -7,8 +7,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -61,6 +59,8 @@ public class Game implements ActionListener, KeyListener {
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
 	
+	private int SHOOTER_SPEED = 2;
+	
 	//Images
 	private ImageIcon imgLogoMain = new ImageIcon(getClass().getResource("logo.png"));
 	private ImageIcon imgStartMain = new ImageIcon(getClass().getResource("startMain.png"));
@@ -83,6 +83,10 @@ public class Game implements ActionListener, KeyListener {
 	
 	private int tank1X, tank1Y, tank2X, tank2Y;	
 	
+	private boolean pressedLeft = false, pressedRight = false, pressedUp = false, pressedDown = false, pressedSpace = false;
+	private boolean controlKeyPressed = false, missileFired = false;
+
+	
 	//JLable and Buttons
 	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1;
 	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN;
@@ -95,8 +99,6 @@ public class Game implements ActionListener, KeyListener {
 	
 	//Array List
 	ArrayList<Missile> missiles = new ArrayList<Missile>();
-	ArrayList<WallY> wallYs = new ArrayList<WallY>();
-	ArrayList<WallX> wallXs = new ArrayList<WallX>();
 	
 	public static void main(String[] args) 
 	{
@@ -110,10 +112,12 @@ public class Game implements ActionListener, KeyListener {
 		StartScreen();
 		//infoBoard();
 		
+		
+		
 		//Set up / start timer
-		//timer = new Timer(TIMER_SPEED, this);
+		timer = new Timer(TIMER_SPEED, this);
 		//timer.setInitialDelay(TIMER_DELAY);
-		//timer.start();
+		timer.start();
 	}
 	
 	public void setUpGameFrame()
@@ -124,7 +128,7 @@ public class Game implements ActionListener, KeyListener {
 		gameFrame.setLayout(null);
 		gameFrame.setResizable(false);
 		gameFrame.getContentPane().setBackground(Color.WHITE);
-		
+		gameFrame.addKeyListener(this);
 		gameFrame.setVisible(true);
 	}
 	
@@ -336,34 +340,122 @@ public class Game implements ActionListener, KeyListener {
 	
 	public void setUpMap1()
 	{
-		WallY tempY = new WallY(0, 0);
-		//Map Setup
-		for (int i = 0; i < 1; i++)
-		{
-			wallYs.add(new WallY(15,15));
-			wallYs.add(new WallY(95,65));
-		}
+		setUpTank1();
 		
 	}
 	
-	public void keyPressed(KeyEvent arg0) {
+	// Set the size and starting position of the player's shooter
+	public void setUpTank1()
+	{
+		// Set the size of the JLabel that contains the shooter image
+		lblTank1.setSize(imgTank1.getIconWidth(), imgTank1.getIconHeight());
+
+		// Set the shooter's initial position 
+		tank1X = 15;
+		tank1Y = 170;
+		lblTank1.setLocation(tank1X, tank1Y);
+
+		// Add the shooter JLabel to the JFrame
+		gameFrame.add(lblTank1);
+	}
+	
+	public void keyPressed(KeyEvent event) {
 		// TODO Auto-generated method stub
+		int key = event.getKeyCode();
 		
+		if (key == KeyEvent.VK_LEFT) // LEFT arrow
+			pressedLeft = true;
+		if (key == KeyEvent.VK_RIGHT) // RIGHT arrow
+			pressedRight = true;
+
+		if (key == KeyEvent.VK_SPACE) // SPACE bar
+			pressedSpace = true;
+		
+		if (key == KeyEvent.VK_UP) // Up arrow
+			pressedUp = true;
+		if (key == KeyEvent.VK_DOWN) // RIGHT arrow
+			pressedDown = true;
 	}
 
-	public void keyReleased(KeyEvent arg0) {
+	public void keyReleased(KeyEvent event) {
 		// TODO Auto-generated method stub
+		int key = event.getKeyCode();
+
+		if (key == KeyEvent.VK_CONTROL) // CONTROL key
+			controlKeyPressed = false;
+
+		if (key == KeyEvent.VK_LEFT) // LEFT arrow
+			pressedLeft = false;
+		if (key == KeyEvent.VK_RIGHT) // RIGHT arrow
+			pressedRight = false;
 		
+		if (key == KeyEvent.VK_UP) // Up arrow
+			pressedUp = false;
+		if (key == KeyEvent.VK_DOWN) // RIGHT arrow
+			pressedDown = false;
+		
+		if (key == KeyEvent.VK_SPACE) // SPACE bar
+		{
+			pressedSpace = false;
+			missileFired = false;
+		}
 	}
 
-	public void keyTyped(KeyEvent arg0) {
+	public void keyTyped(KeyEvent event) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	public void actionPerformed(ActionEvent event) {
 		
+		
+		// Move the existing missiles up the playing field
+//		for (int j = 0; j < missiles.size(); j++)
+//		{
+//		Missile missile = missiles.get(j);
+//		missile.moveMissile();
+//
+//		// If the missile gets past the top of the playing field, remove it
+//		if (missile.getY() < 0 - missile.getHeight())
+//		{
+//				gameFrame.getContentPane().remove(missile.getMissileImage());
+//				missiles.remove(j);
+//			}
+//		}
+		
+		
+		//Prevents user from pressing and holding space bar
+//		if (pressedSpace && !missileFired)
+//		{
+//		// Determine the width and height of the missile being launched
+//		Missile tempMissile = new Missile(0, 0);
+//		int missileWidth = tempMissile.getWidth();
+//		int missileHeight = tempMissile.getHeight();
+//		// Set the starting position of the missile being launched 
+//		int x = shooterX + (lblShooter.getWidth() / 2) - (missileWidth / 2);
+//		int y = FIELD_HEIGHT - lblShooter.getHeight() - 30 - missileHeight;
+//
+//		// Create a new 'Missile' object and add it to the 'missiles' ArrayList 
+//		missiles.add(new Missile(x, y));
+//		missileFired = true;
+//				}
+		
+		if (pressedLeft && tank1X > 4)
+			tank1X -= SHOOTER_SPEED;
+		if (pressedRight && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
+			tank1X += SHOOTER_SPEED;
+		if (pressedUp && tank1X > 4)
+			tank1Y -= SHOOTER_SPEED;
+		if (pressedDown && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
+			tank1Y += SHOOTER_SPEED;
+		
+		lblTank1.setLocation(tank1X, tank1Y);
+		
+		gameFrame.repaint();
+		
 		checkCollisions();
+		
+		Toolkit.getDefaultToolkit().sync();
 	}
 	
 	public void checkCollisions()
