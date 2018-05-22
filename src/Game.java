@@ -83,9 +83,14 @@ public class Game implements ActionListener, KeyListener {
 	
 	private int tank1X, tank1Y, tank2X, tank2Y;	
 	
-	private boolean pressedLeft = false, pressedRight = false, pressedUp = false, pressedDown = false, pressedSpace = false;
-	private boolean controlKeyPressed = false, missileFired = false;
-
+	//Tank1
+	private boolean onepressedLeft = false, onepressedRight = false, onepressedUp = false, onepressedDown = false, onepressedSpace = false;
+	private boolean controlKeyPressed = false, onemissileFired = false;
+	
+	//Tank2
+	private boolean twopressedLeft = false, twopressedRight = false, twopressedUp = false, twopressedDown = false, twopressedSpace = false;
+	private boolean twomissileFired = false;
+	
 	
 	//JLable and Buttons
 	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1;
@@ -341,10 +346,11 @@ public class Game implements ActionListener, KeyListener {
 	public void setUpMap1()
 	{
 		setUpTank1();
+		setUpTank2();
 		
 	}
 	
-	// Set the size and starting position of the player's shooter
+	// Set the size and starting position of the player's tank
 	public void setUpTank1()
 	{
 		// Set the size of the JLabel that contains the shooter image
@@ -359,22 +365,52 @@ public class Game implements ActionListener, KeyListener {
 		gameFrame.add(lblTank1);
 	}
 	
+	public void setUpTank2()
+	{
+		// Set the size of the JLabel that contains the shooter image
+		lblTank2.setSize(imgTank2.getIconWidth(), imgTank2.getIconHeight());
+
+		// Set the shooter's initial position 
+		tank2X = 820;
+		tank2Y = 170;
+		lblTank2.setLocation(tank2X, tank2Y);
+
+		// Add the shooter JLabel to the JFrame
+		gameFrame.add(lblTank2);
+	}
+	
 	public void keyPressed(KeyEvent event) {
 		// TODO Auto-generated method stub
 		int key = event.getKeyCode();
 		
+		//Tank1
 		if (key == KeyEvent.VK_LEFT) // LEFT arrow
-			pressedLeft = true;
+			onepressedLeft = true;
 		if (key == KeyEvent.VK_RIGHT) // RIGHT arrow
-			pressedRight = true;
+			onepressedRight = true;
 
 		if (key == KeyEvent.VK_SPACE) // SPACE bar
-			pressedSpace = true;
+			onepressedSpace = true;
 		
 		if (key == KeyEvent.VK_UP) // Up arrow
-			pressedUp = true;
+			onepressedUp = true;
 		if (key == KeyEvent.VK_DOWN) // RIGHT arrow
-			pressedDown = true;
+			onepressedDown = true;
+		
+		//Tank2
+		if (key == 65) // A
+			twopressedLeft = true;
+		if (key == 68) // S
+			twopressedRight = true;
+
+		if (key == 81) // Q
+			twopressedSpace = true;
+		
+		if (key == 87) // W
+			twopressedUp = true;
+		if (key == 83) // D
+			twopressedDown = true;
+		
 	}
 
 	public void keyReleased(KeyEvent event) {
@@ -383,21 +419,38 @@ public class Game implements ActionListener, KeyListener {
 
 		if (key == KeyEvent.VK_CONTROL) // CONTROL key
 			controlKeyPressed = false;
-
+		
+		//Tank1
 		if (key == KeyEvent.VK_LEFT) // LEFT arrow
-			pressedLeft = false;
+			onepressedLeft = false;
 		if (key == KeyEvent.VK_RIGHT) // RIGHT arrow
-			pressedRight = false;
+			onepressedRight = false;
 		
 		if (key == KeyEvent.VK_UP) // Up arrow
-			pressedUp = false;
+			onepressedUp = false;
 		if (key == KeyEvent.VK_DOWN) // RIGHT arrow
-			pressedDown = false;
+			onepressedDown = false;
+		
+		//Tank2
+		if (key == 65) // A
+			twopressedLeft = false;
+		if (key == 68) // S
+			twopressedRight = false;
+
+		if (key == 81) // Q
+			twopressedSpace = false;
+				
+		if (key == 87) // W
+			twopressedUp = false;
+		if (key == 83) // D
+			twopressedDown = false;
+		
+		
 		
 		if (key == KeyEvent.VK_SPACE) // SPACE bar
 		{
-			pressedSpace = false;
-			missileFired = false;
+			onepressedSpace = false;
+			onemissileFired = false;
 		}
 	}
 
@@ -440,16 +493,29 @@ public class Game implements ActionListener, KeyListener {
 //		missileFired = true;
 //				}
 		
-		if (pressedLeft && tank1X > 4)
+		//Tank1
+		if (onepressedLeft && tank1X > 4)
 			tank1X -= SHOOTER_SPEED;
-		if (pressedRight && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
+		if (onepressedRight && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
 			tank1X += SHOOTER_SPEED;
-		if (pressedUp && tank1X > 4)
+		if (onepressedUp && tank1X > 4)
 			tank1Y -= SHOOTER_SPEED;
-		if (pressedDown && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
+		if (onepressedDown && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
 			tank1Y += SHOOTER_SPEED;
 		
 		lblTank1.setLocation(tank1X, tank1Y);
+		
+		//Tank1
+		if (twopressedLeft && tank2X > 4)
+			tank2X -= SHOOTER_SPEED;
+		if (twopressedRight && tank2X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
+			tank2X += SHOOTER_SPEED;
+		if (twopressedUp && tank2X > 4)
+			tank2Y -= SHOOTER_SPEED;
+		if (twopressedDown && tank2X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
+			tank2Y += SHOOTER_SPEED;
+			
+		lblTank2.setLocation(tank2X, tank2Y);
 		
 		gameFrame.repaint();
 		
