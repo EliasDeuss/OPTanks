@@ -100,12 +100,13 @@ public class Game implements ActionListener, KeyListener {
 	
 	private int tank1X, tank1Y, tank2X, tank2Y;	
 	
-	//Tank A
+	//Tank 1
 	private int Tank1A = 3;
 	private Image imgTank1 = new ImageIcon("tank1up.png").getImage();
-	private double imageOrientation = 0, sizeX = 1.5, sizeY = 1.5;
-	private double offsetX = FIELD_WIDTH / 2 - imgTank1.getWidth(null) * sizeX / 2;
-	private double offsetY = FIELD_HEIGHT / 2 - imgTank1.getHeight(null) * sizeY / 2;
+	private boolean tank1 = false;
+	
+	private double tank1offsetX = FIELD_WIDTH / 2 - imgTank1.getWidth(null) * 41 / 2;
+	private double tank1offsetY = FIELD_HEIGHT / 2 - imgTank1.getHeight(null) * 57 / 2;
 	
 	//Tank1
 	private boolean onepressedLeft = false, onepressedRight = false, onepressedUp = false, onepressedDown = false, onepressedSpace = false;
@@ -367,24 +368,7 @@ public class Game implements ActionListener, KeyListener {
 		player2BTN.setVisible(false);
 	}
 	
-	public void paintTank1(Graphics g)
-	{
-		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-		Graphics2D g2D = (Graphics2D) g;
-
-		AffineTransform at = AffineTransform.getRotateInstance(imageOrientation,
-				imgTank1.getWidth(null) * 41 / 2 + tank1X,
-				imgTank1.getHeight(null) * 57 / 2 + offsetY);
-
-		at.translate(tank1X, tank1Y);
-
-		at.scale(41, 57);
-
-		g2D.drawImage(imgTank1, at, (ImageObserver) this);
-
-		Toolkit.getDefaultToolkit().sync();
-	}
+	
 	
 	public void setUpMap1()
 	{
@@ -504,42 +488,16 @@ public class Game implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	
 	public void actionPerformed(ActionEvent event) {
 		
 		
-		// Move the existing missiles up the playing field
-//		for (int j = 0; j < missiles.size(); j++)
-//		{
-//		Missile missile = missiles.get(j);
-//		missile.moveMissile();
-//
-//		// If the missile gets past the top of the playing field, remove it
-//		if (missile.getY() < 0 - missile.getHeight())
-//		{
-//				gameFrame.getContentPane().remove(missile.getMissileImage());
-//				missiles.remove(j);
-//			}
-//		}
 		
 		
-		//Prevents user from pressing and holding space bar
-//		if (pressedSpace && !missileFired)
-//		{
-//		// Determine the width and height of the missile being launched
-//		Missile tempMissile = new Missile(0, 0);
-//		int missileWidth = tempMissile.getWidth();
-//		int missileHeight = tempMissile.getHeight();
-//		// Set the starting position of the missile being launched 
-//		int x = shooterX + (lblShooter.getWidth() / 2) - (missileWidth / 2);
-//		int y = FIELD_HEIGHT - lblShooter.getHeight() - 30 - missileHeight;
-//
-//		// Create a new 'Missile' object and add it to the 'missiles' ArrayList 
-//		missiles.add(new Missile(x, y));
-//		missileFired = true;
-//				}
 		
 		//Tank1
+		
 		if (onepressedLeft && tank1X > 4)
 		{
 			tank1X -= SHOOTER_SPEED;
