@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
-import java.awt.image.ImageObserver;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
@@ -29,8 +28,8 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
-public class Game implements ActionListener, KeyListener {
-	
+public class Game extends JFrame implements ActionListener, KeyListener
+{
 	//Sever
 	private String ip = "localhost";
 	private int port = 12345;
@@ -40,7 +39,7 @@ public class Game implements ActionListener, KeyListener {
 	private DataInputStream dis;
 	private ServerSocket serverSocket;
 	
-	private boolean accepted = false;
+	private boolean accepted = false, playGame = false;
 	private boolean unableToCommunicateWithOpponent = false;
 	
 	private JTextField portPicker;
@@ -65,7 +64,7 @@ public class Game implements ActionListener, KeyListener {
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
 	
-	private int SHOOTER_SPEED = 2;
+	private int SHOOTER_SPEED = 1;
 	
 	//Images
 	private ImageIcon imgLogoMain = new ImageIcon(getClass().getResource("logo.png"));
@@ -105,9 +104,12 @@ public class Game implements ActionListener, KeyListener {
 	private Image imgTank1 = new ImageIcon("tank1up.png").getImage();
 	private boolean tank1 = false;
 	
-	private double tank1offsetX = FIELD_WIDTH / 2 - imgTank1.getWidth(null) * 41 / 2;
-	private double tank1offsetY = FIELD_HEIGHT / 2 - imgTank1.getHeight(null) * 57 / 2;
-	
+	private Image image = new ImageIcon("src/tank1down.png").getImage();
+	private int degreesToTurn = 1;
+	private double imageOrientation = 0, sizeX = 1.0, sizeY = 1.0;
+	private double offsetX = FIELD_WIDTH / 2 - image.getWidth(null) * sizeX / 2;
+	private double offsetY = FIELD_HEIGHT / 2 - image.getHeight(null) * sizeY / 2;
+
 	//Tank1
 	private boolean onepressedLeft = false, onepressedRight = false, onepressedUp = false, onepressedDown = false, onepressedSpace = false;
 	private boolean controlKeyPressed = false, onemissileFired = false;
@@ -129,7 +131,7 @@ public class Game implements ActionListener, KeyListener {
 	
 	//Array List
 	ArrayList<Missile> missiles = new ArrayList<Missile>();
-	
+
 	public static void main(String[] args) 
 	{
 		new Game();
@@ -137,6 +139,13 @@ public class Game implements ActionListener, KeyListener {
 	
 	public Game()
 	{
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setSize(frameWidth, frameHeight);
+//		setTitle("Rotate, Translate, and Scale an Image on a JFrame");
+//		setLocationRelativeTo(null);
+//		setResizable(false);
+//		setVisible(true);
+		
 		MenuBar();
 		setUpGameFrame();
 		StartScreen();
@@ -152,14 +161,14 @@ public class Game implements ActionListener, KeyListener {
 	
 	public void setUpGameFrame()
 	{	
-		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		gameFrame.setSize(FIELD_WIDTH, FIELD_HEIGHT);
-		gameFrame.setLocationRelativeTo(null);
-		gameFrame.setLayout(null);
-		gameFrame.setResizable(false);
-		gameFrame.getContentPane().setBackground(Color.WHITE);
-		gameFrame.addKeyListener(this);
-		gameFrame.setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(FIELD_WIDTH, FIELD_HEIGHT);
+		setLocationRelativeTo(null);
+		setLayout(null);
+		setResizable(false);
+		getContentPane().setBackground(Color.WHITE);
+		addKeyListener(this);
+		setVisible(true);
 	}
 	
 	//Server Stuff
@@ -189,8 +198,8 @@ public class Game implements ActionListener, KeyListener {
 		lblKillsTank2.setOpaque(false);
 		lblKillsTank2.setVisible(true);
 		
-		gameFrame.add(lblKillsTank1);
-		gameFrame.add(lblKillsTank2);
+		add(lblKillsTank1);
+		add(lblKillsTank2);
 	}
 	
 	public void StartScreen()
@@ -242,10 +251,10 @@ public class Game implements ActionListener, KeyListener {
 		settingsMainBTN.setVisible(true);
 		
 		//Add Items to Frame
-		gameFrame.add(lblGameTitle);
-		gameFrame.add(startGame);
-		gameFrame.add(leaderboardMainBTN);
-		gameFrame.add(settingsMainBTN);
+		add(lblGameTitle);
+		add(startGame);
+		add(leaderboardMainBTN);
+		add(settingsMainBTN);
 	}
 	
 	public void hideStartScreen()
@@ -283,6 +292,7 @@ public class Game implements ActionListener, KeyListener {
 								System.out.println("Gamemode set to " + GAMEMODE);
 								
 								hideGamemodeSelector();
+								playGame = true;
 								//playerSelector();
 							}
 						}
@@ -290,8 +300,8 @@ public class Game implements ActionListener, KeyListener {
 				);
 		normalGamemodeBTN.setVisible(true);
 		
-		gameFrame.add(lblGameSelectorTitle);
-		gameFrame.add(normalGamemodeBTN);
+		add(lblGameSelectorTitle);
+		add(normalGamemodeBTN);
 	}
 	
 	public void hideGamemodeSelector()
@@ -356,9 +366,9 @@ public class Game implements ActionListener, KeyListener {
 				);
 		player2BTN.setVisible(true);
 		
-		gameFrame.add(lblGamePlayerSTitle);
-		gameFrame.add(player1BTN);
-		gameFrame.add(player2BTN);
+		add(lblGamePlayerSTitle);
+		add(player1BTN);
+		add(player2BTN);
 	}
 	
 	public void hidePlayerSelector()
@@ -392,7 +402,7 @@ public class Game implements ActionListener, KeyListener {
 		lblTank1.setLocation(tank1X, tank1Y);
 
 		// Add the shooter JLabel to the JFrame
-		gameFrame.add(lblTank1);
+		add(lblTank1);
 	}
 	
 	public void setUpTank2()
@@ -406,7 +416,7 @@ public class Game implements ActionListener, KeyListener {
 		lblTank2.setLocation(tank2X, tank2Y);
 
 		// Add the shooter JLabel to the JFrame
-		gameFrame.add(lblTank2);
+		add(lblTank2);
 	}
 	
 	public void keyPressed(KeyEvent event) {
@@ -500,31 +510,36 @@ public class Game implements ActionListener, KeyListener {
 		
 		if (onepressedLeft && tank1X > 4)
 		{
-			tank1X -= SHOOTER_SPEED;
-			
-			lblTank1.setIcon(imgTank1left);
-			lblTank1.setSize(imgTank1left.getIconWidth(), imgTank1left.getIconHeight());
+			imageOrientation = imageOrientation -0.03;
 		}
 		if (onepressedRight && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
 		{
-			tank1X += SHOOTER_SPEED;
-			lblTank1.setIcon(imgTank1right);
-			lblTank1.setSize(imgTank1right.getIconWidth(), imgTank1right.getIconHeight());
+			imageOrientation = imageOrientation +0.03;
 		}
+		
+		//Forwords
 		if (onepressedUp && tank1X > 4)
 		{
 			tank1Y -= SHOOTER_SPEED;
-			lblTank1.setIcon(imgTank1up);
-			lblTank1.setSize(imgTank1up.getIconWidth(), imgTank1up.getIconHeight());
+			
+			
+			offsetY = tank1Y;
+			
+			
+			//tank1Y -= SHOOTER_SPEED;
+//			tank1Y = (int) (-((Math.sin(imageOrientation) * (2)) + (FIELD_HEIGHT / 2 - 20)));
+//			tank1X = ((int) (-(Math.cos(imageOrientation) * (2)) + (FIELD_HEIGHT / 2 - 20)));
+//			offsetY = tank1Y;
 		}
+		
+		//Backwords
 		if (onepressedDown && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
 		{
 			tank1Y += SHOOTER_SPEED;
-			lblTank1.setIcon(imgTank1down);
-			lblTank1.setSize(imgTank1down.getIconWidth(), imgTank1down.getIconHeight());
+			
+			
+			offsetY = tank1Y;
 		}
-		
-		lblTank1.setLocation(tank1X, tank1Y);
 		
 		//Tank2
 		if (twopressedLeft && tank2X > 4)
@@ -554,11 +569,13 @@ public class Game implements ActionListener, KeyListener {
 			
 		lblTank2.setLocation(tank2X, tank2Y);
 		
-		gameFrame.repaint();
-		
 		checkCollisions();
 		
 		Toolkit.getDefaultToolkit().sync();
+		
+
+		if (playGame)
+			repaint();
 	}
 	
 	public void checkCollisions()
@@ -634,7 +651,7 @@ public class Game implements ActionListener, KeyListener {
 						    {
 						    	if (e.getActionCommand().equals("Exit"))
 								{
-						    		gameFrame.dispose();
+						    		dispose();
 									System.exit(0);
 								}
 						    }
@@ -657,7 +674,64 @@ public class Game implements ActionListener, KeyListener {
 						  }
 						);
 		menu.add(menuItem);
-		gameFrame.setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 		rbMenuItem2.setEnabled(true);
+	}
+	
+	public void paintComponent(Graphics g)
+	{
+		super.paintComponents(g);
+	}
+
+	public void paint(Graphics g)
+	{
+		paintComponent(g);
+		// This line causes graphics and text to be rendered with anti-aliasing
+		//  turned on, making the overall display look smoother and cleaner
+		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		// Draw the JFrame background
+		//g.setColor(Color.BLACK);
+		//g.fillRect(0, 0, frameWidth, frameHeight);
+
+		// The 'Graphics2D' class provides for greater control and manipulation
+		//  of two-dimensional images, shapes, and text
+		Graphics2D g2D = (Graphics2D) g;
+
+		// Set the point around which the Image is to be rotated, and then rotate
+		//  the Image to the appropriate angle and position based on that point;
+		//  note that for this example program, the Image is being centered on
+		//  the JFrame (using 'offsetX' and 'offsetY'), and also scaled (using
+		//  'sizeX' and 'sizeY'), both of which must be taken into account when
+		//  determining the single point around which the Image is being rotated
+		AffineTransform at = AffineTransform.getRotateInstance(imageOrientation,
+                                                             image.getWidth(null) * sizeX / 2 + offsetX,
+                                                             image.getHeight(null) * sizeY / 2 + offsetY);
+
+		// Position the Image at the desired location on the JFrame; by default,
+		//  the Image is located at coordinate (0, 0), which is the upper-left
+		//  of the JFrame; note that if the goal is to have the Image rotate
+		//  around its center-point, then 'offsetX' and 'offsetY' must be taken
+		//  into account when using the 'getRotateInstance' method (above)
+		at.translate(offsetX, offsetY);
+
+		// Scale the Image (change its size); to make the Image larger, use
+		//  values greater than "1"; for example, a value of "2" will double
+		//  the Image size, a value of "3" will triple the size, a value of
+		//  "4" will quadruple the size, and so on; a value less than "1"
+		//  will make the Image smaller; for example, "0.5" halves the size
+		at.scale(sizeX, sizeY);
+
+		// Draw the updated image
+		if (playGame)
+			g2D.drawImage(image, at, this);
+
+		// This line synchronizes the graphics state by flushing buffers containing
+		//  graphics events and forcing the frame drawing to happen now; otherwise,
+		//  it can sometimes take a few extra milliseconds for the drawing to take
+		//  place, which can result in jerky graphics movement; this line ensures
+		//  that the display is up-to-date; it is useful for animation, since it
+		//  reduces or eliminates flickering
+		Toolkit.getDefaultToolkit().sync();
 	}
 }
