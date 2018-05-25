@@ -65,6 +65,7 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	private int PLAYER2KILLS = 0;
 	
 	private int SHOOTER_SPEED = 1;
+	private int a = 0;
 	
 	//Images
 	private ImageIcon imgLogoMain = new ImageIcon(getClass().getResource("logo.png"));
@@ -393,16 +394,11 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	// Set the size and starting position of the player's tank
 	public void setUpTank1()
 	{
-		// Set the size of the JLabel that contains the shooter image
-		lblTank1.setSize(imgTank1right.getIconWidth(), imgTank1right.getIconHeight());
 
 		// Set the shooter's initial position 
 		tank1X = 15;
 		tank1Y = 170;
-		lblTank1.setLocation(tank1X, tank1Y);
 
-		// Add the shooter JLabel to the JFrame
-		add(lblTank1);
 	}
 	
 	public void setUpTank2()
@@ -519,17 +515,16 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		
 		//Forwords
 		if (onepressedUp && tank1X > 4)
-		{
-			tank1Y -= SHOOTER_SPEED;
-			
-			
-			offsetY = tank1Y;
-			
-			
+		{	
 			//tank1Y -= SHOOTER_SPEED;
-//			tank1Y = (int) (-((Math.sin(imageOrientation) * (2)) + (FIELD_HEIGHT / 2 - 20)));
-//			tank1X = ((int) (-(Math.cos(imageOrientation) * (2)) + (FIELD_HEIGHT / 2 - 20)));
+			//tank1Y = tank1Y - (SHOOTER_SPEED) * (int)(Math.sin(imageOrientation));
+			//tank1X = tank1X + (int)(Math.cos(imageOrientation));
+			int b = (int)imageOrientation;
+			a = (int)Math.toRadians(b);
+			tank1Y += (Math.sin(a));
+			tank1X += (Math.cos(a));
 //			offsetY = tank1Y;
+//			offsetX = tank1X;
 		}
 		
 		//Backwords
@@ -676,6 +671,7 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		menu.add(menuItem);
 		setJMenuBar(menuBar);
 		rbMenuItem2.setEnabled(true);
+		
 	}
 	
 	public void paintComponent(Graphics g)
@@ -686,52 +682,21 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	public void paint(Graphics g)
 	{
 		paintComponent(g);
-		// This line causes graphics and text to be rendered with anti-aliasing
-		//  turned on, making the overall display look smoother and cleaner
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		// Draw the JFrame background
-		//g.setColor(Color.BLACK);
-		//g.fillRect(0, 0, frameWidth, frameHeight);
-
-		// The 'Graphics2D' class provides for greater control and manipulation
-		//  of two-dimensional images, shapes, and text
 		Graphics2D g2D = (Graphics2D) g;
-
-		// Set the point around which the Image is to be rotated, and then rotate
-		//  the Image to the appropriate angle and position based on that point;
-		//  note that for this example program, the Image is being centered on
-		//  the JFrame (using 'offsetX' and 'offsetY'), and also scaled (using
-		//  'sizeX' and 'sizeY'), both of which must be taken into account when
-		//  determining the single point around which the Image is being rotated
+	
 		AffineTransform at = AffineTransform.getRotateInstance(imageOrientation,
                                                              image.getWidth(null) * sizeX / 2 + offsetX,
                                                              image.getHeight(null) * sizeY / 2 + offsetY);
-
-		// Position the Image at the desired location on the JFrame; by default,
-		//  the Image is located at coordinate (0, 0), which is the upper-left
-		//  of the JFrame; note that if the goal is to have the Image rotate
-		//  around its center-point, then 'offsetX' and 'offsetY' must be taken
-		//  into account when using the 'getRotateInstance' method (above)
 		at.translate(offsetX, offsetY);
 
-		// Scale the Image (change its size); to make the Image larger, use
-		//  values greater than "1"; for example, a value of "2" will double
-		//  the Image size, a value of "3" will triple the size, a value of
-		//  "4" will quadruple the size, and so on; a value less than "1"
-		//  will make the Image smaller; for example, "0.5" halves the size
 		at.scale(sizeX, sizeY);
 
 		// Draw the updated image
 		if (playGame)
 			g2D.drawImage(image, at, this);
 
-		// This line synchronizes the graphics state by flushing buffers containing
-		//  graphics events and forcing the frame drawing to happen now; otherwise,
-		//  it can sometimes take a few extra milliseconds for the drawing to take
-		//  place, which can result in jerky graphics movement; this line ensures
-		//  that the display is up-to-date; it is useful for animation, since it
-		//  reduces or eliminates flickering
 		Toolkit.getDefaultToolkit().sync();
 	}
 }
