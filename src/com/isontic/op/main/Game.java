@@ -1,3 +1,5 @@
+package com.isontic.op.main;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -14,8 +16,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-
+import javax.swing.Timer;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,24 +27,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
-import javax.swing.Timer;
 
 public class Game extends JFrame implements ActionListener, KeyListener
 {
-	//Sever
-	private String ip = "localhost";
-	private int port = 12345;
-	
-	private Socket socket;
-	private DataOutputStream dos;
-	private DataInputStream dis;
-	private ServerSocket serverSocket;
-	
-	private boolean accepted = false, playGame = false;
-	private boolean unableToCommunicateWithOpponent = false;
-	
-	private JTextField portPicker;
-	
 	// Global Constants
 	public static final int FIELD_WIDTH = 900;
 	public static final int FIELD_HEIGHT = 600;
@@ -53,19 +39,20 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	private Timer timer;
 	
 	//Private Constants
-	private JFrame gameFrame = new JFrame("OP Tanks V0.1.0");
+	//private JFrame("OP Tanks V0.1.0");
 	
 	//Stat's and game settings
 	private int GAMEMODE = 0; //What game mode you are in
 	private int PLAYERS = 2; //How many players are in the Game
 	private int MAP = 1; //What map the player is in
-	
+	private boolean playGame = false; //Players and game stats will spawn in if set to True
  	
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
 	
 	private int SHOOTER_SPEED = 1;
-	private int a = 0;
+	private int OneA = 0;
+	private int OneB = 0;
 	
 	//Images
 	private ImageIcon imgLogoMain = new ImageIcon(getClass().getResource("logo.png"));
@@ -105,7 +92,7 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	private Image imgTank1 = new ImageIcon("tank1up.png").getImage();
 	private boolean tank1 = false;
 	
-	private Image image = new ImageIcon("src/tank1down.png").getImage();
+	private Image image = new ImageIcon("src/com/isontic/op/main/tank1down.png").getImage();
 	private int degreesToTurn = 1;
 	private double imageOrientation = 0, sizeX = 1.0, sizeY = 1.0;
 	private double offsetX = FIELD_WIDTH / 2 - image.getWidth(null) * sizeX / 2;
@@ -131,7 +118,7 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	private JMenuItem menuItem, menuItem2, menuItem3;
 	
 	//Array List
-	ArrayList<Missile> missiles = new ArrayList<Missile>();
+	//ArrayList<Missile> missiles = new ArrayList<Missile>();
 
 	public static void main(String[] args) 
 	{
@@ -140,13 +127,7 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	
 	public Game()
 	{
-//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setSize(frameWidth, frameHeight);
-//		setTitle("Rotate, Translate, and Scale an Image on a JFrame");
-//		setLocationRelativeTo(null);
-//		setResizable(false);
-//		setVisible(true);
-		
+		//SetUp Game
 		MenuBar();
 		setUpGameFrame();
 		StartScreen();
@@ -171,16 +152,6 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		addKeyListener(this);
 		setVisible(true);
 	}
-	
-	//Server Stuff
-	
-	
-	public void waitingLobby()
-	{
-		
-	}
-	
-	
 	
 	//Info of player kills in game
 	public void infoBoard()
@@ -498,7 +469,9 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	
 	public void actionPerformed(ActionEvent event) {
 		
+		OneB = (int)imageOrientation;
 		
+		OneA = (int)Math.toRadians(OneB);
 		
 		
 		
@@ -519,11 +492,11 @@ public class Game extends JFrame implements ActionListener, KeyListener
 			//tank1Y -= SHOOTER_SPEED;
 			//tank1Y = tank1Y - (SHOOTER_SPEED) * (int)(Math.sin(imageOrientation));
 			//tank1X = tank1X + (int)(Math.cos(imageOrientation));
-			int b = (int)imageOrientation;
-			a = (int)Math.toRadians(b);
-			tank1Y += (Math.sin(a));
-			tank1X += (Math.cos(a));
-//			offsetY = tank1Y;
+			
+			tank1Y += (Math.sin(OneA));
+			tank1X += (Math.cos(OneA));
+
+			//			offsetY = tank1Y;
 //			offsetX = tank1X;
 		}
 		
@@ -568,7 +541,11 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		
 		Toolkit.getDefaultToolkit().sync();
 		
-
+		if (imageOrientation > 360) {
+			imageOrientation = 0;
+	      } else if (imageOrientation < 0) {
+	    	  imageOrientation = 360;}
+		
 		if (playGame)
 			repaint();
 	}
@@ -692,6 +669,7 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		at.translate(offsetX, offsetY);
 
 		at.scale(sizeX, sizeY);
+		
 
 		// Draw the updated image
 		if (playGame)
@@ -700,3 +678,4 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		Toolkit.getDefaultToolkit().sync();
 	}
 }
+
