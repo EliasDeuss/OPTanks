@@ -12,7 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
-import javax.swing.Timer;
+import java.util.ArrayList;
+
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,6 +23,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.Timer;
 
 public class Game extends JFrame implements ActionListener, KeyListener
 {
@@ -40,8 +42,8 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	private int PLAYERS = 2; //How many players are in the Game
 	private int MAP = 1; //What map the player is in
 	private boolean playGame = false; //Players and game stats will spawn in if set to True
-	private boolean tank1move = false;
-	private boolean tank2move = false;
+	private boolean tank1move = false; //Tracks it the player is moving
+	private boolean tank2move = false; //Tracks it the player is moving
 	
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
@@ -91,7 +93,7 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	private JMenuItem menuItem, menuItem2, menuItem3;
 	
 	//Array List
-	//ArrayList<Missile> missiles = new ArrayList<Missile>();
+	ArrayList<Missile> missiles = new ArrayList<Missile>();
 
 	public static void main(String[] args) 
 	{
