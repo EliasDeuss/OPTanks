@@ -25,7 +25,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.Timer;
 
-public class Game extends JFrame implements ActionListener, KeyListener
+public class Main extends JFrame implements ActionListener, KeyListener
 {
 	// Global Constants
 	public static final int FIELD_WIDTH = 900;
@@ -97,10 +97,10 @@ public class Game extends JFrame implements ActionListener, KeyListener
 
 	public static void main(String[] args) 
 	{
-		new Game();
+		new Main();
 	}
 	
-	public Game()
+	public Main()
 	{
 		//SetUp Game
 		MenuBar();
@@ -565,10 +565,10 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		
 		if (playGame)
 		{
-			if (tank1move == true || tank2move == true)
-			{
+			//if (tank1move == true || tank2move == true)
+			//{
 				repaint();
-			}
+			//}
 		}
 	}
 	
