@@ -50,7 +50,7 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
 	
-	private int SHOOTER_SPEED = 1;
+	private int SHOOTER_SPEED = 2;
 	private int OneA = 0;
 	private int OneB = 0;
 	
@@ -85,16 +85,17 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	private ImageIcon imgTank2right = new ImageIcon(getClass().getResource("tank2right.png"));
 	private JLabel lblTank2 = new JLabel(imgTank2left);
 	
-	private int tank1X, tank1Y, tank2X, tank2Y;	
+	private double tank1X, tank1Y, tank2X, tank2Y;	
 	
 	//Tank 1
-	private int Tank1A = 3;
+	private double tank1A = 4.7, tank2A = 1.56;
 	private Image imgTank1 = new ImageIcon("tank1up.png").getImage();
 	private boolean tank1 = false;
 	
 	private Image image = new ImageIcon("src/com/isontic/op/main/tank1down.png").getImage();
+	private Image image2 = new ImageIcon("src/com/isontic/op/main/tank2down.png").getImage();
 	private int degreesToTurn = 1;
-	private double imageOrientation = 0, sizeX = 1.0, sizeY = 1.0;
+	private double sizeX = 1.0, sizeY = 1.0;
 	private double offsetX = FIELD_WIDTH / 2 - image.getWidth(null) * sizeX / 2;
 	private double offsetY = FIELD_HEIGHT / 2 - image.getHeight(null) * sizeY / 2;
 
@@ -367,23 +368,16 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	{
 
 		// Set the shooter's initial position 
-		tank1X = 15;
-		tank1Y = 170;
+		tank1X = 41;
+		tank1Y = 280;
 
 	}
 	
 	public void setUpTank2()
 	{
-		// Set the size of the JLabel that contains the shooter image
-		lblTank2.setSize(imgTank2down.getIconWidth(), imgTank2down.getIconHeight());
-
 		// Set the shooter's initial position 
-		tank2X = 820;
-		tank2Y = 170;
-		lblTank2.setLocation(tank2X, tank2Y);
-
-		// Add the shooter JLabel to the JFrame
-		add(lblTank2);
+		tank2X = 850;
+		tank2Y = 280;
 	}
 	
 	public void keyPressed(KeyEvent event) {
@@ -469,82 +463,65 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	
 	public void actionPerformed(ActionEvent event) {
 		
-		OneB = (int)imageOrientation;
-		
-		OneA = (int)Math.toRadians(OneB);
-		
-		
 		
 		//Tank1
 		
 		if (onepressedLeft && tank1X > 4)
 		{
-			imageOrientation = imageOrientation -0.03;
+			tank1A = tank1A -0.03;
 		}
 		if (onepressedRight && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
 		{
-			imageOrientation = imageOrientation +0.03;
+			tank1A = tank1A +0.03;
 		}
 		
-		//Forwords
+		//Forwards
 		if (onepressedUp && tank1X > 4)
 		{	
-			//tank1Y -= SHOOTER_SPEED;
-			//tank1Y = tank1Y - (SHOOTER_SPEED) * (int)(Math.sin(imageOrientation));
-			//tank1X = tank1X + (int)(Math.cos(imageOrientation));
-			
-			tank1Y += (Math.sin(OneA));
-			tank1X += (Math.cos(OneA));
-
-			//			offsetY = tank1Y;
-//			offsetX = tank1X;
+			tank1Y = tank1Y + (SHOOTER_SPEED) * (Math.cos(tank1A));
+			tank1X = tank1X - (SHOOTER_SPEED) * (Math.sin(tank1A));
 		}
 		
-		//Backwords
+		//Backwards
 		if (onepressedDown && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
 		{
-			tank1Y += SHOOTER_SPEED;
-			
-			
-			offsetY = tank1Y;
+			tank1Y = tank1Y - (SHOOTER_SPEED) * (Math.cos(tank1A));
+			tank1X = tank1X + (SHOOTER_SPEED) * (Math.sin(tank1A));
 		}
 		
 		//Tank2
+		
 		if (twopressedLeft && tank2X > 4)
 		{
-			tank2X -= SHOOTER_SPEED;
-			lblTank2.setIcon(imgTank2left);
-			lblTank2.setSize(imgTank2left.getIconWidth(), imgTank2left.getIconHeight());
+			tank2A = tank2A -0.03;
 		}
-		if (twopressedRight && tank2X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
+		if (twopressedRight && tank2X < FIELD_WIDTH - lblTank2.getWidth() - 6 - 4)
 		{
-			tank2X += SHOOTER_SPEED;
-			lblTank2.setIcon(imgTank2right);
-			lblTank2.setSize(imgTank2right.getIconWidth(), imgTank2right.getIconHeight());
+			tank2A = tank2A +0.03;
 		}
+				
+		//Forwards
 		if (twopressedUp && tank2X > 4)
-		{
-			tank2Y -= SHOOTER_SPEED;
-			lblTank2.setIcon(imgTank2up);
-			lblTank2.setSize(imgTank2up.getIconWidth(), imgTank2up.getIconHeight());
-		}
-		if (twopressedDown && tank2X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
-		{
-			tank2Y += SHOOTER_SPEED;
-			lblTank2.setIcon(imgTank2down);
-			lblTank2.setSize(imgTank2down.getIconWidth(), imgTank2down.getIconHeight());
+		{	
+			tank2Y = tank2Y + (SHOOTER_SPEED) * (Math.cos(tank2A));
+			tank2X = tank2X - (SHOOTER_SPEED) * (Math.sin(tank2A));
 		}
 			
-		lblTank2.setLocation(tank2X, tank2Y);
+		//Backwards
+		if (twopressedDown && tank2X < FIELD_WIDTH - lblTank2.getWidth() - 6 - 4)
+		{
+			tank2Y = tank2Y - (SHOOTER_SPEED) * (Math.cos(tank2A));
+			tank2X = tank2X + (SHOOTER_SPEED) * (Math.sin(tank2A));
+		}
 		
 		checkCollisions();
 		
 		Toolkit.getDefaultToolkit().sync();
 		
-		if (imageOrientation > 360) {
-			imageOrientation = 0;
-	      } else if (imageOrientation < 0) {
-	    	  imageOrientation = 360;}
+		if (tank1A > 2 * Math.PI) {
+			tank1A = 0;
+	      } else if (tank1A < 0) {
+	    	  tank1A = 2 * Math.PI;}
 		
 		if (playGame)
 			repaint();
@@ -663,17 +640,21 @@ public class Game extends JFrame implements ActionListener, KeyListener
 
 		Graphics2D g2D = (Graphics2D) g;
 	
-		AffineTransform at = AffineTransform.getRotateInstance(imageOrientation,
-                                                             image.getWidth(null) * sizeX / 2 + offsetX,
-                                                             image.getHeight(null) * sizeY / 2 + offsetY);
-		at.translate(offsetX, offsetY);
+		AffineTransform at = AffineTransform.getRotateInstance(tank1A, tank1X, tank1Y);
+		AffineTransform at2 = AffineTransform.getRotateInstance(tank2A, tank2X, tank2Y);
+		
+		at.translate(tank1X - 20, tank1Y - 24);
+		at2.translate(tank2X - 20, tank2Y - 24);
 
 		at.scale(sizeX, sizeY);
-		
+		at2.scale(sizeX, sizeY);
 
 		// Draw the updated image
 		if (playGame)
+		{
 			g2D.drawImage(image, at, this);
+			g2D.drawImage(image2, at2, this);
+		}
 
 		Toolkit.getDefaultToolkit().sync();
 	}
