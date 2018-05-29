@@ -12,10 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import javax.swing.Timer;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -26,7 +22,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JTextField;
 
 public class Game extends JFrame implements ActionListener, KeyListener
 {
@@ -39,20 +34,19 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	private Timer timer;
 	
 	//Private Constants
-	//private JFrame("OP Tanks V0.1.0");
 	
 	//Stat's and game settings
 	private int GAMEMODE = 0; //What game mode you are in
 	private int PLAYERS = 2; //How many players are in the Game
 	private int MAP = 1; //What map the player is in
 	private boolean playGame = false; //Players and game stats will spawn in if set to True
- 	
+	private boolean tank1move = false;
+	private boolean tank2move = false;
+	
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
 	
 	private int SHOOTER_SPEED = 2;
-	private int OneA = 0;
-	private int OneB = 0;
 	
 	//Images
 	private ImageIcon imgLogoMain = new ImageIcon(getClass().getResource("logo.png"));
@@ -68,36 +62,14 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	private ImageIcon imgTank2Score = new ImageIcon(getClass().getResource("tank2score.png"));
 	
 	//Players
-	private ImageIcon imgTank1down = new ImageIcon(getClass().getResource("tank1down.png"));
-	private ImageIcon imgTank1downthree = new ImageIcon(getClass().getResource("tank1downthree.png"));
-	private ImageIcon imgTank1up = new ImageIcon(getClass().getResource("tank1up.png"));
-	private ImageIcon imgTank1upthree = new ImageIcon(getClass().getResource("tank1upthree.png"));
-	private ImageIcon imgTank1left = new ImageIcon(getClass().getResource("tank1left.png"));
-	private ImageIcon imgTank1leftthree = new ImageIcon(getClass().getResource("tank1leftthree.png"));
-	private ImageIcon imgTank1right = new ImageIcon(getClass().getResource("tank1right.png"));
-	private ImageIcon imgTank1rightthree = new ImageIcon(getClass().getResource("tank1rightthree.png"));
-	
-	private JLabel lblTank1 = new JLabel(imgTank1right);
-	
-	private ImageIcon imgTank2down = new ImageIcon(getClass().getResource("tank2down.png"));
-	private ImageIcon imgTank2up = new ImageIcon(getClass().getResource("tank2up.png"));
-	private ImageIcon imgTank2left = new ImageIcon(getClass().getResource("tank2left.png"));
-	private ImageIcon imgTank2right = new ImageIcon(getClass().getResource("tank2right.png"));
-	private JLabel lblTank2 = new JLabel(imgTank2left);
-	
 	private double tank1X, tank1Y, tank2X, tank2Y;	
 	
-	//Tank 1
+	//Tank 1 & 2
 	private double tank1A = 4.7, tank2A = 1.56;
-	private Image imgTank1 = new ImageIcon("tank1up.png").getImage();
-	private boolean tank1 = false;
 	
 	private Image image = new ImageIcon("src/com/isontic/op/main/tank1down.png").getImage();
 	private Image image2 = new ImageIcon("src/com/isontic/op/main/tank2down.png").getImage();
-	private int degreesToTurn = 1;
 	private double sizeX = 1.0, sizeY = 1.0;
-	private double offsetX = FIELD_WIDTH / 2 - image.getWidth(null) * sizeX / 2;
-	private double offsetY = FIELD_HEIGHT / 2 - image.getHeight(null) * sizeY / 2;
 
 	//Tank1
 	private boolean onepressedLeft = false, onepressedRight = false, onepressedUp = false, onepressedDown = false, onepressedSpace = false;
@@ -228,6 +200,8 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		add(startGame);
 		add(leaderboardMainBTN);
 		add(settingsMainBTN);
+		
+		repaint();
 	}
 	
 	public void hideStartScreen()
@@ -275,6 +249,7 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		
 		add(lblGameSelectorTitle);
 		add(normalGamemodeBTN);
+		repaint();
 	}
 	
 	public void hideGamemodeSelector()
@@ -357,27 +332,32 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	{
 		setUpTank1();
 		setUpTank2();
-		infoBoard();
+		//infoBoard();
 		
-		
+		repaint();
 	}
 	
 
 	// Set the size and starting position of the player's tank
 	public void setUpTank1()
 	{
-
+		tank1move = true;
 		// Set the shooter's initial position 
 		tank1X = 41;
 		tank1Y = 280;
+		
+		tank1move = false;
 
 	}
 	
 	public void setUpTank2()
 	{
+		tank2move = true;
 		// Set the shooter's initial position 
 		tank2X = 850;
 		tank2Y = 280;
+		
+		tank2move = false;
 	}
 	
 	public void keyPressed(KeyEvent event) {
@@ -386,31 +366,62 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		
 		//Tank1
 		if (key == KeyEvent.VK_LEFT) // LEFT arrow
+		{
 			onepressedLeft = true;
+			tank1move = true;
+		}
+		
 		if (key == KeyEvent.VK_RIGHT) // RIGHT arrow
+		{
 			onepressedRight = true;
-
+			tank1move = true;
+		}
+		
 		if (key == KeyEvent.VK_SPACE) // SPACE bar
+		{
 			onepressedSpace = true;
+			tank1move = true;
+		}
 		
 		if (key == KeyEvent.VK_UP) // Up arrow
+		{
 			onepressedUp = true;
+			tank1move = true;
+		}
 		if (key == KeyEvent.VK_DOWN) // RIGHT arrow
+		{
 			onepressedDown = true;
+			tank1move = true;
+		}
 		
 		//Tank2
 		if (key == 65) // A
+		{
 			twopressedLeft = true;
+			tank2move = true;
+		}
 		if (key == 68) // S
+		{
 			twopressedRight = true;
+			tank2move = true;
+		}
 
 		if (key == 81) // Q
+		{
 			twopressedSpace = true;
+			tank2move = true;
+		}
 		
 		if (key == 87) // W
+		{
 			twopressedUp = true;
+			tank2move = true;
+		}
 		if (key == 83) // D
+		{
 			twopressedDown = true;
+			tank2move = true;
+		}
 		
 	}
 
@@ -423,28 +434,55 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		
 		//Tank1
 		if (key == KeyEvent.VK_LEFT) // LEFT arrow
+		{
 			onepressedLeft = false;
+			tank1move = false;
+		}
 		if (key == KeyEvent.VK_RIGHT) // RIGHT arrow
+		{
 			onepressedRight = false;
+			tank1move = false;
+		}
 		
 		if (key == KeyEvent.VK_UP) // Up arrow
+		{
 			onepressedUp = false;
+			tank1move = false;
+		}
 		if (key == KeyEvent.VK_DOWN) // RIGHT arrow
+		{
 			onepressedDown = false;
+			tank1move = false;
+		}
 		
 		//Tank2
 		if (key == 65) // A
+		{
 			twopressedLeft = false;
+			tank2move = false;
+		}
 		if (key == 68) // S
+		{
 			twopressedRight = false;
+			tank2move = false;
+		}
 
 		if (key == 81) // Q
+		{
 			twopressedSpace = false;
+			tank2move = false;
+		}
 				
 		if (key == 87) // W
+		{
 			twopressedUp = false;
+			tank2move = false;
+		}
 		if (key == 83) // D
+		{
 			twopressedDown = false;
+			tank2move = false;
+		}
 		
 		
 		
@@ -470,7 +508,7 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		{
 			tank1A = tank1A -0.03;
 		}
-		if (onepressedRight && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
+		if (onepressedRight && tank1X < FIELD_WIDTH  - 6 - 4)
 		{
 			tank1A = tank1A +0.03;
 		}
@@ -483,7 +521,7 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		}
 		
 		//Backwards
-		if (onepressedDown && tank1X < FIELD_WIDTH - lblTank1.getWidth() - 6 - 4)
+		if (onepressedDown && tank1X < FIELD_WIDTH - 6 - 4)
 		{
 			tank1Y = tank1Y - (SHOOTER_SPEED) * (Math.cos(tank1A));
 			tank1X = tank1X + (SHOOTER_SPEED) * (Math.sin(tank1A));
@@ -495,7 +533,7 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		{
 			tank2A = tank2A -0.03;
 		}
-		if (twopressedRight && tank2X < FIELD_WIDTH - lblTank2.getWidth() - 6 - 4)
+		if (twopressedRight && tank2X < FIELD_WIDTH - 6 - 4)
 		{
 			tank2A = tank2A +0.03;
 		}
@@ -508,7 +546,7 @@ public class Game extends JFrame implements ActionListener, KeyListener
 		}
 			
 		//Backwards
-		if (twopressedDown && tank2X < FIELD_WIDTH - lblTank2.getWidth() - 6 - 4)
+		if (twopressedDown && tank2X < FIELD_WIDTH  - 6 - 4)
 		{
 			tank2Y = tank2Y - (SHOOTER_SPEED) * (Math.cos(tank2A));
 			tank2X = tank2X + (SHOOTER_SPEED) * (Math.sin(tank2A));
@@ -524,7 +562,12 @@ public class Game extends JFrame implements ActionListener, KeyListener
 	    	  tank1A = 2 * Math.PI;}
 		
 		if (playGame)
-			repaint();
+		{
+			if (tank1move == true || tank2move == true)
+			{
+				repaint();
+			}
+		}
 	}
 	
 	public void checkCollisions()
@@ -608,23 +651,9 @@ public class Game extends JFrame implements ActionListener, KeyListener
 						);
 		menu.add(menuItem);
 		
-		menuItem = new JMenuItem("Map1");
-		menuItem.setActionCommand("map1");
-		menuItem.addActionListener(
-						  new ActionListener() 
-						  {
-						    public void actionPerformed(ActionEvent e)
-						    {
-						    	if (e.getActionCommand().equals("map1"))
-								{
-						    		setUpMap1();
-								}
-						    }
-						  }
-						);
-		menu.add(menuItem);
+		
 		setJMenuBar(menuBar);
-		rbMenuItem2.setEnabled(true);
+		menu2.setVisible(false);
 		
 	}
 	
