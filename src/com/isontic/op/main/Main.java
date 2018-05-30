@@ -552,8 +552,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		if (tank1M && !T1missileFired && T1STOP == false)
 		{
 			// Set the starting position of the missile being launched 
-			double x = tank1X + 10;
-			double y = tank1Y - 59;
+			double x = tank1X;
+			double y = tank1Y - 61;
 			double a = tank1A;
 
 			// Create a new 'Missile' object and add it to the 'missiles' ArrayList 
@@ -591,7 +591,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		//Limits missiles to 5
 		if (missiles.size() >= 5)
 		{
-			T1STOP = true;
+		//	T1STOP = true;
 		}
 		
 		//Checks if missile is out of bounds
