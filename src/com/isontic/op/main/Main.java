@@ -80,6 +80,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	private Image image2 = new ImageIcon(getClass().getResource("tank2down.png")).getImage(); //Tank2 Image 
 	
+	private boolean tank2M = false, T2missileFired = false, T2STOP = false;
 	private boolean twopressedLeft = false, twopressedRight = false, twopressedUp = false, twopressedDown = false;
 	//Tank Size info
 	private double sizeX = 1.0, sizeY = 1.0;
@@ -97,6 +98,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	//Array List
 	ArrayList<Missile1> missile1s = new ArrayList<Missile1>();
+	ArrayList<Missile2> missile2s = new ArrayList<Missile2>();
 
 	public static void main(String[] args) 
 	{
@@ -422,6 +424,12 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			tank2move = true;
 		}
 		
+		if (key == 81) // Q
+		{
+			tank2M = true; 
+			T2missileFired = false;
+		}
+		
 	}
 
 	public void keyReleased(KeyEvent event) {
@@ -483,6 +491,11 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			tank2move = false;
 		}
 		
+		if (key == 81) // Q
+		{
+			tank2M = false; 
+			T2missileFired = true;
+		}
 		
 		
 		if (key == KeyEvent.VK_SPACE) // SPACE bar
@@ -551,6 +564,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			tank2X = tank2X + (SHOOTER_SPEED) * (Math.sin(tank2A));
 		}
 		
+		//Tank1 Missile
 		if (tank1M && !T1missileFired && T1STOP == false)
 		{
 			// Set the starting position of the missile being launched 
@@ -564,9 +578,21 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			T1missileFired = true;
 		}
 		
-		//Move missile1s
+		//Tank2 Missile
+		if (tank2M && !T2missileFired && T2STOP == false)
+		{
+			// Set the starting position of the missile being launched 
+			double x = tank2X;
+			double y = tank2Y - 61;
+			double a = tank2A;
+
+			// Create a new 'Missile' object and add it to the 'missile1s' ArrayList 
+			missile2s.add(new Missile2(x, y, a));
+
+			T2missileFired = true;
+		}
 		
-		// Move the existing missile1s up the playing field
+		// Move the existing missile1 up the playing field
 		for (int j = 0; j < missile1s.size(); j++)
 		{
 			Missile1 missile = missile1s.get(j);
@@ -580,7 +606,21 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			}
 		}
 		
-		//Draws the Missile
+		// Move the existing missile2 up the playing field
+		for (int j = 0; j < missile2s.size(); j++)
+		{
+			Missile2 missile = missile2s.get(j);
+			missile.moveMissile();
+
+			// If the missile gets past the top of the playing field, remove it
+			if (missile.getY() < 0 - missile.getHeight())
+			{
+				getContentPane().remove(missile.getMissileImage());
+				missile2s.remove(j);
+			}
+		}
+		
+		//Draws the Missile for Tank 1
 		for (int i = 0; i < missile1s.size(); i++)
 		{
 			Missile1 missile = missile1s.get(i);
@@ -588,6 +628,16 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			mLabel.setLocation(missile.getX(), missile.getY());
 			mLabel.setSize(missile.getWidth(), missile.getHeight());
 			add(mLabel);
+		}
+		
+		//Draws the Missile for Tank 2
+		for (int i = 0; i < missile2s.size(); i++)
+		{
+			Missile2 missile = missile2s.get(i);
+			JLabel mLabel2 = missile.getMissileImage();
+			mLabel2.setLocation(missile.getX(), missile.getY());
+			mLabel2.setSize(missile.getWidth(), missile.getHeight());
+			add(mLabel2);
 		}
 		
 		//Limits missile1s to 5
@@ -598,6 +648,19 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			if (T1TIMEL == 25)
 			{
 				missile1s.removeAll(missile1s);
+				System.out.println("Test");
+				T1TIMEL = 0;
+			}
+		}
+		
+		//Limits missile2s to 5
+		if (missile2s.size() >= 5)
+		{
+			T2STOP = true;
+				
+			if (T1TIMEL == 25)
+			{
+				missile2s.removeAll(missile2s);
 				System.out.println("Test");
 				T1TIMEL = 0;
 			}
@@ -643,7 +706,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 					{
 						getContentPane().remove(missile1s.get(j).getMissileImage());
 						missile1s.remove(j);
-							
+						
 						System.out.println("Hit Tank 2");
 						//PLAYER_LIVES = PLAYER_LIVES - 1;
 						//lblPlayerLives.setText("Lives: " + PLAYER_LIVES);
