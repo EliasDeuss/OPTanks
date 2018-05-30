@@ -30,6 +30,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	// Global Constants
 	public static final int FIELD_WIDTH = 900;
 	public static final int FIELD_HEIGHT = 600;
+	public static final int SHOOTER_SPEED = 2;
 	
 	//Timer
 	private final int TIMER_SPEED = 10;
@@ -48,8 +49,6 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
 	
-	private int SHOOTER_SPEED = 2;
-	
 	//Images
 	private ImageIcon imgLogoMain = new ImageIcon(getClass().getResource("logo.png"));
 	private ImageIcon imgStartMain = new ImageIcon(getClass().getResource("startMain.png"));
@@ -66,8 +65,9 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	//Tank1
 	private double tank1X, tank1Y; //X and Y for Tank 1
 	private double tank1A = 4.7; //Angle of the tank1 (0-6)
+	private boolean T1STOP = false;
 	
-	private Image tank1image = new ImageIcon("src/com/isontic/op/main/tank1down.png").getImage(); //Tank1 Image
+	private Image tank1image = new ImageIcon(getClass().getResource("tank1down.png")).getImage(); //Tank1 Image
 	
 	private boolean tank1M = false, T1missileFired = false;
 	private boolean onepressedLeft = false, onepressedRight = false, onepressedUp = false, onepressedDown = false;
@@ -76,7 +76,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private double tank2X, tank2Y; //X & Y for Tank 2
 	private double tank2A = 1.56; //Angle of the tank2 (0-6)
 	
-	private Image image2 = new ImageIcon("src/com/isontic/op/main/tank2down.png").getImage(); //Tank2 Image 
+	private Image image2 = new ImageIcon(getClass().getResource("tank2down.png")).getImage(); //Tank2 Image 
 	
 	private boolean twopressedLeft = false, twopressedRight = false, twopressedUp = false, twopressedDown = false;
 	//Tank Size info
@@ -391,6 +391,12 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			tank1move = true;
 		}
 		
+		if (key == 77)
+		{
+			tank1M = true; 
+			T1missileFired = false;
+		}
+		
 		//Tank2
 		if (key == 65) // A
 		{
@@ -446,6 +452,12 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			tank1move = false;
 		}
 		
+		if (key == 77)
+		{
+			tank1M = false; 
+			T1missileFired = true;
+		}
+		
 		//Tank2
 		if (key == 65) // A
 		{
@@ -473,8 +485,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		
 		if (key == KeyEvent.VK_SPACE) // SPACE bar
 		{
-			onepressedSpace = false;
-			onemissileFired = false;
+//			onepressedSpace = false;
+//			onemissileFired = false;
 		}
 	}
 
@@ -537,19 +549,15 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			tank2X = tank2X + (SHOOTER_SPEED) * (Math.sin(tank2A));
 		}
 		
-		if (tank1M && !T1missileFired)
+		if (tank1M && !T1missileFired && T1STOP == false)
 		{
-			// Determine the width and height of the missile being launched
-			Missile1 tempMissile = new Missile1(0, 0);
-			int missileWidth = tempMissile.getWidth();
-			int missileHeight = tempMissile.getHeight();
-
 			// Set the starting position of the missile being launched 
-			double x = tank1X + 15;
-			double y = tank1Y + 25;
+			double x = tank1X + 10;
+			double y = tank1Y - 59;
+			double a = tank1A;
 
 			// Create a new 'Missile' object and add it to the 'missiles' ArrayList 
-			missiles.add(new Missile1(x, y));
+			missiles.add(new Missile1(x, y, a));
 
 			T1missileFired = true;
 		}
@@ -578,6 +586,18 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			mLabel.setLocation(missile.getX(), missile.getY());
 			mLabel.setSize(missile.getWidth(), missile.getHeight());
 			add(mLabel);
+		}
+		
+		//Limits missiles to 5
+		if (missiles.size() >= 5)
+		{
+			T1STOP = true;
+		}
+		
+		//Checks if missile is out of bounds
+		for (int i = 0; i < missiles.size(); i++)
+		{
+		//	if (missiles.getY() < 0 - missiles.getHeight())
 		}
 		
 		checkCollisions();

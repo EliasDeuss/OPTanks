@@ -12,24 +12,26 @@ public class Missile1
 	private int missileHeight;
 	private double missileXPos;
 	private double missileYPos;
+	private double missileA;
 
 	private ImageIcon missileImage = new ImageIcon(getClass().getResource("missile.png"));
 	private JLabel missileLabel = new JLabel(missileImage);
 
 	// Constructor
-	public Missile1(double x, double y)
+	public Missile1(double x, double y, double a)
 	{
 		missileWidth = missileImage.getIconWidth();
 		missileHeight = missileImage.getIconHeight();
 		missileXPos = x;
 		missileYPos = y;
+		missileA = a;
 	}
 
 	// Move the missile
-	public void moveMissile(double x, double y)
+	public void moveMissile()
 	{
-		x = missileXPos;
-		y = missileYPos;
+		missileXPos = missileXPos - 2 * (Math.sin(missileA));
+		missileYPos = missileYPos + 2 * (Math.cos(missileA));
 	}
 
 	public JLabel getMissileImage()
@@ -47,13 +49,13 @@ public class Missile1
 		return missileHeight;
 	}
 
-	public double getX()
+	public int getX()
 	{
-		return missileXPos;
+		return (int) missileXPos;
 	}
 
-	public double getY()
+	public int getY()
 	{
-		return missileYPos;
+		return (int) missileYPos;
 	}
 }
