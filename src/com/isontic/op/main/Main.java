@@ -716,6 +716,31 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				{
 				}
 			}
+		
+		//Gets rid of missile2 hits player 1
+		for (int i = 0; i < 1; i++)
+			for (int j = 0; j < missile2s.size(); j++)
+			{
+				try
+				{
+					Rectangle rMissile = new Rectangle(missile2s.get(j).getX(), missile2s.get(j).getY(), 5 , 5);
+					Rectangle rTank1 = new Rectangle( (int) tank1X, (int) tank1Y, 35, 35);
+								
+					//If a Bomb Hits a player it will remove Health
+					if (rMissile.intersects(rTank1))
+					{
+						getContentPane().remove(missile2s.get(j).getMissileImage());
+						missile2s.remove(j);
+								
+						System.out.println("Hit Tank 1");
+						//PLAYER_LIVES = PLAYER_LIVES - 1;
+						//lblPlayerLives.setText("Lives: " + PLAYER_LIVES);
+					}
+				}
+				catch (Exception error)
+				{
+				}
+			}
 	}
 	
 	public void MenuBar()
