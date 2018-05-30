@@ -1,5 +1,6 @@
 package com.isontic.op.main;
 
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -7,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -74,6 +76,9 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean tank1M = false, T1missileFired = false;
 	private boolean onepressedLeft = false, onepressedRight = false, onepressedUp = false, onepressedDown = false;
 	private int T1TIMEL = 0;
+	
+	//Color Check for Tank 1 A
+	private int tank1checkA = 255;
 	
 	//Tank2
 	private double tank2X, tank2Y; //X & Y for Tank 2
@@ -269,81 +274,22 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		
 	}
 	
-	public void playerSelector()
-	{
-		lblGamePlayerSTitle = new JLabel(imgPlMain);
-		lblGamePlayerSTitle.setSize(300, 45);
-		lblGamePlayerSTitle.setFont(new Font("Serif", Font.PLAIN, 35));
-		lblGamePlayerSTitle.setLocation(290, 100);
-		lblGamePlayerSTitle.setOpaque(false);
-		lblGamePlayerSTitle.setVisible(true);
-		
-		player1BTN = new JButton(imgOnePlMain);
-		player1BTN.setSize(179, 40);
-		player1BTN.setFont(new Font("Serif", Font.PLAIN, 25));
-		player1BTN.setLocation(345, 170);
-		player1BTN.setFocusable(false);
-		player1BTN.setActionCommand("oneplayerGame");
-		player1BTN.addActionListener(
-				  new ActionListener() 
-						{
-					    public void actionPerformed(ActionEvent e) 
-					    {
-					    	if (e.getActionCommand().equals("oneplayerGame"))
-							{
-					    		PLAYERS = 1;
-								
-								System.out.println("Selected " + PLAYERS + " player('s)");
-							}
-						}
-				  }
-				);
-		player1BTN.setVisible(true);
-		
-		player2BTN = new JButton(imgTwoPlMain);
-		player2BTN.setSize(179, 40);
-		player2BTN.setFont(new Font("Serif", Font.PLAIN, 25));
-		player2BTN.setLocation(345, 220);
-		player2BTN.setFocusable(false);
-		player2BTN.setActionCommand("twoplayersGame");
-		player2BTN.addActionListener(
-				  new ActionListener() 
-						{
-					    public void actionPerformed(ActionEvent e) 
-					    {
-					    	if (e.getActionCommand().equals("twoplayersGame"))
-							{
-					    		PLAYERS = 2;
-								
-								System.out.println("Selected " + PLAYERS + " player('s)");
-							}
-						}
-				  }
-				);
-		player2BTN.setVisible(true);
-		
-		add(lblGamePlayerSTitle);
-		add(player1BTN);
-		add(player2BTN);
-	}
-	
-	public void hidePlayerSelector()
-	{
-		lblGamePlayerSTitle.setVisible(false);
-		player1BTN.setVisible(false);
-		player2BTN.setVisible(false);
-	}
-	
-	
-	
 	public void setUpMap1()
 	{
 		setUpTank1();
 		setUpTank2();
 		//infoBoard();
 		
-		setContentPane(new JLabel(new ImageIcon(getClass().getResource("map.png"))));
-		setVisible(true);
+		if (MAP == 1)
+		{
+			setContentPane(new JLabel(new ImageIcon(getClass().getResource("map.png"))));
+			setVisible(true);
+		}
+		
+		if (MAP == 2)
+		{
+			
+		}
 		
 		repaint();
 	}
@@ -697,6 +643,24 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	public void checkCollisions()
 	{
+		//Checks if player is on black
+		for (int i = 0; i < 1; i++)
+		{
+			 try {
+		            Robot robot = new Robot();
+
+		            // The the pixel color information at 20, 20
+		            Color color = robot.getPixelColor( (int) tank1X + 40, (int) tank1Y);
+
+		            // Print the RGB information of the pixel color
+		            //System.out.println("Red   = " + color.getRed());
+		            //System.out.println("Green = " + color.getGreen());
+		            //System.out.println("Blue  = " + color.getBlue());
+
+		        } catch (AWTException e) {
+		        }
+		}
+		
 		//Gets rid of missile1 hits player 2
 		for (int i = 0; i < 1; i++)
 			for (int j = 0; j < missile1s.size(); j++)
@@ -704,7 +668,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				try
 				{
 					Rectangle rMissile = new Rectangle(missile1s.get(j).getX(), missile1s.get(j).getY(), 5 , 5);
-					Rectangle rTank2 = new Rectangle( (int) tank2X - 20, (int) tank2Y - 63, 35, 40);
+					Rectangle rTank2 = new Rectangle( (int) tank2X - 20, (int) tank2Y - 87, 30, 35);
 							
 					//If a Bomb Hits a player it will remove Health
 					if (rMissile.intersects(rTank2))
@@ -734,7 +698,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				try
 				{
 					Rectangle rMissile = new Rectangle(missile2s.get(j).getX(), missile2s.get(j).getY(), 5 , 5);
-					Rectangle rTank1 = new Rectangle( (int) tank1X - 20, (int) tank1Y - 63, 35, 40);
+					Rectangle rTank1 = new Rectangle( (int) tank2X - 20, (int) tank2Y - 84, 30, 40);
 								
 					//If a Bomb Hits a player it will remove Health
 					if (rMissile.intersects(rTank1))
@@ -855,8 +819,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		AffineTransform at = AffineTransform.getRotateInstance(tank1A, tank1X, tank1Y);
 		AffineTransform at2 = AffineTransform.getRotateInstance(tank2A, tank2X, tank2Y);
 		
-		at.translate(tank1X - 20, tank1Y - 24);
-		at2.translate(tank2X - 20, tank2Y - 24);
+		at.translate(tank1X - 13, tank1Y - 24);
+		at2.translate(tank2X - 22, tank2Y - 24);
 
 		at.scale(sizeX, sizeY);
 		at2.scale(sizeX, sizeY);
