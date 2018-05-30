@@ -46,6 +46,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean playGame = false; //Players and game stats will spawn in if set to True
 	private boolean tank1move = false; //Tracks it the player is moving
 	private boolean tank2move = false; //Tracks it the player is moving
+	private ImageIcon map = new ImageIcon(getClass().getResource("map.png")); //Map Image 
 	
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
@@ -87,7 +88,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean controlKeyPressed = false;
 	
 	//JLable and Buttons
-	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1;
+	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap;
 	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN;
 	
 	//Menu Bar
@@ -341,6 +342,9 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		setUpTank2();
 		//infoBoard();
 		
+		setContentPane(new JLabel(new ImageIcon(getClass().getResource("map.png"))));
+		setVisible(true);
+		
 		repaint();
 	}
 	
@@ -366,6 +370,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		
 		tank2move = false;
 	}
+	
 	
 	public void keyPressed(KeyEvent event) {
 		// TODO Auto-generated method stub
@@ -518,11 +523,11 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		
 		if (onepressedLeft && tank1X > 4)
 		{
-			tank1A = tank1A -0.03;
+			tank1A = tank1A -0.05;
 		}
 		if (onepressedRight && tank1X < FIELD_WIDTH  - 6 - 4)
 		{
-			tank1A = tank1A +0.03;
+			tank1A = tank1A +0.05;
 		}
 		
 		//Forwards
@@ -543,11 +548,11 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		
 		if (twopressedLeft && tank2X > 4)
 		{
-			tank2A = tank2A -0.03;
+			tank2A = tank2A -0.05;
 		}
 		if (twopressedRight && tank2X < FIELD_WIDTH - 6 - 4)
 		{
-			tank2A = tank2A +0.03;
+			tank2A = tank2A +0.05;
 		}
 				
 		//Forwards
@@ -641,30 +646,30 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		}
 		
 		//Limits missile1s to 5
-		if (missile1s.size() >= 5)
-		{
-			T1STOP = true;
-			
-			if (T1TIMEL == 25)
-			{
-				missile1s.removeAll(missile1s);
-				System.out.println("Test");
-				T1TIMEL = 0;
-			}
-		}
+//		if (missile1s.size() >= 5)
+//		{
+//			T1STOP = true;
+//			
+//			if (T1TIMEL == 25)
+//			{
+//				missile1s.removeAll(missile1s);
+//				System.out.println("Test");
+//				T1TIMEL = 0;
+//			}
+//		}
 		
 		//Limits missile2s to 5
-		if (missile2s.size() >= 5)
-		{
-			T2STOP = true;
-				
-			if (T1TIMEL == 25)
-			{
-				missile2s.removeAll(missile2s);
-				System.out.println("Test");
-				T1TIMEL = 0;
-			}
-		}
+//		if (missile2s.size() >= 5)
+//		{
+//			T2STOP = true;
+//				
+//			if (T1TIMEL == 25)
+//			{
+//				missile2s.removeAll(missile2s);
+//				System.out.println("Test");
+//				T1TIMEL = 0;
+//			}
+//		}
 		
 		//Checks if missile is out of bounds
 		for (int i = 0; i < missile1s.size(); i++)
@@ -699,7 +704,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				try
 				{
 					Rectangle rMissile = new Rectangle(missile1s.get(j).getX(), missile1s.get(j).getY(), 5 , 5);
-					Rectangle rTank2 = new Rectangle( (int) tank2X, (int) tank2Y, 35, 35);
+					Rectangle rTank2 = new Rectangle( (int) tank2X - 20, (int) tank2Y - 63, 35, 40);
 							
 					//If a Bomb Hits a player it will remove Health
 					if (rMissile.intersects(rTank2))
@@ -707,7 +712,12 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						getContentPane().remove(missile1s.get(j).getMissileImage());
 						missile1s.remove(j);
 						
-						System.out.println("Hit Tank 2");
+						PLAYER1KILLS = PLAYER1KILLS + 1;
+						
+						System.out.println("\n\n\n\n\n\n\n\n\n");
+						System.out.println("Tank1 Kills: " + PLAYER1KILLS);
+						System.out.println("Tank2 Kills: " + PLAYER2KILLS);
+						
 						//PLAYER_LIVES = PLAYER_LIVES - 1;
 						//lblPlayerLives.setText("Lives: " + PLAYER_LIVES);
 					}
@@ -724,15 +734,20 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				try
 				{
 					Rectangle rMissile = new Rectangle(missile2s.get(j).getX(), missile2s.get(j).getY(), 5 , 5);
-					Rectangle rTank1 = new Rectangle( (int) tank1X, (int) tank1Y, 35, 35);
+					Rectangle rTank1 = new Rectangle( (int) tank1X - 20, (int) tank1Y - 63, 35, 40);
 								
 					//If a Bomb Hits a player it will remove Health
 					if (rMissile.intersects(rTank1))
 					{
 						getContentPane().remove(missile2s.get(j).getMissileImage());
 						missile2s.remove(j);
-								
-						System.out.println("Hit Tank 1");
+						
+						PLAYER2KILLS = PLAYER2KILLS + 1;
+						
+						System.out.println("\n\n\n\n\n\n\n\n\n");
+						System.out.println("Tank1 Kills: " + PLAYER1KILLS);
+						System.out.println("Tank2 Kills: " + PLAYER2KILLS);
+						
 						//PLAYER_LIVES = PLAYER_LIVES - 1;
 						//lblPlayerLives.setText("Lives: " + PLAYER_LIVES);
 					}
