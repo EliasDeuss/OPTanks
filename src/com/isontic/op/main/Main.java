@@ -63,24 +63,25 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private ImageIcon imgTank1Score = new ImageIcon(getClass().getResource("tank1score.png"));
 	private ImageIcon imgTank2Score = new ImageIcon(getClass().getResource("tank2score.png"));
 	
-	//Players
-	private double tank1X, tank1Y, tank2X, tank2Y;	
-	
-	//Tank 1 & 2
-	private double tank1A = 4.7, tank2A = 1.56;
-	
-	private Image image = new ImageIcon("src/com/isontic/op/main/tank1down.png").getImage();
-	private Image image2 = new ImageIcon("src/com/isontic/op/main/tank2down.png").getImage();
-	private double sizeX = 1.0, sizeY = 1.0;
-
 	//Tank1
-	private boolean onepressedLeft = false, onepressedRight = false, onepressedUp = false, onepressedDown = false, onepressedSpace = false;
-	private boolean controlKeyPressed = false, onemissileFired = false;
+	private double tank1X, tank1Y; //X and Y for Tank 1
+	private double tank1A = 4.7; //Angle of the tank1 (0-6)
+	
+	private Image tank1image = new ImageIcon("src/com/isontic/op/main/tank1down.png").getImage(); //Tank1 Image
+	
+	private boolean tank1M = false, T1missileFired = false;
+	private boolean onepressedLeft = false, onepressedRight = false, onepressedUp = false, onepressedDown = false;
 	
 	//Tank2
-	private boolean twopressedLeft = false, twopressedRight = false, twopressedUp = false, twopressedDown = false, twopressedSpace = false;
-	private boolean twomissileFired = false;
+	private double tank2X, tank2Y; //X & Y for Tank 2
+	private double tank2A = 1.56; //Angle of the tank2 (0-6)
 	
+	private Image image2 = new ImageIcon("src/com/isontic/op/main/tank2down.png").getImage(); //Tank2 Image 
+	
+	private boolean twopressedLeft = false, twopressedRight = false, twopressedUp = false, twopressedDown = false;
+	//Tank Size info
+	private double sizeX = 1.0, sizeY = 1.0;
+	private boolean controlKeyPressed = false;
 	
 	//JLable and Buttons
 	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1;
@@ -93,7 +94,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private JMenuItem menuItem, menuItem2, menuItem3;
 	
 	//Array List
-	ArrayList<Missile> missiles = new ArrayList<Missile>();
+	ArrayList<Missile1> missiles = new ArrayList<Missile1>();
 
 	public static void main(String[] args) 
 	{
@@ -379,12 +380,6 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			tank1move = true;
 		}
 		
-		if (key == KeyEvent.VK_SPACE) // SPACE bar
-		{
-			onepressedSpace = true;
-			tank1move = true;
-		}
-		
 		if (key == KeyEvent.VK_UP) // Up arrow
 		{
 			onepressedUp = true;
@@ -408,12 +403,6 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			tank2move = true;
 		}
 
-		if (key == 81) // Q
-		{
-			twopressedSpace = true;
-			tank2move = true;
-		}
-		
 		if (key == 87) // W
 		{
 			twopressedUp = true;
@@ -468,13 +457,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			twopressedRight = false;
 			tank2move = false;
 		}
-
-		if (key == 81) // Q
-		{
-			twopressedSpace = false;
-			tank2move = false;
-		}
-				
+	
 		if (key == 87) // W
 		{
 			twopressedUp = false;
@@ -552,6 +535,49 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		{
 			tank2Y = tank2Y - (SHOOTER_SPEED) * (Math.cos(tank2A));
 			tank2X = tank2X + (SHOOTER_SPEED) * (Math.sin(tank2A));
+		}
+		
+		if (tank1M && !T1missileFired)
+		{
+			// Determine the width and height of the missile being launched
+			Missile1 tempMissile = new Missile1(0, 0);
+			int missileWidth = tempMissile.getWidth();
+			int missileHeight = tempMissile.getHeight();
+
+			// Set the starting position of the missile being launched 
+			double x = tank1X + 15;
+			double y = tank1Y + 25;
+
+			// Create a new 'Missile' object and add it to the 'missiles' ArrayList 
+			missiles.add(new Missile1(x, y));
+
+			T1missileFired = true;
+		}
+		
+		//Move Missiles
+		
+		// Move the existing missiles up the playing field
+		for (int j = 0; j < missiles.size(); j++)
+		{
+			Missile1 missile = missiles.get(j);
+			missile.moveMissile();
+
+			// If the missile gets past the top of the playing field, remove it
+			if (missile.getY() < 0 - missile.getHeight())
+			{
+				getContentPane().remove(missile.getMissileImage());
+				missiles.remove(j);
+			}
+		}
+		
+		//Draws the Missile
+		for (int i = 0; i < missiles.size(); i++)
+		{
+			Missile1 missile = missiles.get(i);
+			JLabel mLabel = missile.getMissileImage();
+			mLabel.setLocation(missile.getX(), missile.getY());
+			mLabel.setSize(missile.getWidth(), missile.getHeight());
+			add(mLabel);
 		}
 		
 		checkCollisions();
@@ -683,7 +709,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		// Draw the updated image
 		if (playGame)
 		{
-			g2D.drawImage(image, at, this);
+			g2D.drawImage(tank1image, at, this);
 			g2D.drawImage(image2, at2, this);
 		}
 
