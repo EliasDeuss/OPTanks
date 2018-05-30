@@ -597,7 +597,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		//Checks if missile is out of bounds
 		for (int i = 0; i < missiles.size(); i++)
 		{
-		//	if (missiles.getY() < 0 - missiles.getHeight())
+			//if (missiles.getY() < 0 - missiles.getHeight())
 		}
 		
 		checkCollisions();
