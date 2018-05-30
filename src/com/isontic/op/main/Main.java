@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -71,6 +72,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	private boolean tank1M = false, T1missileFired = false;
 	private boolean onepressedLeft = false, onepressedRight = false, onepressedUp = false, onepressedDown = false;
+	private int T1TIMEL = 0;
 	
 	//Tank2
 	private double tank2X, tank2Y; //X & Y for Tank 2
@@ -94,7 +96,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private JMenuItem menuItem, menuItem2, menuItem3;
 	
 	//Array List
-	ArrayList<Missile1> missiles = new ArrayList<Missile1>();
+	ArrayList<Missile1> missile1s = new ArrayList<Missile1>();
 
 	public static void main(String[] args) 
 	{
@@ -556,48 +558,55 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			double y = tank1Y - 61;
 			double a = tank1A;
 
-			// Create a new 'Missile' object and add it to the 'missiles' ArrayList 
-			missiles.add(new Missile1(x, y, a));
+			// Create a new 'Missile' object and add it to the 'missile1s' ArrayList 
+			missile1s.add(new Missile1(x, y, a));
 
 			T1missileFired = true;
 		}
 		
-		//Move Missiles
+		//Move missile1s
 		
-		// Move the existing missiles up the playing field
-		for (int j = 0; j < missiles.size(); j++)
+		// Move the existing missile1s up the playing field
+		for (int j = 0; j < missile1s.size(); j++)
 		{
-			Missile1 missile = missiles.get(j);
+			Missile1 missile = missile1s.get(j);
 			missile.moveMissile();
 
 			// If the missile gets past the top of the playing field, remove it
 			if (missile.getY() < 0 - missile.getHeight())
 			{
 				getContentPane().remove(missile.getMissileImage());
-				missiles.remove(j);
+				missile1s.remove(j);
 			}
 		}
 		
 		//Draws the Missile
-		for (int i = 0; i < missiles.size(); i++)
+		for (int i = 0; i < missile1s.size(); i++)
 		{
-			Missile1 missile = missiles.get(i);
+			Missile1 missile = missile1s.get(i);
 			JLabel mLabel = missile.getMissileImage();
 			mLabel.setLocation(missile.getX(), missile.getY());
 			mLabel.setSize(missile.getWidth(), missile.getHeight());
 			add(mLabel);
 		}
 		
-		//Limits missiles to 5
-		if (missiles.size() >= 5)
+		//Limits missile1s to 5
+		if (missile1s.size() >= 5)
 		{
-		//	T1STOP = true;
+			T1STOP = true;
+			
+			if (T1TIMEL == 25)
+			{
+				missile1s.removeAll(missile1s);
+				System.out.println("Test");
+				T1TIMEL = 0;
+			}
 		}
 		
 		//Checks if missile is out of bounds
-		for (int i = 0; i < missiles.size(); i++)
+		for (int i = 0; i < missile1s.size(); i++)
 		{
-			//if (missiles.getY() < 0 - missiles.getHeight())
+			
 		}
 		
 		checkCollisions();
@@ -620,7 +629,30 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	public void checkCollisions()
 	{
-		
+		//Gets rid of missile1 hits player 2
+		for (int i = 0; i < 1; i++)
+			for (int j = 0; j < missile1s.size(); j++)
+			{
+				try
+				{
+					Rectangle rMissile = new Rectangle(missile1s.get(j).getX(), missile1s.get(j).getY(), 5 , 5);
+					Rectangle rTank2 = new Rectangle( (int) tank2X, (int) tank2Y, 35, 35);
+							
+					//If a Bomb Hits a player it will remove Health
+					if (rMissile.intersects(rTank2))
+					{
+						getContentPane().remove(missile1s.get(j).getMissileImage());
+						missile1s.remove(j);
+							
+						System.out.println("Hit Tank 2");
+						//PLAYER_LIVES = PLAYER_LIVES - 1;
+						//lblPlayerLives.setText("Lives: " + PLAYER_LIVES);
+					}
+				}
+				catch (Exception error)
+				{
+				}
+			}
 	}
 	
 	public void MenuBar()
