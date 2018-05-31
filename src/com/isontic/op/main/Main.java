@@ -15,8 +15,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -65,6 +69,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private ImageIcon imgTwoPlMain = new ImageIcon(getClass().getResource("TwoPlMain.png"));
 	private ImageIcon imgTank1Score = new ImageIcon(getClass().getResource("tank1score.png"));
 	private ImageIcon imgTank2Score = new ImageIcon(getClass().getResource("tank2score.png"));
+	private File file = new File("src/com/isontic/op/main/map.png");
 	
 	//Tank1
 	private double tank1X, tank1Y; //X and Y for Tank 1
@@ -93,7 +98,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean controlKeyPressed = false;
 	
 	//JLable and Buttons
-	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap;
+	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap, mLabel;
 	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN;
 	
 	//Menu Bar
@@ -575,7 +580,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		for (int i = 0; i < missile1s.size(); i++)
 		{
 			Missile1 missile = missile1s.get(i);
-			JLabel mLabel = missile.getMissileImage();
+			mLabel = missile.getMissileImage();
 			mLabel.setLocation(missile.getX(), missile.getY());
 			mLabel.setSize(missile.getWidth(), missile.getHeight());
 			add(mLabel);
@@ -661,6 +666,47 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		        }
 		}
 		
+		//Checks if player is on black
+		for (int i = 0; i < 1; i++)
+		{
+			 try {
+		           Robot robot = new Robot();
+		           // The the pixel color information at 20, 20
+			       
+			       for (int j = 0 ; j < missile1s.size(); j++)
+			       {
+			    	   Color color = robot.getPixelColor( mLabel.getX() , mLabel.getY());
+			    	   
+			    	 
+			    	   BufferedImage image = ImageIO.read(file);
+			    	   // Getting pixel color by position x and y 
+			    	   int clr=  image.getRGB(mLabel.getX() + 5,mLabel.getY() + 35); 
+			    	 
+			    	   int  blue  =  clr & 0x000000ff;
+			    	   
+			    	   if (blue == 0)
+			    	   {
+			    		   getContentPane().remove(missile1s.get(j).getMissileImage());
+			    		   missile1s.remove(j);
+			    	   }
+			    		
+			    	   
+			    	   
+//			    	   System.out.println("Red   = " + color.getRed());
+//				       System.out.println("Green = " + color.getGreen());
+//				       System.out.println("Blue  = " + color.getBlue());
+			       }
+			       
+			       // Print the RGB information of the pixel color
+			       
+
+			       } catch (AWTException e) {
+			       } catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		
 		//Gets rid of missile1 hits player 2
 		for (int i = 0; i < 1; i++)
 			for (int j = 0; j < missile1s.size(); j++)
@@ -698,7 +744,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				try
 				{
 					Rectangle rMissile = new Rectangle(missile2s.get(j).getX(), missile2s.get(j).getY(), 5 , 5);
-					Rectangle rTank1 = new Rectangle( (int) tank2X - 20, (int) tank2Y - 84, 30, 40);
+					Rectangle rTank1 = new Rectangle( (int) tank1X - 20, (int) tank1Y - 84, 30, 40);
 								
 					//If a Bomb Hits a player it will remove Health
 					if (rMissile.intersects(rTank1))
