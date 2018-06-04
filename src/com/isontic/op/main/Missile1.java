@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 public class Missile1
 {
 	// Constant
-	private final int MISSILE_SPEED = 2;
+	private final int MISSILE_SPEED = 1;
 
 	private int missileWidth;
 	private int missileHeight;
@@ -30,8 +30,8 @@ public class Missile1
 	// Move the missile
 	public void moveMissile()
 	{
-		missileXPos = missileXPos - 3 * (Math.sin(missileA));
-		missileYPos = missileYPos + 3 * (Math.cos(missileA));
+		missileXPos = missileXPos - 2 * (Math.sin(missileA));
+		missileYPos = missileYPos + 2 * (Math.cos(missileA));
 	}
 
 	public JLabel getMissileImage()

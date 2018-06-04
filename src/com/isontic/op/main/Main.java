@@ -39,6 +39,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	public static final int FIELD_HEIGHT = 600;
 	public static final int SHOOTER_SPEED = 2;
 	
+	
 	//Timer
 	private final int TIMER_SPEED = 10;
 	private Timer timer;
@@ -70,9 +71,10 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private ImageIcon imgTank1Score = new ImageIcon(getClass().getResource("tank1score.png"));
 	private ImageIcon imgTank2Score = new ImageIcon(getClass().getResource("tank2score.png"));
 	private File file = new File("src/com/isontic/op/main/map.png");
+	private BufferedImage image;
 	
 	//Tank1
-	private double tank1X, tank1Y; //X and Y for Tank 1
+	private double tank1X = 400, tank1Y = 200; //X and Y for Tank 1
 	private double tank1A = 4.7; //Angle of the tank1 (0-6)
 	private boolean T1STOP = false;
 	
@@ -124,7 +126,12 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		StartScreen();
 		//infoBoard();
 		
-		
+		try {
+			image = ImageIO.read(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//Set up / start timer
 		timer = new Timer(TIMER_SPEED, this);
@@ -524,8 +531,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		if (tank1M && !T1missileFired && T1STOP == false)
 		{
 			// Set the starting position of the missile being launched 
-			double x = tank1X;
-			double y = tank1Y - 61;
+			double x = tank1X - 7;
+			double y = tank1Y - 45 ;//- 61;
 			double a = tank1A;
 
 			// Create a new 'Missile' object and add it to the 'missile1s' ArrayList 
@@ -538,8 +545,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		if (tank2M && !T2missileFired && T2STOP == false)
 		{
 			// Set the starting position of the missile being launched 
-			double x = tank2X;
-			double y = tank2Y - 61;
+			double x = tank2X - 4;
+			double y = tank2Y - 45;
 			double a = tank2A;
 
 			// Create a new 'Missile' object and add it to the 'missile1s' ArrayList 
@@ -651,36 +658,35 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		//Checks if player is on black
 		for (int i = 0; i < 1; i++)
 		{
-			 try {
-		            Robot robot = new Robot();
-
-		            // The the pixel color information at 20, 20
-		            Color color = robot.getPixelColor( (int) tank1X + 40, (int) tank1Y);
-
-		            // Print the RGB information of the pixel color
-		            //System.out.println("Red   = " + color.getRed());
-		            //System.out.println("Green = " + color.getGreen());
-		            //System.out.println("Blue  = " + color.getBlue());
-
-		        } catch (AWTException e) {
-		        }
+			// The the pixel color information at 20, 20			           	 			    	 
+		    	   double tankX = tank1X;
+		    	   double tankY = tank1Y;
+		    	   
+		    	   tankX = tankX - (Math.cos(tank1A));
+		    	   tankY = tankY + (Math.sin(tank1A));
+		    	   
+		    	   
+		    	   // Getting pixel color by position x and y 
+		    	   int clr=  image.getRGB( (int) tankX + 30, (int) tankY + 0); 
+		    	   
+		    	   int  blue  =  clr & 0x000000ff;
+		    	   
+		    	   if (blue == 0)
+		    	   {
+		    		  System.out.println("nick");
+		    	   }				   
+		       
 		}
 		
-		//Checks if player is on black
+		//Checks if missile1 is on black
 		for (int i = 0; i < 1; i++)
-		{
-			 try {
-		           Robot robot = new Robot();
-		           // The the pixel color information at 20, 20
-			       
+		{    
+		           // The the pixel color information at 20, 20			       
 			       for (int j = 0 ; j < missile1s.size(); j++)
-			       {
-			    	   Color color = robot.getPixelColor( mLabel.getX() , mLabel.getY());
+			       {			    	 			    	 
 			    	   
-			    	 
-			    	   BufferedImage image = ImageIO.read(file);
 			    	   // Getting pixel color by position x and y 
-			    	   int clr=  image.getRGB(mLabel.getX() + 5,mLabel.getY() + 35); 
+			    	   int clr=  image.getRGB(missile1s.get(j).getX() + 3,missile1s.get(j).getY() + 25); 
 			    	 
 			    	   int  blue  =  clr & 0x000000ff;
 			    	   
@@ -688,24 +694,29 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			    	   {
 			    		   getContentPane().remove(missile1s.get(j).getMissileImage());
 			    		   missile1s.remove(j);
-			    	   }
-			    		
-			    	   
-			    	   
-//			    	   System.out.println("Red   = " + color.getRed());
-//				       System.out.println("Green = " + color.getGreen());
-//				       System.out.println("Blue  = " + color.getBlue());
+			    	   }				   
 			       }
-			       
-			       // Print the RGB information of the pixel color
-			       
-
-			       } catch (AWTException e) {
-			       } catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 		}
+		
+		//Checks if missile2 is on black
+				for (int i = 0; i < 1; i++)
+				{    
+				           // The the pixel color information at 20, 20			       
+					       for (int j = 0 ; j < missile2s.size(); j++)
+					       {			    	 			    	 
+					    	   
+					    	   // Getting pixel color by position x and y 
+					    	   int clr=  image.getRGB(missile2s.get(j).getX() + 3,missile2s.get(j).getY() + 25); 
+					    	 
+					    	   int  blue  =  clr & 0x000000ff;
+					    	   
+					    	   if (blue == 0)
+					    	   {
+					    		   getContentPane().remove(missile2s.get(j).getMissileImage());
+					    		   missile2s.remove(j);
+					    	   }				   
+					       }
+				}
 		
 		//Gets rid of missile1 hits player 2
 		for (int i = 0; i < 1; i++)
@@ -865,8 +876,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		AffineTransform at = AffineTransform.getRotateInstance(tank1A, tank1X, tank1Y);
 		AffineTransform at2 = AffineTransform.getRotateInstance(tank2A, tank2X, tank2Y);
 		
-		at.translate(tank1X - 13, tank1Y - 24);
-		at2.translate(tank2X - 22, tank2Y - 24);
+		at.translate(tank1X - 29 / 2, tank1Y - 40 / 2);
+		at2.translate(tank2X - 30 / 2, tank2Y - 35 / 2);
 
 		at.scale(sizeX, sizeY);
 		at2.scale(sizeX, sizeY);

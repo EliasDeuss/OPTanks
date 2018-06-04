@@ -30,8 +30,8 @@ public class Missile2
 	// Move the missile
 	public void moveMissile()
 	{
-		missileXPos = missileXPos - 3 * (Math.sin(missileA));
-		missileYPos = missileYPos + 3 * (Math.cos(missileA));
+		missileXPos = missileXPos - 2 * (Math.sin(missileA));
+		missileYPos = missileYPos + 2 * (Math.cos(missileA));
 	}
 
 	public JLabel getMissileImage()
