@@ -1,6 +1,5 @@
 package com.isontic.op.main;
 
-import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -8,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,7 +35,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	// Global Constants
 	public static final int FIELD_WIDTH = 900;
 	public static final int FIELD_HEIGHT = 600;
-	public static final int SHOOTER_SPEED = 2;
+	public static final int SHOOTER_SPEED = 1;
 	
 	
 	//Timer
@@ -72,6 +70,13 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private ImageIcon imgTank2Score = new ImageIcon(getClass().getResource("tank2score.png"));
 	private File file = new File("src/com/isontic/op/main/map.png");
 	private BufferedImage image;
+	
+	//Power ups
+	private int powerU = 0; //What powerup is coming next
+	
+	//Tracking Missile
+	private int trackingMClock = 0;
+	
 	
 	//Tank1
 	private double tank1X = 400, tank1Y = 200; //X and Y for Tank 1
@@ -112,7 +117,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	//Array List
 	ArrayList<Missile1> missile1s = new ArrayList<Missile1>();
 	ArrayList<Missile2> missile2s = new ArrayList<Missile2>();
-
+	
+	ArrayList<test> tests = new ArrayList<test>();
 	public static void main(String[] args) 
 	{
 		new Main();
@@ -476,6 +482,16 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	public void actionPerformed(ActionEvent event) {
 		
+		//Power Ups
+		
+		//Tracking Missiles
+		trackingMClock = trackingMClock + 1;
+		
+		if (trackingMClock <= 1000 && powerU == 1)
+		{
+			
+		}
+		
 		
 		//Tank1
 		
@@ -658,25 +674,47 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		//Checks if player is on black
 		for (int i = 0; i < 1; i++)
 		{
-			// The the pixel color information at 20, 20			           	 			    	 
+			if (onepressedUp == true)
+			{
+				
+				// The the pixel color information at 20, 20			           	 			    	 
 		    	   double tankX = tank1X;
 		    	   double tankY = tank1Y;
 		    	   
-		    	   tankX = tankX - (Math.cos(tank1A));
-		    	   tankY = tankY + (Math.sin(tank1A));
+		    	   tankX = tankX + (Math.cos(tank1A)) * (29/2);
+		    	   System.out.println(tank1A);
+		    	   tankY = tankY + (Math.cos(tank1A)) * (55/2);
 		    	   
 		    	   
 		    	   // Getting pixel color by position x and y 
-		    	   int clr=  image.getRGB( (int) tankX + 30, (int) tankY + 0); 
+		    	   int clr=  image.getRGB( (int) tankX + 15, (int) tankY -50); 
+		    	   
+		    	   
+		    	   //test
+					double x = (int) tankX + 15;
+					double y = (int) tankY - 50;
+					//tests.add(new test(x, y));
+		    	   //
+				   
 		    	   
 		    	   int  blue  =  clr & 0x000000ff;
 		    	   
 		    	   if (blue == 0)
 		    	   {
-		    		  System.out.println("nick");
+		    		  //System.out.println("nick");
 		    	   }				   
-		       
+			}
 		}
+		
+		//Draws the Missile for Tank 1
+				for (int i = 0; i < tests.size(); i++)
+				{
+					test test = tests.get(i);
+					mLabel = test.getMissileImage();
+					mLabel.setLocation(test.getX(), test.getY());
+					mLabel.setSize(test.getWidth(), test.getHeight());
+					add(mLabel);
+				}
 		
 		//Checks if missile1 is on black
 		for (int i = 0; i < 1; i++)
