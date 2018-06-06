@@ -73,9 +73,10 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	//Power ups
 	private int powerU = 0; //What powerup is coming next
+	private int powerUClock = 0;
 	
 	//Tracking Missile
-	private int trackingMClock = 0;
+	
 	
 	
 	//Tank1
@@ -105,7 +106,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean controlKeyPressed = false;
 	
 	//JLable and Buttons
-	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap, mLabel;
+	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap, mLabel, lblKillsTank1img, lblKillsTank2img;
 	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN;
 	
 	//Menu Bar
@@ -130,7 +131,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		MenuBar();
 		setUpGameFrame();
 		StartScreen();
-		//infoBoard();
+		infoBoard();
 		
 		try {
 			image = ImageIO.read(file);
@@ -160,22 +161,34 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	//Info of player kills in game
 	public void infoBoard()
 	{
-		lblKillsTank1 = new JLabel(imgTank1Score);
-		lblKillsTank1.setSize(35, 45);
-		lblKillsTank1.setFont(new Font("Serif", Font.PLAIN, 39));
-		lblKillsTank1.setLocation(1, 1);
-		lblKillsTank1.setOpaque(false);
+		lblKillsTank1img = new JLabel(imgTank1Score);
+		lblKillsTank1img.setSize(35, 45);
+		lblKillsTank1img.setFont(new Font("Serif", Font.PLAIN, 39));
+		lblKillsTank1img.setLocation(15, 493);
+		lblKillsTank1img.setOpaque(false);
+		lblKillsTank1img.setVisible(true);
+		
+		lblKillsTank1 = new JLabel("Kills: " + PLAYER1KILLS);
+		lblKillsTank1.setSize(85, 30);
+		lblKillsTank1.setFont(new Font("Serif", Font.PLAIN, 25));
+		lblKillsTank1.setLocation(50, 498);
+		lblKillsTank1.setForeground(Color.white);
 		lblKillsTank1.setVisible(true);
 		
-		lblKillsTank2 = new JLabel(imgTank2Score);
-		lblKillsTank2.setSize(35, 45);
-		lblKillsTank2.setFont(new Font("Serif", Font.PLAIN, 39));
-		lblKillsTank2.setLocation(1, 1);
-		lblKillsTank2.setOpaque(false);
+		lblKillsTank2img = new JLabel(imgTank2Score);
+		lblKillsTank2img.setSize(35, 45);
+		lblKillsTank2img.setFont(new Font("Serif", Font.PLAIN, 39));
+		lblKillsTank2img.setLocation(135, 493);
+		lblKillsTank2img.setOpaque(false);
+		lblKillsTank2img.setVisible(true);
+		
+		lblKillsTank2 = new JLabel("Kills: " + PLAYER2KILLS);
+		lblKillsTank2.setSize(85, 30);
+		lblKillsTank2.setFont(new Font("Serif", Font.PLAIN, 25));
+		lblKillsTank2.setLocation(175, 498);
+		lblKillsTank2.setForeground(Color.white);
 		lblKillsTank2.setVisible(true);
 		
-		add(lblKillsTank1);
-		add(lblKillsTank2);
 	}
 	
 	public void StartScreen()
@@ -309,6 +322,11 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			
 		}
 		
+		add(lblKillsTank1);
+		add(lblKillsTank1img);
+		add(lblKillsTank2);
+		add(lblKillsTank2img);
+		
 		repaint();
 	}
 	
@@ -330,7 +348,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		tank2move = true;
 		// Set the shooter's initial position 
 		tank2X = 850;
-		tank2Y = 280;
+		tank2Y = 95;
 		
 		tank2move = false;
 	}
@@ -485,10 +503,12 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		//Power Ups
 		
 		//Tracking Missiles
-		trackingMClock = trackingMClock + 1;
+		powerUClock = powerUClock + 1;
 		
-		if (trackingMClock <= 1000 && powerU == 1)
+		if (powerUClock <= 1000 && powerU == 1)
 		{
+			powerUClock = 0; // Resets clock
+			
 			
 		}
 		
@@ -773,9 +793,14 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						
 						PLAYER1KILLS = PLAYER1KILLS + 1;
 						
-						System.out.println("\n\n\n\n\n\n\n\n\n");
-						System.out.println("Tank1 Kills: " + PLAYER1KILLS);
-						System.out.println("Tank2 Kills: " + PLAYER2KILLS);
+						lblKillsTank1.setText("Kills: " + PLAYER1KILLS);
+						lblKillsTank2.setText("Kills: " + PLAYER2KILLS);
+						
+						tank1X = 41;
+						tank1Y = 280;
+						tank2X = 850;
+						tank2Y = 95;
+						
 						
 						//PLAYER_LIVES = PLAYER_LIVES - 1;
 						//lblPlayerLives.setText("Lives: " + PLAYER_LIVES);
@@ -803,9 +828,13 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						
 						PLAYER2KILLS = PLAYER2KILLS + 1;
 						
-						System.out.println("\n\n\n\n\n\n\n\n\n");
-						System.out.println("Tank1 Kills: " + PLAYER1KILLS);
-						System.out.println("Tank2 Kills: " + PLAYER2KILLS);
+						lblKillsTank1.setText("Kills: " + PLAYER1KILLS);
+						lblKillsTank2.setText("Kills: " + PLAYER2KILLS);
+						
+						tank1X = 41;
+						tank1Y = 280;
+						tank2X = 850;
+						tank2Y = 95;
 						
 						//PLAYER_LIVES = PLAYER_LIVES - 1;
 						//lblPlayerLives.setText("Lives: " + PLAYER_LIVES);

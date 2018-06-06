@@ -10,7 +10,7 @@ public class TrackingMissileBox
 	private int boxXPos;
 	private int boxYPos;
 
-	private ImageIcon imgBox = new ImageIcon(getClass().getResource("asteroid.png"));
+	private ImageIcon imgBox = new ImageIcon(getClass().getResource("tmbox.png"));
 	private JLabel boxLabel = new JLabel(imgBox);
 
 
