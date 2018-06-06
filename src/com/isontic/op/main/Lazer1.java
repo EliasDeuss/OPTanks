@@ -3,7 +3,7 @@ package com.isontic.op.main;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class TrackingMissile1
+public class Lazer1
 {
 	// Constant
 	private final int MISSILE_SPEED = 1;
@@ -13,22 +13,18 @@ public class TrackingMissile1
 	private double missileXPos;
 	private double missileYPos;
 	private double missileA;
-	private double missileDX;
-	private double missileDY;
 	
 	private ImageIcon missileImage = new ImageIcon(getClass().getResource("missile.png"));
 	private JLabel missileLabel = new JLabel(missileImage);
 
 	// Constructor
-	public TrackingMissile1(double x, double y, double a, double dx, double dy)
+	public Lazer1(double x, double y, double a)
 	{
 		missileWidth = missileImage.getIconWidth();
 		missileHeight = missileImage.getIconHeight();
 		missileXPos = x;
 		missileYPos = y;
 		missileA = a;
-		missileDX = dx;
-		missileDY = dy;
 	}
 
 	// Move the missile

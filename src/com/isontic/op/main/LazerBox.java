@@ -3,7 +3,7 @@ package com.isontic.op.main;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class TrackingMissileBox
+public class LazerBox
 {
 	private int boxWidth;
 	private int boxHeight;
@@ -14,7 +14,7 @@ public class TrackingMissileBox
 	private JLabel boxLabel = new JLabel(imgBox);
 
 
-	public TrackingMissileBox(int xPos, int yPos)
+	public LazerBox(int xPos, int yPos)
 	{
 		boxWidth = imgBox.getIconWidth();
 		boxHeight = imgBox.getIconHeight();

@@ -75,9 +75,11 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private int powerU = 1; //What powerup is coming next
 	private int powerUClock = 0;
 	
-	//Tracking Missile
-	
-	
+	//Lazer
+	private double lazer1X = 0;
+	private double lazer1Y = 0;
+	private boolean lazer1F = false, lazer1S = false;
+	private Image lazer1image = new ImageIcon(getClass().getResource("lazer.png")).getImage(); //Lazer1 Image
 	
 	//Tank1
 	private double tank1X = 400, tank1Y = 200; //X and Y for Tank 1
@@ -118,7 +120,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	//Array List
 	ArrayList<Missile1> missile1s = new ArrayList<Missile1>();
 	ArrayList<Missile2> missile2s = new ArrayList<Missile2>();
-	ArrayList<TrackingMissileBox> tmBoxs = new ArrayList<TrackingMissileBox>();
+	ArrayList<LazerBox> lBoxes = new ArrayList<LazerBox>();
 	
 	ArrayList<test> tests = new ArrayList<test>();
 	public static void main(String[] args) 
@@ -165,28 +167,28 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		lblKillsTank1img = new JLabel(imgTank1Score);
 		lblKillsTank1img.setSize(35, 45);
 		lblKillsTank1img.setFont(new Font("Serif", Font.PLAIN, 39));
-		lblKillsTank1img.setLocation(15, 493);
+		lblKillsTank1img.setLocation(15, 504);
 		lblKillsTank1img.setOpaque(false);
 		lblKillsTank1img.setVisible(true);
 		
 		lblKillsTank1 = new JLabel("Kills: " + PLAYER1KILLS);
 		lblKillsTank1.setSize(85, 30);
 		lblKillsTank1.setFont(new Font("Serif", Font.PLAIN, 25));
-		lblKillsTank1.setLocation(50, 498);
+		lblKillsTank1.setLocation(50, 508);
 		lblKillsTank1.setForeground(Color.white);
 		lblKillsTank1.setVisible(true);
 		
 		lblKillsTank2img = new JLabel(imgTank2Score);
 		lblKillsTank2img.setSize(35, 45);
 		lblKillsTank2img.setFont(new Font("Serif", Font.PLAIN, 39));
-		lblKillsTank2img.setLocation(135, 493);
+		lblKillsTank2img.setLocation(135, 504);
 		lblKillsTank2img.setOpaque(false);
 		lblKillsTank2img.setVisible(true);
 		
 		lblKillsTank2 = new JLabel("Kills: " + PLAYER2KILLS);
 		lblKillsTank2.setSize(85, 30);
 		lblKillsTank2.setFont(new Font("Serif", Font.PLAIN, 25));
-		lblKillsTank2.setLocation(175, 498);
+		lblKillsTank2.setLocation(175, 508);
 		lblKillsTank2.setForeground(Color.white);
 		lblKillsTank2.setVisible(true);
 		
@@ -511,15 +513,15 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		{
 			powerUClock = 0; // Resets clock
 			powerU = 0;
-			tmBoxs.add(new TrackingMissileBox(20, 25));
+			lBoxes.add(new LazerBox(20, 25));
 			
 			System.out.println("Spawned In Box");
 		}
 		
 		//Draws the TrackingMBox
-		for (int i = 0; i < tmBoxs.size(); i++)
+		for (int i = 0; i < lBoxes.size(); i++)
 		{
-			TrackingMissileBox boxs = tmBoxs.get(i);
+			LazerBox boxs = lBoxes.get(i);
 			mLabel = boxs.getBoxImage();
 			mLabel.setLocation(boxs.getX(), boxs.getY());
 			mLabel.setSize(boxs.getWidth(), boxs.getHeight());
@@ -577,17 +579,30 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		}
 		
 		//Tank1 Missile
-		if (tank1M && !T1missileFired && T1STOP == false)
+		if (lazer1F == false)
 		{
-			// Set the starting position of the missile being launched 
-			double x = tank1X - 7;
-			double y = tank1Y - 45 ;//- 61;
-			double a = tank1A;
+			if (tank1M && !T1missileFired && T1STOP == false)
+		
+			{
+				// Set the starting position of the missile being launched 
+				double x = tank1X - 7;
+				double y = tank1Y - 45 ;//- 61;
+				double a = tank1A;
 
-			// Create a new 'Missile' object and add it to the 'missile1s' ArrayList 
-			missile1s.add(new Missile1(x, y, a));
+				// Create a new 'Missile' object and add it to the 'missile1s' ArrayList 
+				missile1s.add(new Missile1(x, y, a));
 
-			T1missileFired = true;
+				T1missileFired = true;
+			}
+		} 
+		
+		if (lazer1F == true)
+		{
+			if (tank1M == true)
+			{
+				lazer1S = true;
+				
+			}
 		}
 		
 		//Tank2 Missile
@@ -674,6 +689,9 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				repaint();
 			//}
 		}
+		
+		lazer1X = tank1X;
+		lazer1Y = tank1Y;
 	}
 	
 	public void checkCollisions()
@@ -689,7 +707,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		    	   double tankY = tank1Y;
 		    	   
 		    	   tankX = tankX + (Math.cos(tank1A)) * (29/2);
-		    	   System.out.println(tank1A);
+		    	   //System.out.println(tank1A);
 		    	   tankY = tankY + (Math.cos(tank1A)) * (55/2);
 		    	   
 		    	   
@@ -767,13 +785,13 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		for (int i = 0; i < 1; i++)
 				try
 				{
-					Rectangle rTMBox = new Rectangle(tmBoxs.get(0).getX(), tmBoxs.get(0).getY(), 25 , 25);
+					Rectangle rTMBox = new Rectangle(lBoxes.get(0).getX(), lBoxes.get(0).getY(), 25 , 25);
 					Rectangle rTank1 = new Rectangle( (int) tank1X - 20, (int) tank1Y - 84, 30, 40);
 									
 					if (rTMBox.intersects(rTank1))
 					{
-						getContentPane().remove(tmBoxs.get(0).getBoxImage());
-						tmBoxs.remove(0);
+						getContentPane().remove(lBoxes.get(0).getBoxImage());
+						lBoxes.remove(0);
 								
 						
 					}
@@ -787,13 +805,13 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		for (int i = 0; i < 1; i++)
 				try
 				{
-					Rectangle rTMBox = new Rectangle(tmBoxs.get(0).getX(), tmBoxs.get(0).getY(), 25 , 25);
+					Rectangle rTMBox = new Rectangle(lBoxes.get(0).getX(), lBoxes.get(0).getY(), 25 , 25);
 					Rectangle rTank2 = new Rectangle( (int) tank2X - 20, (int) tank2Y - 87, 30, 35);
 											
 					if (rTMBox.intersects(rTank2))
 					{
-						getContentPane().remove(tmBoxs.get(0).getBoxImage());
-						tmBoxs.remove(0);
+						getContentPane().remove(lBoxes.get(0).getBoxImage());
+						lBoxes.remove(0);
 										
 								
 					}
@@ -969,18 +987,26 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 		AffineTransform at = AffineTransform.getRotateInstance(tank1A, tank1X, tank1Y);
 		AffineTransform at2 = AffineTransform.getRotateInstance(tank2A, tank2X, tank2Y);
+		AffineTransform at3 = AffineTransform.getRotateInstance(tank1A, lazer1X, lazer1Y);
 		
 		at.translate(tank1X - 29 / 2, tank1Y - 40 / 2);
 		at2.translate(tank2X - 30 / 2, tank2Y - 35 / 2);
-
+		at3.translate(lazer1X - 2, lazer1Y + 14);
+		
 		at.scale(sizeX, sizeY);
 		at2.scale(sizeX, sizeY);
-
+		at3.scale(1, 1);
+		
 		// Draw the updated image
 		if (playGame)
 		{
 			g2D.drawImage(tank1image, at, this);
 			g2D.drawImage(image2, at2, this);
+			
+			if (lazer1S == true)
+			{
+				g2D.drawImage(lazer1image, at3, this);
+			}
 		}
 
 		Toolkit.getDefaultToolkit().sync();
