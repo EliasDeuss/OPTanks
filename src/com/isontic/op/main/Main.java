@@ -72,7 +72,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private BufferedImage image;
 	
 	//Power ups
-	private int powerU = 0; //What powerup is coming next
+	private int powerU = 1; //What powerup is coming next
 	private int powerUClock = 0;
 	
 	//Tracking Missile
@@ -118,6 +118,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	//Array List
 	ArrayList<Missile1> missile1s = new ArrayList<Missile1>();
 	ArrayList<Missile2> missile2s = new ArrayList<Missile2>();
+	ArrayList<TrackingMissileBox> tmBoxs = new ArrayList<TrackingMissileBox>();
 	
 	ArrayList<test> tests = new ArrayList<test>();
 	public static void main(String[] args) 
@@ -503,15 +504,27 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		//Power Ups
 		
 		//Tracking Missiles
-		powerUClock = powerUClock + 1;
+		if (playGame == true)
+			powerUClock = powerUClock + 1;
 		
-		if (powerUClock <= 1000 && powerU == 1)
+		if (powerUClock >= 1600 && powerU == 1)
 		{
 			powerUClock = 0; // Resets clock
+			powerU = 0;
+			tmBoxs.add(new TrackingMissileBox(20, 25));
 			
-			
+			System.out.println("Spawned In Box");
 		}
 		
+		//Draws the TrackingMBox
+		for (int i = 0; i < tmBoxs.size(); i++)
+		{
+			TrackingMissileBox boxs = tmBoxs.get(i);
+			mLabel = boxs.getBoxImage();
+			mLabel.setLocation(boxs.getX(), boxs.getY());
+			mLabel.setSize(boxs.getWidth(), boxs.getHeight());
+			add(mLabel);
+		}
 		
 		//Tank1
 		
@@ -639,32 +652,6 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			add(mLabel2);
 		}
 		
-		//Limits missile1s to 5
-//		if (missile1s.size() >= 5)
-//		{
-//			T1STOP = true;
-//			
-//			if (T1TIMEL == 25)
-//			{
-//				missile1s.removeAll(missile1s);
-//				System.out.println("Test");
-//				T1TIMEL = 0;
-//			}
-//		}
-		
-		//Limits missile2s to 5
-//		if (missile2s.size() >= 5)
-//		{
-//			T2STOP = true;
-//				
-//			if (T1TIMEL == 25)
-//			{
-//				missile2s.removeAll(missile2s);
-//				System.out.println("Test");
-//				T1TIMEL = 0;
-//			}
-//		}
-		
 		//Checks if missile is out of bounds
 		for (int i = 0; i < missile1s.size(); i++)
 		{
@@ -775,6 +762,46 @@ public class Main extends JFrame implements ActionListener, KeyListener
 					    	   }				   
 					       }
 				}
+		
+		//If Tank1 hit TM Box
+		for (int i = 0; i < 1; i++)
+				try
+				{
+					Rectangle rTMBox = new Rectangle(tmBoxs.get(0).getX(), tmBoxs.get(0).getY(), 25 , 25);
+					Rectangle rTank1 = new Rectangle( (int) tank1X - 20, (int) tank1Y - 84, 30, 40);
+									
+					if (rTMBox.intersects(rTank1))
+					{
+						getContentPane().remove(tmBoxs.get(0).getBoxImage());
+						tmBoxs.remove(0);
+								
+						
+					}
+				}
+				catch (Exception error)
+				{
+				}
+			
+		
+		//If Tank2 hit TM Box
+		for (int i = 0; i < 1; i++)
+				try
+				{
+					Rectangle rTMBox = new Rectangle(tmBoxs.get(0).getX(), tmBoxs.get(0).getY(), 25 , 25);
+					Rectangle rTank2 = new Rectangle( (int) tank2X - 20, (int) tank2Y - 87, 30, 35);
+											
+					if (rTMBox.intersects(rTank2))
+					{
+						getContentPane().remove(tmBoxs.get(0).getBoxImage());
+						tmBoxs.remove(0);
+										
+								
+					}
+				}
+				catch (Exception error)
+				{
+				}
+					
 		
 		//Gets rid of missile1 hits player 2
 		for (int i = 0; i < 1; i++)
