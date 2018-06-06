@@ -78,6 +78,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	//Lazer
 	private double lazer1X = 0;
 	private double lazer1Y = 0;
+	private int lazerT = 0;
 	private boolean lazer1F = false, lazer1S = false;
 	private Image lazer1image = new ImageIcon(getClass().getResource("lazer.png")).getImage(); //Lazer1 Image
 	
@@ -692,6 +693,18 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		
 		lazer1X = tank1X;
 		lazer1Y = tank1Y;
+		
+		//Keeps lazer out for only 2 seconds
+		if (lazer1F && lazer1S == true)
+		{
+			lazerT = lazerT + 1;
+			
+			if (lazerT >= 80)
+			{
+				lazer1F = false;
+				lazer1S = false;
+			}
+		}
 	}
 	
 	public void checkCollisions()
@@ -792,7 +805,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 					{
 						getContentPane().remove(lBoxes.get(0).getBoxImage());
 						lBoxes.remove(0);
-								
+						
+						lazer1F = true;
 						
 					}
 				}
