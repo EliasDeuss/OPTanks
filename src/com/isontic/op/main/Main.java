@@ -1044,6 +1044,69 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				{
 				}
 			}
+		
+		//Gets rid of lazer1 hits player 2
+		for (int i = 0; i < 1; i++)
+			for (int j = 0; j < lazer1s.size(); j++)
+			{
+				try
+				{
+					Rectangle rLazer = new Rectangle(lazer1s.get(j).getX(), lazer1s.get(j).getY(), 5 , 5);
+					Rectangle rTank2 = new Rectangle( (int) tank2X - 20, (int) tank2Y - 87, 30, 35);
+									
+					//If a Bomb Hits a player it will remove Health
+					if (rLazer.intersects(rTank2))
+					{
+						getContentPane().remove(lazer1s.get(j).getMissileImage());
+						lazer1s.remove(j);
+								
+						PLAYER1KILLS = PLAYER1KILLS + 1;
+							
+						tank1X = 41;
+						tank1Y = 280;
+						tank2X = 850;
+						tank2Y = 95;
+								
+								
+						//PLAYER_LIVES = PLAYER_LIVES - 1;
+						//lblPlayerLives.setText("Lives: " + PLAYER_LIVES);
+					}
+				}
+				catch (Exception error)
+				{
+				}
+			}
+				
+		//Gets rid of lazer2 hits player 1
+		for (int i = 0; i < 1; i++)
+			for (int j = 0; j < lazer2s.size(); j++)
+			{
+				try
+				{
+					Rectangle rLazer = new Rectangle(lazer2s.get(j).getX(), lazer2s.get(j).getY(), 5 , 5);
+					Rectangle rTank1 = new Rectangle( (int) tank1X - 20, (int) tank1Y - 84, 30, 40);
+								
+					//If a Bomb Hits a player it will remove Health
+					if (rLazer.intersects(rTank1))
+					{
+						getContentPane().remove(lazer2s.get(j).getMissileImage());
+						lazer2s.remove(j);
+								
+						PLAYER2KILLS = PLAYER2KILLS + 1;
+								
+						tank1X = 41;
+						tank1Y = 280;
+						tank2X = 850;
+						tank2Y = 95;
+								
+						//PLAYER_LIVES = PLAYER_LIVES - 1;
+						//lblPlayerLives.setText("Lives: " + PLAYER_LIVES);
+					}
+				}
+				catch (Exception error)
+				{
+				}
+			}
 	}
 	
 	public void MenuBar()
