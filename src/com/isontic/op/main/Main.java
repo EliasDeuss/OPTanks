@@ -79,13 +79,15 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private double lazer1X = 0;
 	private double lazer1Y = 0;
 	private int lazer1T = 0;
-	private boolean lazer1F = false, lazer1S = false;
+	private int tank1tm = 0;
+	private boolean lazer1F = true, lazer1S = false;
 	private Image lazer1image = new ImageIcon(getClass().getResource("lazer.png")).getImage(); //Lazer1 Image
 	
 	//Lazer 2
 	private double lazer2X = 0;
 	private double lazer2Y = 0;
 	private int lazer2T = 0;
+	private int tank2tm = 0;
 	private boolean lazer2F = false, lazer2S = false;
 	private Image lazer2image = new ImageIcon(getClass().getResource("lazer.png")).getImage(); //Lazer1 Image
 		
@@ -130,6 +132,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	ArrayList<Missile1> missile1s = new ArrayList<Missile1>();
 	ArrayList<Missile2> missile2s = new ArrayList<Missile2>();
 	ArrayList<LazerBox> lBoxes = new ArrayList<LazerBox>();
+	ArrayList<Lazer1> lazer1s = new ArrayList<Lazer1>();
+	ArrayList<Lazer2> lazer2s = new ArrayList<Lazer2>();
 	
 	ArrayList<test> tests = new ArrayList<test>();
 	public static void main(String[] args) 
@@ -605,11 +609,25 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			}
 		} 
 		
+		//Lazer Tank1
 		if (lazer1F == true)
 		{
-			if (tank1M == true)
+			tank1tm = tank1tm + 1;
+			if (tank1M == true && tank1tm >= 2 || lazer1S == true && tank1tm >= 2)
 			{
 				lazer1S = true;
+				tank1tm = 0;
+				for (int j = 0; j < 1; j++)
+				{
+					// Set the starting position of the missile being launched 
+					double x = tank1X - 7;
+					double y = tank1Y - 45 ;//- 61;
+					double a = tank1A;
+
+					// Create a new 'Missile' object and add it to the 'missile1s' ArrayList 
+					lazer1s.add(new Lazer1(x, y, a));
+
+				}
 				
 			}
 		}
@@ -629,12 +647,25 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				T2missileFired = true;
 			}
 		
-		if (lazer2F == true)
+		//Lazer Tank2
+		if (lazer1F == true)
 		{
-			if (tank2M == true)
+			tank2tm = tank2tm + 1;
+			if (tank2M == true && tank2tm >= 2 || lazer2S == true && tank2tm >= 2)
 			{
 				lazer2S = true;
-				
+				tank2tm = 0;
+				for (int j = 0; j < 1; j++)
+				{
+					// Set the starting position of the missile being launched 
+					double x = tank2X - 7;
+					double y = tank2Y - 45 ;//- 61;
+					double a = tank2A;
+
+					// Create a new 'Missile' object and add it to the 'missile1s' ArrayList 
+					lazer2s.add(new Lazer2(x, y, a));
+				}
+						
 			}
 		}
 		
@@ -666,6 +697,34 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			}
 		}
 		
+		// Move the existing lazer1 up the playing field
+		for (int j = 0; j < lazer1s.size(); j++)
+		{
+			Lazer1 lazer = lazer1s.get(j);
+			lazer.moveMissile();
+
+			// If the missile gets past the top of the playing field, remove it
+			if (lazer.getY() < 0 - lazer.getHeight())
+			{
+				getContentPane().remove(lazer.getMissileImage());
+				lazer1s.remove(j);
+			}
+		}
+				
+		// Move the existing lazer2 up the playing field
+		for (int j = 0; j < lazer2s.size(); j++)
+		{
+			Lazer2 lazer = lazer2s.get(j);
+			lazer.moveMissile();
+
+			// If the missile gets past the top of the playing field, remove it
+			if (lazer.getY() < 0 - lazer.getHeight())
+			{
+				getContentPane().remove(lazer.getMissileImage());
+				lazer2s.remove(j);
+			}
+		}
+		
 		//Draws the Missile for Tank 1
 		for (int i = 0; i < missile1s.size(); i++)
 		{
@@ -680,10 +739,30 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		for (int i = 0; i < missile2s.size(); i++)
 		{
 			Missile2 missile = missile2s.get(i);
-			JLabel mLabel2 = missile.getMissileImage();
-			mLabel2.setLocation(missile.getX(), missile.getY());
-			mLabel2.setSize(missile.getWidth(), missile.getHeight());
-			add(mLabel2);
+			JLabel lLabel = missile.getMissileImage();
+			lLabel.setLocation(missile.getX(), missile.getY());
+			lLabel.setSize(missile.getWidth(), missile.getHeight());
+			add(lLabel);
+		}
+		
+		//Draws the Lazer for Tank 1
+		for (int i = 0; i < lazer1s.size(); i++)
+		{
+			Lazer1 lazer = lazer1s.get(i);
+			mLabel = lazer.getMissileImage();
+			mLabel.setLocation(lazer.getX(), lazer.getY());
+			mLabel.setSize(lazer.getWidth(), lazer.getHeight());
+			add(mLabel);
+		}
+				
+		//Draws the Lazer for Tank 2
+		for (int i = 0; i < lazer2s.size(); i++)
+		{
+			Lazer2 lazer = lazer2s.get(i);
+			JLabel lLabel = lazer.getMissileImage();
+			lLabel.setLocation(lazer.getX(), lazer.getY());
+			lLabel.setSize(lazer.getWidth(), lazer.getHeight());
+			add(lLabel);
 		}
 		
 		//Checks if missile is out of bounds
@@ -720,7 +799,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		{
 			lazer1T = lazer1T + 1;
 			
-			if (lazer1T >= 80)
+			if (lazer1T >= 28)
 			{
 				lazer1F = false;
 				lazer1S = false;
@@ -732,12 +811,14 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		{
 			lazer2T = lazer2T + 1;
 					
-			if (lazer2T >= 80)
+			if (lazer2T >= 28)
 			{
 				lazer2F = false;
 				lazer2S = false;
 			}
 		}
+		
+		
 	}
 	
 	public void checkCollisions()
@@ -867,7 +948,47 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				{
 				}
 					
+		//Gets rid of missile1 hits player 2
 		
+			if (lazer1S && lazer1F == true || lazer2S && lazer2F == true)	{
+				try
+					{
+						Rectangle rLazer = new Rectangle( (int) lazer1X, (int) lazer1X + 14, 5 , 150);
+						Rectangle rTank1 = new Rectangle( (int) tank1X - 20, (int) tank1Y - 84, 30, 40);
+						Rectangle rTank2 = new Rectangle( (int) tank2X - 20, (int) tank2Y - 87, 30, 35);
+
+						//If a lazer Hits a player it will kill player
+						if (rTank2.intersects(rLazer))
+						{
+							lazer1S = false;
+							lazer1F = false;
+								
+							PLAYER1KILLS = PLAYER1KILLS + 1;
+								
+							tank1X = 41;
+							tank1Y = 280;
+							tank2X = 850;
+							tank2Y = 95;
+						}
+						
+						if (rTank1.intersects(rLazer))
+						{
+							lazer2S = false;
+							lazer2F = false;
+								
+							PLAYER2KILLS = PLAYER2KILLS + 1;
+								
+							tank1X = 41;
+							tank1Y = 280;
+							tank2X = 850;
+							tank2Y = 95;
+						}
+				}
+				catch (Exception error)
+				{
+				}
+			}
+				
 		//Gets rid of missile1 hits player 2
 		for (int i = 0; i < 1; i++)
 			for (int j = 0; j < missile1s.size(); j++)
@@ -884,9 +1005,6 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						missile1s.remove(j);
 						
 						PLAYER1KILLS = PLAYER1KILLS + 1;
-						
-						lblKillsTank1.setText("Kills: " + PLAYER1KILLS);
-						lblKillsTank2.setText("Kills: " + PLAYER2KILLS);
 						
 						tank1X = 41;
 						tank1Y = 280;
@@ -919,9 +1037,6 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						missile2s.remove(j);
 						
 						PLAYER2KILLS = PLAYER2KILLS + 1;
-						
-						lblKillsTank1.setText("Kills: " + PLAYER1KILLS);
-						lblKillsTank2.setText("Kills: " + PLAYER2KILLS);
 						
 						tank1X = 41;
 						tank1Y = 280;
@@ -1034,18 +1149,12 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 		AffineTransform at = AffineTransform.getRotateInstance(tank1A, tank1X, tank1Y);
 		AffineTransform at2 = AffineTransform.getRotateInstance(tank2A, tank2X, tank2Y);
-		AffineTransform at3 = AffineTransform.getRotateInstance(tank1A, lazer1X, lazer1Y);
-		AffineTransform at4 = AffineTransform.getRotateInstance(tank2A, lazer2X, lazer2Y);
 		
 		at.translate(tank1X - 29 / 2, tank1Y - 40 / 2);
 		at2.translate(tank2X - 30 / 2, tank2Y - 35 / 2);
-		at3.translate(lazer1X - 2, lazer1Y + 14);
-		at4.translate(lazer2X - 2, lazer2Y + 14);
 		
 		at.scale(sizeX, sizeY);
 		at2.scale(sizeX, sizeY);
-		at3.scale(1, 1);
-		at4.scale(1, 1);
 		
 		// Draw the updated image
 		if (playGame)
@@ -1053,15 +1162,6 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			g2D.drawImage(tank1image, at, this);
 			g2D.drawImage(image2, at2, this);
 			
-			if (lazer1S == true)
-			{
-				g2D.drawImage(lazer1image, at3, this);
-			}
-			
-			if (lazer2S == true)
-			{
-				g2D.drawImage(lazer2image, at4, this);
-			}
 		}
 
 		Toolkit.getDefaultToolkit().sync();
