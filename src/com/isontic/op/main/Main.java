@@ -111,7 +111,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private int tank1checkA = 255;
 	
 	//Tank2
-	private double tank2X, tank2Y; //X & Y for Tank 2
+	private double tank2X = 400, tank2Y = 400; //X & Y for Tank 2
 	private double tank2A = 1.56; //Angle of the tank2 (0-6)
 	private boolean twowallUp = false;
 	private boolean twowallDown = false;
@@ -1002,10 +1002,10 @@ public class Main extends JFrame implements ActionListener, KeyListener
 							double y4 = (int) tankY - 47 - Math.cos(a - .907098504) * 25;//31;// - 50;
 							
 							
-						   int one =  imagetwo.getRGB( (int) x + 5, (int) y + 25);
-					       int two =  imagetwo.getRGB( (int) x2 + 5, (int) y2 + 25);
-					       int three =  imagetwo.getRGB( (int) x3 + 5, (int) y3 + 25);
-					       int four =  imagetwo.getRGB( (int) x4 + 5, (int) y4 + 25);
+						   int one =  image.getRGB( (int) x + 5, (int) y + 25);
+					       int two =  image.getRGB( (int) x2 + 5, (int) y2 + 25);
+					       int three =  image.getRGB( (int) x3 + 5, (int) y3 + 25);
+					       int four =  image.getRGB( (int) x4 + 5, (int) y4 + 25);
 							
 				    	   int  oneb  =  one & 0x000000ff;
 				    	   if (oneb == 0)
