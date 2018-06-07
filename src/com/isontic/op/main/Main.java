@@ -98,7 +98,9 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private double tank1X = 400, tank1Y = 200; //X and Y for Tank 1
 	private double tank1A = 4.7; //Angle of the tank1 (0-6)
 	private boolean T1STOP = false;
-	
+	private boolean onewallUp = false;
+	private boolean onewallDown = false;
+	private boolean oneright = false, oneleft = false;
 	private Image tank1image = new ImageIcon(getClass().getResource("tank1down.png")).getImage(); //Tank1 Image
 	
 	private boolean tank1M = false, T1missileFired = false;
@@ -111,7 +113,9 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	//Tank2
 	private double tank2X, tank2Y; //X & Y for Tank 2
 	private double tank2A = 1.56; //Angle of the tank2 (0-6)
-	
+	private boolean twowallUp = false;
+	private boolean twowallDown = false;
+	private boolean tworight = false, twoleft = false;
 	private Image image2 = new ImageIcon(getClass().getResource("tank2down.png")).getImage(); //Tank2 Image 
 	
 	private boolean tank2M = false, T2missileFired = false, T2STOP = false;
@@ -327,7 +331,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	{
 		setUpTank1();
 		setUpTank2();
-		//infoBoard();
+		infoBoard();
 		
 		if (MAP == 1)
 		{
@@ -518,8 +522,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	public void actionPerformed(ActionEvent event) {
 		
-//		System.out.println("X: " + tank1X);
-//		System.out.println("Y: " + tank1Y);
+		
 		//Power Ups
 		
 		lranC = lranC + 1;
@@ -538,27 +541,27 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			
 			if (lranC == 1)
 			{
-				lBoxes.add(new LazerBox(20, 25));
+				lBoxes.add(new LazerBox(555, 81));
 			}
 			
 			if (lranC == 2)
 			{
-				lBoxes.add(new LazerBox(417, 504));
+				lBoxes.add(new LazerBox(354, 517));
 			}
 			
 			if (lranC == 3)
 			{
-				lBoxes.add(new LazerBox(633, 241));
+				lBoxes.add(new LazerBox(846, 452));
 			}
 			
 			if (lranC == 4)
 			{
-				lBoxes.add(new LazerBox(419, 75));
+				lBoxes.add(new LazerBox(270, 231));
 			}
 			
 			if (lranC == 5)
 			{
-				lBoxes.add(new LazerBox(846, 433));
+				lBoxes.add(new LazerBox(45, 212));
 			}
 			
 			System.out.println("Spawned In Box");
@@ -578,50 +581,66 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		
 		if (onepressedLeft && tank1X > 4)
 		{
-			tank1A = tank1A -0.05;
+			if (oneleft == false)
+				tank1A = tank1A -0.05;
 		}
 		if (onepressedRight && tank1X < FIELD_WIDTH  - 6 - 4)
 		{
-			tank1A = tank1A +0.05;
+			if (oneright == false)
+				tank1A = tank1A +0.05;
 		}
 		
 		//Forwards
 		if (onepressedUp && tank1X > 4)
 		{	
-			tank1Y = tank1Y + (SHOOTER_SPEED) * (Math.cos(tank1A));
-			tank1X = tank1X - (SHOOTER_SPEED) * (Math.sin(tank1A));
+			if (onewallUp == false)
+			{
+				tank1Y = tank1Y + (SHOOTER_SPEED) * (Math.cos(tank1A));
+				tank1X = tank1X - (SHOOTER_SPEED) * (Math.sin(tank1A));
+			}
 		}
 		
 		//Backwards
 		if (onepressedDown && tank1X < FIELD_WIDTH - 6 - 4)
 		{
-			tank1Y = tank1Y - (SHOOTER_SPEED) * (Math.cos(tank1A));
-			tank1X = tank1X + (SHOOTER_SPEED) * (Math.sin(tank1A));
+			if (onewallDown == false)
+			{
+				tank1Y = tank1Y - (SHOOTER_SPEED) * (Math.cos(tank1A));
+				tank1X = tank1X + (SHOOTER_SPEED) * (Math.sin(tank1A));
+			}
 		}
 		
 		//Tank2
 		
 		if (twopressedLeft && tank2X > 4)
 		{
-			tank2A = tank2A -0.05;
+			if (twoleft == false)
+				tank2A = tank2A -0.05;
 		}
 		if (twopressedRight && tank2X < FIELD_WIDTH - 6 - 4)
 		{
-			tank2A = tank2A +0.05;
+			if (oneright == false)
+				tank2A = tank2A +0.05;
 		}
 				
 		//Forwards
 		if (twopressedUp && tank2X > 4)
 		{	
-			tank2Y = tank2Y + (SHOOTER_SPEED) * (Math.cos(tank2A));
-			tank2X = tank2X - (SHOOTER_SPEED) * (Math.sin(tank2A));
+			if (twowallUp == false)
+			{
+				tank2Y = tank2Y + (SHOOTER_SPEED) * (Math.cos(tank2A));
+				tank2X = tank2X - (SHOOTER_SPEED) * (Math.sin(tank2A));
+			}
 		}
 			
 		//Backwards
 		if (twopressedDown && tank2X < FIELD_WIDTH  - 6 - 4)
 		{
-			tank2Y = tank2Y - (SHOOTER_SPEED) * (Math.cos(tank2A));
-			tank2X = tank2X + (SHOOTER_SPEED) * (Math.sin(tank2A));
+			if (onewallDown == false)
+			{
+				tank2Y = tank2Y - (SHOOTER_SPEED) * (Math.cos(tank2A));
+				tank2X = tank2X + (SHOOTER_SPEED) * (Math.sin(tank2A));	
+			}
 		}
 		
 		//Tank1 Missile
@@ -856,40 +875,204 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	public void checkCollisions()
 	{
-		//Checks if player is on black
+		//Checks if tank1 is on black
 		for (int i = 0; i < 1; i++)
 		{
-			if (onepressedUp == true)
-			{
-				
-				// The the pixel color information at 20, 20			           	 			    	 
+					           	 			    	 
 		    	   double tankX = tank1X;
 		    	   double tankY = tank1Y;
 		    	   
-		    	   tankX = tankX + (Math.cos(tank1A)) * (29/2);
-		    	   //System.out.println(tank1A);
-		    	   tankY = tankY + (Math.cos(tank1A)) * (55/2);
-		    	   
-		    	   
+		    	   double a = ((2 * Math.PI - tank1A) + Math.PI * 3 / 2) % (Math.PI * 2);
+		    	
 		    	   // Getting pixel color by position x and y 
-		    	   int clr=  image.getRGB( (int) tankX + 15, (int) tankY -50); 
-		    	   
-		    	   
-		    	   //test
-					double x = (int) tankX + 15;
-					double y = (int) tankY - 50;
-					//tests.add(new test(x, y));
-		    	   //
+		    	  
+					double x = (int) tankX - 5 + Math.sin(a + .907098504) * 25;//31;// + 15;
+					double y = (int) tankY - 47 + Math.cos(a + .907098504) * 25;//31;// - 50;
+					
+		    	  
+					
+					double x2 = (int) tankX - 5 - Math.sin(a + .907098504) * 25;//31;// + 15;
+					double y2 = (int) tankY - 47 - Math.cos(a + .907098504) * 25;//31;// - 50;
+					
+					
+					double x3 = (int) tankX - 5 + Math.sin(a - .907098504) * 25;//31;// + 15;
+					double y3 = (int) tankY - 47 + Math.cos(a - .907098504) * 25;//31;// - 50;
+				
 				   
-		    	   
-		    	   int  blue  =  clr & 0x000000ff;
-		    	   
-		    	   if (blue == 0)
+					double x4 = (int) tankX - 5 - Math.sin(a - .907098504) * 25;//31;// + 15;
+					double y4 = (int) tankY - 47 - Math.cos(a - .907098504) * 25;//31;// - 50;
+					
+					
+				   int one =  image.getRGB( (int) x + 5, (int) y + 25);
+			       int two =  image.getRGB( (int) x2 + 5, (int) y2 + 25);
+			       int three =  image.getRGB( (int) x3 + 5, (int) y3 + 25);
+			       int four =  image.getRGB( (int) x4 + 5, (int) y4 + 25);
+					
+		    	   int  oneb  =  one & 0x000000ff;
+		    	   if (oneb == 0)
 		    	   {
-		    		  //System.out.println("nick");
-		    	   }				   
-			}
+		    		  // Top Right
+		    		   onepressedUp = false;
+		    		   onewallUp = true;
+		    		   oneright = true;
+		    	   }
+		    	   
+		    	   if (oneb == 255)
+		    	   {
+		    		  // Top Right
+		    		   onewallUp = false;
+		    		   oneright = false;
+		    	   }
+		    	   
+		    	   int  twob  =  two & 0x000000ff;
+		    	   if (twob == 0)
+		    	   {
+		    		  //Bottom left
+		    		   onepressedDown = false;
+		    		   onewallDown = true;
+		    		   oneleft = true;
+		    	   }
+		    	   
+		    	   if (twob == 255)
+		    	   {
+		    		  //Bottom left
+		    		   onewallDown = false;
+		    		   oneleft = false;
+		    	   }	
+		    	   
+		    	   int  threeb  =  three & 0x000000ff;
+		    	   if (threeb == 0)
+		    	   {
+		    		  //Bottom Right
+		    		   onepressedDown = false;
+		    		   onewallDown = true;
+		    		   oneright = true;
+		    	   }
+		    	   
+		    	   if (threeb == 255)
+		    	   {
+		    		  //Bottom Right
+		    		   onewallDown = false;
+		    		   oneright = false;
+		    	   }
+		    	   
+		    	   int  fourb  =  four & 0x000000ff;
+		    	   if (fourb == 0)
+		    	   {
+		    		//Top Left
+		    		   onepressedUp = false;
+		    		   onewallUp = true;
+		    		   oneleft = true;
+		    	   }
+		    	   
+		    	   if (fourb == 255)
+		    	   {
+		    		//Top Left
+		    		   onewallUp = false;
+		    		   oneleft = false;
+		    	   }
+			
 		}
+		
+		//Checks if tank2 is on black
+				for (int i = 0; i < 1; i++)
+				{
+							           	 			    	 
+				    	   double tankX = tank2X;
+				    	   double tankY = tank2Y;
+				    	   
+				    	   double a = ((2 * Math.PI - tank1A) + Math.PI * 3 / 2) % (Math.PI * 2);
+				    	
+				    	   // Getting pixel color by position x and y 
+				    	  
+							double x = (int) tankX - 5 + Math.sin(a + .907098504) * 25;//31;// + 15;
+							double y = (int) tankY - 47 + Math.cos(a + .907098504) * 25;//31;// - 50;
+							
+				    	  
+							
+							double x2 = (int) tankX - 5 - Math.sin(a + .907098504) * 25;//31;// + 15;
+							double y2 = (int) tankY - 47 - Math.cos(a + .907098504) * 25;//31;// - 50;
+							
+							
+							double x3 = (int) tankX - 5 + Math.sin(a - .907098504) * 25;//31;// + 15;
+							double y3 = (int) tankY - 47 + Math.cos(a - .907098504) * 25;//31;// - 50;
+						
+						   
+							double x4 = (int) tankX - 5 - Math.sin(a - .907098504) * 25;//31;// + 15;
+							double y4 = (int) tankY - 47 - Math.cos(a - .907098504) * 25;//31;// - 50;
+							
+							
+						   int one =  imagetwo.getRGB( (int) x + 5, (int) y + 25);
+					       int two =  imagetwo.getRGB( (int) x2 + 5, (int) y2 + 25);
+					       int three =  imagetwo.getRGB( (int) x3 + 5, (int) y3 + 25);
+					       int four =  imagetwo.getRGB( (int) x4 + 5, (int) y4 + 25);
+							
+				    	   int  oneb  =  one & 0x000000ff;
+				    	   if (oneb == 0)
+				    	   {
+				    		  // Top Right
+				    		   twopressedUp = false;
+				    		   twowallUp = true;
+				    		   tworight = true;
+				    	   }
+				    	   
+				    	   if (oneb == 255)
+				    	   {
+				    		  // Top Right
+				    		   twowallUp = false;
+				    		   tworight = false;
+				    	   }
+				    	   
+				    	   int  twob  =  two & 0x000000ff;
+				    	   if (twob == 0)
+				    	   {
+				    		  //Bottom left
+				    		   twopressedDown = false;
+				    		   twowallDown = true;
+				    		   twoleft = true;
+				    	   }
+				    	   
+				    	   if (twob == 255)
+				    	   {
+				    		  //Bottom left
+				    		   twowallDown = false;
+				    		   twoleft = false;
+				    	   }	
+				    	   
+				    	   int  threeb  =  three & 0x000000ff;
+				    	   if (threeb == 0)
+				    	   {
+				    		  //Bottom Right
+				    		   twopressedDown = false;
+				    		   twowallDown = true;
+				    		   tworight = true;
+				    	   }
+				    	   
+				    	   if (threeb == 255)
+				    	   {
+				    		  //Bottom Right
+				    		   twowallDown = false;
+				    		   tworight = false;
+				    	   }
+				    	   
+				    	   int  fourb  =  four & 0x000000ff;
+				    	   if (fourb == 0)
+				    	   {
+				    		//Top Left
+				    		   twopressedUp = false;
+				    		   twowallUp = true;
+				    		   twoleft = true;
+				    	   }
+				    	   
+				    	   if (fourb == 255)
+				    	   {
+				    		//Top Left
+				    		   twowallUp = false;
+				    		   twoleft = false;
+				    	   }
+					
+				}
+		
 		
 		//Draws the Missile for Tank 1
 				for (int i = 0; i < tests.size(); i++)
@@ -999,6 +1182,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						
 						PLAYER1KILLS = PLAYER1KILLS + 1;
 						
+						lblKillsTank1.setText("Kills: " + PLAYER1KILLS);
+						
 						tank1X = 41;
 						tank1Y = 280;
 						tank2X = 850;
@@ -1031,6 +1216,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						
 						PLAYER2KILLS = PLAYER2KILLS + 1;
 						
+						lblKillsTank2.setText("Kills: " + PLAYER2KILLS);
+						
 						tank1X = 41;
 						tank1Y = 280;
 						tank2X = 850;
@@ -1061,7 +1248,9 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						lazer1s.remove(j);
 								
 						PLAYER1KILLS = PLAYER1KILLS + 1;
-							
+						
+						
+						
 						tank1X = 41;
 						tank1Y = 280;
 						tank2X = 850;
@@ -1129,6 +1318,22 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		//a group of JMenuItems
 		menuItem = new JMenuItem("Reset");
 		menuItem.setActionCommand("reset");
+		menuItem.addActionListener(
+				  new ActionListener() 
+						{
+					    public void actionPerformed(ActionEvent e) 
+					    {
+					    	if (e.getActionCommand().equals("reset"))
+							{
+					    		tank2X = 850;
+					    		tank2Y = 95;
+					    		
+					    		tank1X = 41;
+					    		tank1Y = 280;
+							}
+						}
+				  }
+				);
 		
 		menu.add(menuItem);
 		menu.addSeparator();
