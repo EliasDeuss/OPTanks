@@ -75,12 +75,14 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private int powerU = 1; //What powerup is coming next
 	private int powerUClock = 0;
 	
+	private int lranC = 0;
+	
 	//Lazer 1
 	private double lazer1X = 0;
 	private double lazer1Y = 0;
 	private int lazer1T = 0;
 	private int tank1tm = 0;
-	private boolean lazer1F = true, lazer1S = false;
+	private boolean lazer1F = false, lazer1S = false;
 	private Image lazer1image = new ImageIcon(getClass().getResource("lazer.png")).getImage(); //Lazer1 Image
 	
 	//Lazer 2
@@ -516,7 +518,14 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	public void actionPerformed(ActionEvent event) {
 		
+//		System.out.println("X: " + tank1X);
+//		System.out.println("Y: " + tank1Y);
 		//Power Ups
+		
+		lranC = lranC + 1;
+		
+		if (lranC >= 6)
+			lranC = 0;
 		
 		//Tracking Missiles
 		if (playGame == true)
@@ -525,13 +534,37 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		if (powerUClock >= 1600 && powerU == 1)
 		{
 			powerUClock = 0; // Resets clock
-			powerU = 0;
-			lBoxes.add(new LazerBox(20, 25));
+			powerU = 1;
+			
+			if (lranC == 1)
+			{
+				lBoxes.add(new LazerBox(20, 25));
+			}
+			
+			if (lranC == 2)
+			{
+				lBoxes.add(new LazerBox(417, 504));
+			}
+			
+			if (lranC == 3)
+			{
+				lBoxes.add(new LazerBox(633, 241));
+			}
+			
+			if (lranC == 4)
+			{
+				lBoxes.add(new LazerBox(419, 75));
+			}
+			
+			if (lranC == 5)
+			{
+				lBoxes.add(new LazerBox(846, 433));
+			}
 			
 			System.out.println("Spawned In Box");
 		}
 		
-		//Draws the TrackingMBox
+		//Draws the Lazer Box
 		for (int i = 0; i < lBoxes.size(); i++)
 		{
 			LazerBox boxs = lBoxes.get(i);
@@ -648,7 +681,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			}
 		
 		//Lazer Tank2
-		if (lazer1F == true)
+		if (lazer2F == true)
 		{
 			tank2tm = tank2tm + 1;
 			if (tank2M == true && tank2tm >= 2 || lazer2S == true && tank2tm >= 2)
@@ -948,47 +981,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				{
 				}
 					
-		//Gets rid of missile1 hits player 2
 		
-			if (lazer1S && lazer1F == true || lazer2S && lazer2F == true)	{
-				try
-					{
-						Rectangle rLazer = new Rectangle( (int) lazer1X, (int) lazer1X + 14, 5 , 150);
-						Rectangle rTank1 = new Rectangle( (int) tank1X - 20, (int) tank1Y - 84, 30, 40);
-						Rectangle rTank2 = new Rectangle( (int) tank2X - 20, (int) tank2Y - 87, 30, 35);
-
-						//If a lazer Hits a player it will kill player
-						if (rTank2.intersects(rLazer))
-						{
-							lazer1S = false;
-							lazer1F = false;
-								
-							PLAYER1KILLS = PLAYER1KILLS + 1;
-								
-							tank1X = 41;
-							tank1Y = 280;
-							tank2X = 850;
-							tank2Y = 95;
-						}
-						
-						if (rTank1.intersects(rLazer))
-						{
-							lazer2S = false;
-							lazer2F = false;
-								
-							PLAYER2KILLS = PLAYER2KILLS + 1;
-								
-							tank1X = 41;
-							tank1Y = 280;
-							tank2X = 850;
-							tank2Y = 95;
-						}
-				}
-				catch (Exception error)
-				{
-				}
-			}
-				
 		//Gets rid of missile1 hits player 2
 		for (int i = 0; i < 1; i++)
 			for (int j = 0; j < missile1s.size(); j++)
