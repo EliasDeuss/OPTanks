@@ -30,8 +30,8 @@ public class Lazer1
 	// Move the missile
 	public void moveMissile()
 	{
-		missileXPos = missileXPos - 2 * (Math.sin(missileA));
-		missileYPos = missileYPos + 2 * (Math.cos(missileA));
+		missileXPos = missileXPos - 5 * (Math.sin(missileA));
+		missileYPos = missileYPos + 5 * (Math.cos(missileA));
 	}
 
 	public JLabel getMissileImage()
