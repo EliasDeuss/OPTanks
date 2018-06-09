@@ -144,7 +144,6 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	ArrayList<Lazer1> lazer1s = new ArrayList<Lazer1>();
 	ArrayList<Lazer2> lazer2s = new ArrayList<Lazer2>();
 	
-	ArrayList<test> tests = new ArrayList<test>();
 	public static void main(String[] args) 
 	{
 		new Main();
@@ -768,7 +767,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 					// Create a new 'Missile' object and add it to the 'missile1s' ArrayList 
 					lazer2s.add(new Lazer2(x, y, a));
 				}
-						
+				
 			}
 		}
 		
@@ -852,10 +851,10 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		for (int i = 0; i < lazer1s.size(); i++)
 		{
 			Lazer1 lazer = lazer1s.get(i);
-			mLabel = lazer.getMissileImage();
-			mLabel.setLocation(lazer.getX(), lazer.getY());
-			mLabel.setSize(lazer.getWidth(), lazer.getHeight());
-			add(mLabel);
+			JLabel lLabel2 = lazer.getMissileImage();
+			lLabel2.setLocation(lazer.getX(), lazer.getY());
+			lLabel2.setSize(lazer.getWidth(), lazer.getHeight());
+			add(lLabel2);
 		}
 				
 		//Draws the Lazer for Tank 2
@@ -906,6 +905,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			{
 				lazer1F = false;
 				lazer1S = false;
+				lazer1T = 0;
 			}
 		}
 		
@@ -918,6 +918,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			{
 				lazer2F = false;
 				lazer2S = false;
+				lazer2T = 0;
 			}
 		}
 		
@@ -1124,16 +1125,6 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				}
 		
 		
-		//Draws the Missile for Tank 1
-				for (int i = 0; i < tests.size(); i++)
-				{
-					test test = tests.get(i);
-					mLabel = test.getMissileImage();
-					mLabel.setLocation(test.getX(), test.getY());
-					mLabel.setSize(test.getWidth(), test.getHeight());
-					add(mLabel);
-				}
-		
 		//Checks if missile1 is on black
 		for (int i = 0; i < 1; i++)
 		{    
@@ -1299,16 +1290,10 @@ public class Main extends JFrame implements ActionListener, KeyListener
 								
 						PLAYER1KILLS = PLAYER1KILLS + 1;
 						
-						
-						
 						tank1X = 41;
 						tank1Y = 280;
 						tank2X = 850;
 						tank2Y = 95;
-								
-								
-						//PLAYER_LIVES = PLAYER_LIVES - 1;
-						//lblPlayerLives.setText("Lives: " + PLAYER_LIVES);
 					}
 				}
 				catch (Exception error)
@@ -1337,9 +1322,6 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						tank1Y = 280;
 						tank2X = 850;
 						tank2Y = 95;
-								
-						//PLAYER_LIVES = PLAYER_LIVES - 1;
-						//lblPlayerLives.setText("Lives: " + PLAYER_LIVES);
 					}
 				}
 				catch (Exception error)
