@@ -52,6 +52,9 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean tank1move = false; //Tracks it the player is moving
 	private boolean tank2move = false; //Tracks it the player is moving
 	private ImageIcon map = new ImageIcon(getClass().getResource("map.png")); //Map Image 
+	private boolean newspawn = true;
+	private int tankspawn = 0;
+	private int spawnT = 0;
 	
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
@@ -82,7 +85,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private double lazer1Y = 0;
 	private int lazer1T = 0;
 	private int tank1tm = 0;
-	private boolean lazer1F = false, lazer1S = false;
+	private boolean lazer1F = true, lazer1S = false;
 	private Image lazer1image = new ImageIcon(getClass().getResource("lazer.png")).getImage(); //Lazer1 Image
 	
 	//Lazer 2
@@ -522,6 +525,24 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	public void actionPerformed(ActionEvent event) {
 		
+		for (int j = 0; j < lazer1s.size(); j++)
+		{
+			if (lazer1s.get(j).getX() <= 0 || lazer1s.get(j).getX() >= 900 || lazer1s.get(j).getY() >= 600 || lazer1s.get(j).getY() <= 0)
+			{
+				getContentPane().remove(lazer1s.get(j).getMissileImage());
+				lazer1s.remove(j);
+			}
+		}
+		
+		for (int j = 0; j < lazer2s.size(); j++)
+		{
+			if (lazer2s.get(j).getX() <= 0 || lazer2s.get(j).getX() >= 900 || lazer2s.get(j).getY() >= 600 || lazer2s.get(j).getY() <= 0)
+			{
+				getContentPane().remove(lazer2s.get(j).getMissileImage());
+				lazer2s.remove(j);
+				
+			}
+		}
 		
 		//Power Ups
 		
@@ -529,42 +550,72 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		
 		if (lranC >= 6)
 			lranC = 0;
+		spawnT = spawnT +1;
+		
+		if (spawnT <= 5)
+		{
+			spawnT = 0;
+		}
+		
+		if (tankspawn == 0 && newspawn == true)
+		{
+			tank1X = 41;
+			tank1Y = 280;
+			tank2X = 850;
+			tank2Y = 95;
+			
+			newspawn = false;
+		}
+		
+		if (tankspawn == 1 && newspawn == true)
+		{
+			tank1X = 346;
+			tank1Y = 90;
+			tank2X = 424;
+			tank2Y = 514;
+
+			newspawn = false;
+		}
 		
 		//Tracking Missiles
 		if (playGame == true)
+		{
 			powerUClock = powerUClock + 1;
+		}
 		
+		
+		
+		//Spawns in powerup
 		if (powerUClock >= 1600 && powerU == 1)
 		{
 			powerUClock = 0; // Resets clock
 			powerU = 1;
 			
-			if (lranC == 1)
+			if (lranC == 1 && lBoxes.size() == 0 && lazer1F == false && lazer1S == false && lazer2F == false && lazer2S == false)
 			{
 				lBoxes.add(new LazerBox(555, 81));
 			}
 			
-			if (lranC == 2)
+			if (lranC == 2 && lBoxes.size() == 0 && lazer1F == false && lazer1S == false && lazer2F == false && lazer2S == false)
 			{
-				lBoxes.add(new LazerBox(354, 517));
+				lBoxes.add(new LazerBox(354, 487));
 			}
 			
-			if (lranC == 3)
+			if (lranC == 3 && lBoxes.size() == 0 && lazer1F == false && lazer1S == false && lazer2F == false && lazer2S == false)
 			{
 				lBoxes.add(new LazerBox(846, 452));
 			}
 			
-			if (lranC == 4)
+			if (lranC == 4 && lBoxes.size() == 0 && lazer1F == false && lazer1S == false && lazer2F == false && lazer2S == false)
 			{
 				lBoxes.add(new LazerBox(270, 231));
 			}
 			
-			if (lranC == 5)
+			if (lranC == 5 && lBoxes.size() == 0 && lazer1F == false && lazer1S == false && lazer2F == false && lazer2S == false)
 			{
 				lBoxes.add(new LazerBox(45, 212));
 			}
 			
-			System.out.println("Spawned In Box");
 		}
 		
 		//Draws the Lazer Box
@@ -981,7 +1032,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				    	   double tankX = tank2X;
 				    	   double tankY = tank2Y;
 				    	   
-				    	   double a = ((2 * Math.PI - tank1A) + Math.PI * 3 / 2) % (Math.PI * 2);
+				    	   double a = ((2 * Math.PI - tank2A) + Math.PI * 3 / 2) % (Math.PI * 2);
 				    	
 				    	   // Getting pixel color by position x and y 
 				    	  
@@ -989,7 +1040,6 @@ public class Main extends JFrame implements ActionListener, KeyListener
 							double y = (int) tankY - 47 + Math.cos(a + .907098504) * 25;//31;// - 50;
 							
 				    	  
-							
 							double x2 = (int) tankX - 5 - Math.sin(a + .907098504) * 25;//31;// + 15;
 							double y2 = (int) tankY - 47 - Math.cos(a + .907098504) * 25;//31;// - 50;
 							
