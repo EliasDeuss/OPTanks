@@ -10,6 +10,4 @@ OPTanks
 
 In Progress features
 -------------
-- Walls
-- PowerUps
 - Music / sounds
