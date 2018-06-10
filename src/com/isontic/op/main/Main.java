@@ -392,21 +392,13 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	{
 		tank1move = true;
 		// Set the shooter's initial position 
-		tank1X = 41;
-		tank1Y = 284;
-		
+		newspawn = true;
 		
 		lblPlayer1.setSize(50, 15);
 		lblPlayer1.setFont(new Font("Serif", Font.PLAIN, 12));
 		lblPlayer1.setOpaque(false);
 		lblPlayer1.setForeground(Color.BLACK);
 		lblPlayer1.setVisible(true);
-		
-		lblPlayer2.setSize(50, 15);
-		lblPlayer2.setFont(new Font("Serif", Font.PLAIN, 12));
-		lblPlayer2.setOpaque(false);
-		lblPlayer2.setForeground(Color.BLUE);
-		lblPlayer2.setVisible(true);
 		
 		tank1move = false;
 
@@ -416,15 +408,20 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	{
 		tank2move = true;
 		// Set the shooter's initial position 
-		tank2X = 850;
-		tank2Y = 95;
+		newspawn = true;
+		
+		lblPlayer2.setSize(50, 15);
+		lblPlayer2.setFont(new Font("Serif", Font.PLAIN, 12));
+		lblPlayer2.setOpaque(false);
+		lblPlayer2.setForeground(Color.BLUE);
+		lblPlayer2.setVisible(true);
 		
 		tank2move = false;
 	}
 	
 	
 	public void keyPressed(KeyEvent event) {
-		// TODO Auto-generated method stub
+		
 		int key = event.getKeyCode();
 		
 		//Tank1
@@ -489,7 +486,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	}
 
 	public void keyReleased(KeyEvent event) {
-		// TODO Auto-generated method stub
+		
 		int key = event.getKeyCode();
 
 		if (key == KeyEvent.VK_CONTROL) // CONTROL key
@@ -562,7 +559,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	}
 
 	public void keyTyped(KeyEvent event) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	
@@ -604,31 +601,89 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		
 		if (lranC >= 6)
 			lranC = 0;
-		spawnT = spawnT +1;
 		
-		if (spawnT <= 5)
+	
+		
+		if (spawnT >= 4)
 		{
 			spawnT = 0;
 		}
 		
-		if (tankspawn == 0 && newspawn == true)
+		if (spawnT == 0 && newspawn == true)
 		{
-			tank1X = 41;
-			tank1Y = 280;
-			tank2X = 850;
-			tank2Y = 95;
+			
+			tank1X = 347.160;
+			tank1Y = 93.148;
+			tank1A = 1.60;
+			lazer1F = false;
+			lazer1S = false;
+			
+			tank2X = 850.026;
+			tank2Y = 449.668;
+			tank2A = 3.0999;
+			lazer2F = false;
+			lazer2S = false;
 			
 			newspawn = false;
+			
+			spawnT = spawnT +1;
 		}
 		
-		if (tankspawn == 1 && newspawn == true)
+		if (spawnT == 1 && newspawn == true)
 		{
-			tank1X = 346;
-			tank1Y = 90;
-			tank2X = 424;
-			tank2Y = 514;
+			tank1X = 51.239;
+			tank1Y = 295.424;
+			tank1A = 6.238;
+			lazer1F = false;
+			lazer1S = false;
+			
+			tank2X = 762.323;
+			tank2Y = 92.65;
+			tank2A = 4.783;
+			lazer2F = false;
+			lazer2S = false;
 
 			newspawn = false;
+			
+			spawnT = spawnT +1;
+		}
+		
+		if (spawnT == 2 && newspawn == true)
+		{
+			tank1X = 640.909;
+			tank1Y = 250.282;
+			tank1A = 3.04999;
+			lazer1F = false;
+			lazer1S = false;
+			
+			tank2X = 130.706;
+			tank2Y = 512.622;
+			tank2A = 3.2499;
+			lazer2F = false;
+			lazer2S = false;
+
+			newspawn = false;
+			
+			spawnT = spawnT +1;
+		}
+		
+		if (spawnT == 3 && newspawn == true)
+		{
+			tank1X = 424.023;
+			tank1Y = 246.949;
+			tank1A = 3.7499;
+			lazer1F = false;
+			lazer1S = false;
+			
+			tank2X = 757.096;
+			tank2Y = 440.279;
+			tank2A = 3.233;
+			lazer2F = false;
+			lazer2S = false;
+			
+			newspawn = false;
+			
+			spawnT = spawnT +1;
 		}
 		
 		//Tracking Missiles
@@ -652,12 +707,12 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			
 			if (lranC == 2 && lBoxes.size() == 0 && lazer1F == false && lazer1S == false && lazer2F == false && lazer2S == false)
 			{
-				lBoxes.add(new LazerBox(354, 487));
+				lBoxes.add(new LazerBox(354, 447));
 			}
 			
 			if (lranC == 3 && lBoxes.size() == 0 && lazer1F == false && lazer1S == false && lazer2F == false && lazer2S == false)
 			{
-				lBoxes.add(new LazerBox(846, 452));
+				lBoxes.add(new LazerBox(846, 442));
 			}
 			
 			if (lranC == 4 && lBoxes.size() == 0 && lazer1F == false && lazer1S == false && lazer2F == false && lazer2S == false)
@@ -1279,15 +1334,9 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						PLAYER1KILLS = PLAYER1KILLS + 1;
 						
 						lblKillsTank1.setText("Kills: " + PLAYER1KILLS);
+						lblKillsTank2.setText("Kills: " + PLAYER2KILLS);
 						
-						tank1X = 41;
-						tank1Y = 284;
-						tank2X = 850;
-						tank2Y = 95;
-						
-						
-						//PLAYER_LIVES = PLAYER_LIVES - 1;
-						//lblPlayerLives.setText("Lives: " + PLAYER_LIVES);
+						newspawn = true;
 					}
 				}
 				catch (Exception error)
@@ -1312,15 +1361,10 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						
 						PLAYER2KILLS = PLAYER2KILLS + 1;
 						
+						lblKillsTank1.setText("Kills: " + PLAYER1KILLS);
 						lblKillsTank2.setText("Kills: " + PLAYER2KILLS);
 						
-						tank1X = 41;
-						tank1Y = 284;
-						tank2X = 850;
-						tank2Y = 95;
-						
-						//PLAYER_LIVES = PLAYER_LIVES - 1;
-						//lblPlayerLives.setText("Lives: " + PLAYER_LIVES);
+						newspawn = true;
 					}
 				}
 				catch (Exception error)
@@ -1345,10 +1389,10 @@ public class Main extends JFrame implements ActionListener, KeyListener
 								
 						PLAYER1KILLS = PLAYER1KILLS + 1;
 						
-						tank1X = 41;
-						tank1Y = 284;
-						tank2X = 850;
-						tank2Y = 95;
+						lblKillsTank1.setText("Kills: " + PLAYER1KILLS);
+						lblKillsTank2.setText("Kills: " + PLAYER2KILLS);
+						
+						newspawn = true;
 					}
 				}
 				catch (Exception error)
@@ -1372,11 +1416,11 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						lazer2s.remove(j);
 								
 						PLAYER2KILLS = PLAYER2KILLS + 1;
-								
-						tank1X = 41;
-						tank1Y = 284;
-						tank2X = 850;
-						tank2Y = 95;
+						
+						lblKillsTank1.setText("Kills: " + PLAYER1KILLS);
+						lblKillsTank2.setText("Kills: " + PLAYER2KILLS);
+					
+						newspawn = true;
 					}
 				}
 				catch (Exception error)
