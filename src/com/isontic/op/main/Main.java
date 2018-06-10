@@ -105,7 +105,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean onewallDown = false;
 	private boolean oneright = false, oneleft = false;
 	private Image tank1image = new ImageIcon(getClass().getResource("tank1down.png")).getImage(); //Tank1 Image
-	
+	private JLabel lblPlayer1 = new JLabel("Player1");
 	private boolean tank1M = false, T1missileFired = false;
 	private boolean onepressedLeft = false, onepressedRight = false, onepressedUp = false, onepressedDown = false;
 	private int T1TIMEL = 0;
@@ -128,7 +128,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean controlKeyPressed = false;
 	
 	//JLable and Buttons
-	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap, mLabel, lblKillsTank1img, lblKillsTank2img;
+	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap, mLabel, lblKillsTank1img, lblKillsTank2img, lblPlayer2;
 	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN;
 	
 	//Menu Bar
@@ -252,7 +252,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		leaderboardMainBTN.setFocusable(false);
 		leaderboardMainBTN.setActionCommand("leaderBoard");
 		//startGame.addActionListener(this);
-		leaderboardMainBTN.setVisible(true);
+		leaderboardMainBTN.setVisible(false);
 		
 		settingsMainBTN = new JButton(imgSettMain);
 		settingsMainBTN.setFont(new Font("Serif", Font.PLAIN, 25));
@@ -261,7 +261,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		settingsMainBTN.setFocusable(false);
 		settingsMainBTN.setActionCommand("settings");
 		//startGame.addActionListener(this);
-		settingsMainBTN.setVisible(true);
+		settingsMainBTN.setVisible(false);
 		
 		//Add Items to Frame
 		add(lblGameTitle);
@@ -361,7 +361,14 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		tank1move = true;
 		// Set the shooter's initial position 
 		tank1X = 41;
-		tank1Y = 280;
+		tank1Y = 284;
+		
+		
+		lblPlayer1.setSize(50, 15);
+		lblPlayer1.setFont(new Font("Serif", Font.PLAIN, 10));
+		lblPlayer1.setOpaque(false);
+		//lblPlayer1.setForeground(Color.red);
+		lblPlayer1.setVisible(true);
 		
 		tank1move = false;
 
@@ -523,6 +530,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	
 	public void actionPerformed(ActionEvent event) {
+		
+		lblPlayer1.setLocation((int) tank1X, (int) tank1Y);
 		
 		for (int j = 0; j < lazer1s.size(); j++)
 		{
@@ -1226,7 +1235,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						lblKillsTank1.setText("Kills: " + PLAYER1KILLS);
 						
 						tank1X = 41;
-						tank1Y = 280;
+						tank1Y = 284;
 						tank2X = 850;
 						tank2Y = 95;
 						
@@ -1260,7 +1269,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						lblKillsTank2.setText("Kills: " + PLAYER2KILLS);
 						
 						tank1X = 41;
-						tank1Y = 280;
+						tank1Y = 284;
 						tank2X = 850;
 						tank2Y = 95;
 						
@@ -1291,7 +1300,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						PLAYER1KILLS = PLAYER1KILLS + 1;
 						
 						tank1X = 41;
-						tank1Y = 280;
+						tank1Y = 284;
 						tank2X = 850;
 						tank2Y = 95;
 					}
@@ -1319,7 +1328,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 						PLAYER2KILLS = PLAYER2KILLS + 1;
 								
 						tank1X = 41;
-						tank1Y = 280;
+						tank1Y = 284;
 						tank2X = 850;
 						tank2Y = 95;
 					}
@@ -1361,7 +1370,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 					    		tank2Y = 95;
 					    		
 					    		tank1X = 41;
-					    		tank1Y = 280;
+					    		tank1Y = 284;
 							}
 						}
 				  }
