@@ -55,7 +55,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean newspawn = true;
 	private int tankspawn = 0;
 	private int spawnT = 0;
-	
+	private boolean playerHUD = true;
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
 	
@@ -85,7 +85,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private double lazer1Y = 0;
 	private int lazer1T = 0;
 	private int tank1tm = 0;
-	private boolean lazer1F = true, lazer1S = false;
+	private boolean lazer1F = false, lazer1S = false;
 	private Image lazer1image = new ImageIcon(getClass().getResource("lazer.png")).getImage(); //Lazer1 Image
 	
 	//Lazer 2
@@ -105,7 +105,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean onewallDown = false;
 	private boolean oneright = false, oneleft = false;
 	private Image tank1image = new ImageIcon(getClass().getResource("tank1down.png")).getImage(); //Tank1 Image
-	private JLabel lblPlayer1 = new JLabel("Player1");
+	private JLabel lblPlayer1 = new JLabel("Player 1");
 	private boolean tank1M = false, T1missileFired = false;
 	private boolean onepressedLeft = false, onepressedRight = false, onepressedUp = false, onepressedDown = false;
 	private int T1TIMEL = 0;
@@ -119,6 +119,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean twowallUp = false;
 	private boolean twowallDown = false;
 	private boolean tworight = false, twoleft = false;
+	private JLabel lblPlayer2 = new JLabel("Player 2");
 	private Image image2 = new ImageIcon(getClass().getResource("tank2down.png")).getImage(); //Tank2 Image 
 	
 	private boolean tank2M = false, T2missileFired = false, T2STOP = false;
@@ -128,7 +129,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean controlKeyPressed = false;
 	
 	//JLable and Buttons
-	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap, mLabel, lblKillsTank1img, lblKillsTank2img, lblPlayer2;
+	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap, mLabel, lblKillsTank1img, lblKillsTank2img;
 	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN;
 	
 	//Menu Bar
@@ -365,10 +366,16 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		
 		
 		lblPlayer1.setSize(50, 15);
-		lblPlayer1.setFont(new Font("Serif", Font.PLAIN, 10));
+		lblPlayer1.setFont(new Font("Serif", Font.PLAIN, 12));
 		lblPlayer1.setOpaque(false);
-		//lblPlayer1.setForeground(Color.red);
+		lblPlayer1.setForeground(Color.BLACK);
 		lblPlayer1.setVisible(true);
+		
+		lblPlayer2.setSize(50, 15);
+		lblPlayer2.setFont(new Font("Serif", Font.PLAIN, 12));
+		lblPlayer2.setOpaque(false);
+		lblPlayer2.setForeground(Color.BLUE);
+		lblPlayer2.setVisible(true);
 		
 		tank1move = false;
 
@@ -531,7 +538,15 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	public void actionPerformed(ActionEvent event) {
 		
-		lblPlayer1.setLocation((int) tank1X, (int) tank1Y);
+		if (playerHUD == true)
+		{
+			lblPlayer1.setLocation((int) tank1X - 22, (int) tank1Y - 103);
+			lblPlayer2.setLocation((int) tank2X - 22, (int) tank2Y - 100);
+			
+			add(lblPlayer1);
+			add(lblPlayer2);
+		}
+		
 		
 		for (int j = 0; j < lazer1s.size(); j++)
 		{
@@ -1379,15 +1394,29 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		menu.add(menuItem);
 		menu.addSeparator();
 		
-		menuItem2 = new JMenuItem("Reset HighScore");
-		menuItem2.setActionCommand("resetScore");
+		menuItem2 = new JMenuItem("Turn Names off");
+		menuItem2.setActionCommand("namesoff");
 		menuItem2.addActionListener(
 		  new ActionListener() 
 				{
 			    public void actionPerformed(ActionEvent e) 
 			    {
-			    	if (e.getActionCommand().equals("resetScore"))
+			    	if (e.getActionCommand().equals("namesoff"))
 					{
+			    		if (playerHUD == true) {
+			    			playerHUD = false;
+			    			lblPlayer1.setVisible(false);
+			    			lblPlayer2.setVisible(false);
+			    			menuItem2.setText("Turn Names on");
+			    		} else {
+			    			if (playerHUD == false) {
+				    			playerHUD = true;
+				    			lblPlayer1.setVisible(true);
+				    			lblPlayer2.setVisible(true);
+				    			menuItem2.setText("Turn Names off");
+				    		}
+			    		}
+			    		
 			    		
 					}
 				}
