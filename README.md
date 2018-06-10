@@ -2,9 +2,9 @@ OPTanks
 =============
 - This is a simple game made in class
 
-> Screenshot 5/30/18
+> Screenshot 6/10/18
 
-![](https://i.imgur.com/ZzQxo3K.png)
+![](https://i.imgur.com/uoHFzPv.png)
 >Note: This game is still under development)
 ----
 
