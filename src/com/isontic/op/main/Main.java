@@ -130,7 +130,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	//JLable and Buttons
 	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap, mLabel, lblKillsTank1img, lblKillsTank2img;
-	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN;
+	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN, startGame2;
 	
 	//Menu Bar
 	private JMenuBar menuBar;
@@ -305,11 +305,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 							{
 					    		GAMEMODE = 0;
 								
-								System.out.println("Gamemode set to " + GAMEMODE);
-								
 								hideGamemodeSelector();
-								playGame = true;
-								//playerSelector();
+								
 							}
 						}
 				  }
@@ -326,8 +323,42 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		lblGameSelectorTitle.setVisible(false);
 		normalGamemodeBTN.setVisible(false);
 		
-		setUpMap1();
+		setUpTor();
+	}
+	
+	public void setUpTor()
+	{
+		setContentPane(new JLabel(new ImageIcon(getClass().getResource("tr.png"))));
+		setVisible(true);
 		
+		startGame2 = new JButton(imgStartMain);
+		startGame2.setSize(181, 46);
+		startGame2.setFont(new Font("Serif", Font.PLAIN, 25));
+		startGame2.setLocation(355, 465);
+		startGame2.setFocusable(false);
+		startGame2.setActionCommand("startGame");
+		startGame2.addActionListener(
+				  new ActionListener() 
+						{
+					    public void actionPerformed(ActionEvent e) 
+					    {
+					    	if (e.getActionCommand().equals("startGame"))
+							{
+					    		hideTor();
+					    		playGame = true;
+							}
+						}
+				  }
+				);
+		startGame2.setVisible(true);
+		add(startGame2);
+		
+		repaint();
+	}
+	
+	public void hideTor()
+	{
+		setUpMap1();
 	}
 	
 	public void setUpMap1()
@@ -1386,6 +1417,9 @@ public class Main extends JFrame implements ActionListener, KeyListener
 					    		
 					    		tank1X = 41;
 					    		tank1Y = 284;
+					    		
+					    		PLAYER1KILLS = 0;
+					    		PLAYER2KILLS = 0;
 							}
 						}
 				  }
