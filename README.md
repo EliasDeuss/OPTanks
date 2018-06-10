@@ -4,12 +4,10 @@ OPTanks
 
 > Screenshot 5/30/18
 
-![](https://i.imgur.com/bvpFphR.png)
+![](https://i.imgur.com/ZzQxo3K.png)
 >Note: This game is still under development)
 ----
 
 In Progress features
 -------------
-- Walls
-- PowerUps
 - Music / sounds
