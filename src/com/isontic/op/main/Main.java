@@ -103,6 +103,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean T1STOP = false;
 	private boolean onewallUp = false;
 	private boolean onewallDown = false;
+	private boolean gmode = false, ge = false, fx = false;
 	private boolean oneright = false, oneleft = false;
 	private Image tank1image = new ImageIcon(getClass().getResource("tank1down.png")).getImage(); //Tank1 Image
 	private JLabel lblPlayer1 = new JLabel("Player 1");
@@ -129,14 +130,14 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean controlKeyPressed = false;
 	
 	//JLable and Buttons
-	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap, mLabel, lblKillsTank1img, lblKillsTank2img;
+	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap, mLabel, lblKillsTank1img, lblKillsTank2img, lblAbout, lblEliasDeuss, lblNickJohnson;
 	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN, startGame2;
 	
 	//Menu Bar
 	private JMenuBar menuBar;
 	private JMenu menu, menu2;
 	private JRadioButtonMenuItem rbMenuItem1, rbMenuItem2;
-	private JMenuItem menuItem, menuItem2, menuItem3;
+	private JMenuItem menuItem, menuItem2, menuItem3, about;
 	
 	//Array List
 	ArrayList<Missile1> missile1s = new ArrayList<Missile1>();
@@ -173,6 +174,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	public void setUpGameFrame()
 	{	
+		setTitle("OPTanks V0.1");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(FIELD_WIDTH, FIELD_HEIGHT);
 		setLocationRelativeTo(null);
@@ -181,6 +183,42 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		getContentPane().setBackground(Color.WHITE);
 		addKeyListener(this);
 		setVisible(true);
+	}
+	
+	public void about() 
+	{
+		 JFrame frame = new JFrame("About");  
+		 frame.setSize(350, 200);
+		 frame.setLocationRelativeTo(null);
+		 frame.setLayout(null);
+		 frame.setResizable(false);
+		 frame.getContentPane().setBackground(Color.WHITE);
+		 
+		 lblAbout = new JLabel("Made by");
+		 lblAbout.setSize(160, 45);
+		 lblAbout.setFont(new Font("Serif", Font.PLAIN, 19));
+		 lblAbout.setLocation(140, 5);
+		 lblAbout.setOpaque(false);
+		 lblAbout.setVisible(true);
+		 
+		 lblEliasDeuss = new JLabel("Elias Deuss");
+		 lblEliasDeuss.setSize(148, 90);
+		 lblEliasDeuss.setFont(new Font("Serif", Font.PLAIN, 14));
+		 lblEliasDeuss.setLocation(140, 5);
+		 lblEliasDeuss.setOpaque(false);
+		 lblEliasDeuss.setVisible(true);
+		 
+		 lblNickJohnson = new JLabel("Nick Johnson");
+		 lblNickJohnson.setSize(135, 123);
+		 lblNickJohnson.setFont(new Font("Serif", Font.PLAIN, 14));
+		 lblNickJohnson.setLocation(135, 5);
+		 lblNickJohnson.setOpaque(false);
+		 lblNickJohnson.setVisible(true);
+		 
+		 frame.add(lblNickJohnson);
+		 frame.add(lblEliasDeuss);
+		 frame.add(lblAbout);
+		 frame.setVisible(true);
 	}
 	
 	//Info of player kills in game
@@ -269,6 +307,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		add(startGame);
 		add(leaderboardMainBTN);
 		add(settingsMainBTN);
+		fx = true;
 		
 		repaint();
 	}
@@ -358,6 +397,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	public void hideTor()
 	{
+		fx = false;
 		setUpMap1();
 	}
 	
@@ -483,6 +523,24 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			T2missileFired = false;
 		}
 		
+		if (key == 80) // Q
+		{
+			if (fx == true)
+			{
+				ge = true;
+			} else {
+			}
+		}
+		
+		if (key == 18) // Q
+		{
+			if (ge == true)
+			{
+				gmode = true;
+			} else {
+			}
+		}
+		
 	}
 
 	public void keyReleased(KeyEvent event) {
@@ -550,11 +608,9 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			T2missileFired = true;
 		}
 		
-		
-		if (key == KeyEvent.VK_SPACE) // SPACE bar
+		if (key == 18) // Q
 		{
-//			onepressedSpace = false;
-//			onemissileFired = false;
+			gmode = false;
 		}
 	}
 
@@ -603,7 +659,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			lranC = 0;
 		
 	
-		
+		//Spawning
 		if (spawnT >= 4)
 		{
 			spawnT = 0;
@@ -1234,7 +1290,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 					
 				}
 		
-		
+		if (gmode == false) {
 		//Checks if missile1 is on black
 		for (int i = 0; i < 1; i++)
 		{    
@@ -1249,12 +1305,14 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			    	   
 			    	   if (blue == 0)
 			    	   {
-			    		   getContentPane().remove(missile1s.get(j).getMissileImage());
-			    		   missile1s.remove(j);
+			    			   getContentPane().remove(missile1s.get(j).getMissileImage());
+				    		   missile1s.remove(j);
 			    	   }				   
 			       }
 		}
-		
+			} else {
+				
+			}
 		//Checks if missile2 is on black
 				for (int i = 0; i < 1; i++)
 				{    
@@ -1441,7 +1499,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		menu.getAccessibleContext().setAccessibleDescription("File");
 		menuBar.add(menu);
 		
-		menu2 = new JMenu("Difficulty");
+		menu2 = new JMenu("About");
 		menu2.setMnemonic(KeyEvent.VK_A);
 		menu2.getAccessibleContext().setAccessibleDescription("Game Difficulty");
 		menuBar.add(menu2);		
@@ -1505,19 +1563,23 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		//Difficulty Selector
 		menu.addSeparator();
 		
-		ButtonGroup group = new ButtonGroup();
-		rbMenuItem1 = new JRadioButtonMenuItem("Normal");
-		rbMenuItem1.setSelected(true);
-		rbMenuItem1.setMnemonic(KeyEvent.VK_R);
-		group.add(rbMenuItem1);
-			
-		menu2.add(rbMenuItem1);
-
-		rbMenuItem2 = new JRadioButtonMenuItem("Hard");
-		rbMenuItem2.setMnemonic(KeyEvent.VK_O);
-		group.add(rbMenuItem2);
-		rbMenuItem2.setActionCommand("hard");
-		menu2.add(rbMenuItem2);
+		about = new JMenuItem("About Page");
+		about.setActionCommand("about");
+		about.addActionListener(
+						  new ActionListener() 
+						  {
+						    public void actionPerformed(ActionEvent e)
+						    {
+						    	if (e.getActionCommand().equals("about"))
+								{
+						    		about();
+								}
+						    }
+						  }
+						);
+		about.setVisible(true);
+		menu2.add(about);
+	
 		
 		//Exit Menu
 		//menu.addSeparator();
@@ -1540,7 +1602,6 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		
 		
 		setJMenuBar(menuBar);
-		menu2.setVisible(false);
 		
 	}
 	
