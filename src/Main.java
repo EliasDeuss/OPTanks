@@ -628,8 +628,18 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			add(lblPlayer1);
 			add(lblPlayer2);
 		}
-		
-		
+	if (gmode == true)	
+	{
+		for (int j = 0; j < missile1s.size(); j++)
+		{
+			if (missile1s.get(j).getX() <= 25 || missile1s.get(j).getX() >= 860 || missile1s.get(j).getY() >= 570 || missile1s.get(j).getY() <= 25)
+			{
+				getContentPane().remove(missile1s.get(j).getMissileImage());
+				missile1s.remove(j);
+			}
+		}
+	}
+	
 		for (int j = 0; j < lazer1s.size(); j++)
 		{
 			if (lazer1s.get(j).getX() <= 0 || lazer1s.get(j).getX() >= 900 || lazer1s.get(j).getY() >= 600 || lazer1s.get(j).getY() <= 0)
