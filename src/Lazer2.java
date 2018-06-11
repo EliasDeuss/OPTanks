@@ -1,9 +1,7 @@
-package com.isontic.op.main;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class Lazer1
+public class Lazer2
 {
 	// Constant
 	private final int MISSILE_SPEED = 1;
@@ -18,7 +16,7 @@ public class Lazer1
 	private JLabel missileLabel = new JLabel(missileImage);
 
 	// Constructor
-	public Lazer1(double x, double y, double a)
+	public Lazer2(double x, double y, double a)
 	{
 		missileWidth = missileImage.getIconWidth();
 		missileHeight = missileImage.getIconHeight();

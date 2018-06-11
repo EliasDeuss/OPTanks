@@ -1,5 +1,3 @@
-package com.isontic.op.main;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 

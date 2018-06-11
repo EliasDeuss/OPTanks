@@ -1,5 +1,3 @@
-package com.isontic.op.main;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -71,7 +69,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private ImageIcon imgTwoPlMain = new ImageIcon(getClass().getResource("TwoPlMain.png"));
 	private ImageIcon imgTank1Score = new ImageIcon(getClass().getResource("tank1score.png"));
 	private ImageIcon imgTank2Score = new ImageIcon(getClass().getResource("tank2score.png"));
-	private File file = new File("src/com/isontic/op/main/map.png");
+	private File file = new File("src/map.png");
 	private BufferedImage image;
 	
 	//Power ups
