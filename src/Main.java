@@ -56,6 +56,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean playerHUD = true;
 	private int PLAYER1KILLS = 0;
 	private int PLAYER2KILLS = 0;
+	private String win = "Player 1";
+	private boolean w = false;
 	
 	//Images
 	private ImageIcon imgLogoMain = new ImageIcon(getClass().getResource("logo.png"));
@@ -128,7 +130,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private boolean controlKeyPressed = false;
 	
 	//JLable and Buttons
-	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap, mLabel, lblKillsTank1img, lblKillsTank2img, lblAbout, lblEliasDeuss, lblNickJohnson;
+	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap, mLabel, lblKillsTank1img, lblKillsTank2img, lblAbout, lblEliasDeuss, lblNickJohnson, lblWin;
 	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN, startGame2;
 	
 	//Menu Bar
@@ -530,7 +532,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			}
 		}
 		
-		if (key == 18) // Q
+		if (key == 78) // N
 		{
 			if (ge == true)
 			{
@@ -606,7 +608,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 			T2missileFired = true;
 		}
 		
-		if (key == 18) // Q
+		if (key == 78) // Q
 		{
 			gmode = false;
 		}
@@ -620,10 +622,42 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	public void actionPerformed(ActionEvent event) {
 		
+		if (PLAYER1KILLS >= 10)
+		{
+			win = "Player 1";
+			w = true;
+		}
+		
+		if (PLAYER2KILLS >= 10)
+		{
+			win = "Player 2";
+			w = true;
+		}
+		
+		if (w == true)
+		{
+			lblWin = new JLabel(win + " won");
+			lblWin.setSize(400, 50);
+			lblWin.setFont(new Font("Serif", Font.PLAIN, 40));
+			lblWin.setForeground(Color.RED);
+			lblWin.setLocation(330, 230);
+			lblWin.setOpaque(false);
+			lblWin.setVisible(true);
+			
+			lblPlayer1.setVisible(false);
+			lblPlayer2.setVisible(false);
+			
+			repaint();
+			
+			timer.stop();
+			
+			add(lblWin);
+		}
+		
 		if (playerHUD == true)
 		{
-			lblPlayer1.setLocation((int) tank1X - 22, (int) tank1Y - 103);
-			lblPlayer2.setLocation((int) tank2X - 22, (int) tank2Y - 100);
+			lblPlayer1.setLocation((int) tank1X - 22, (int) tank1Y - 93);
+			lblPlayer2.setLocation((int) tank2X - 22, (int) tank2Y - 91);
 			
 			add(lblPlayer1);
 			add(lblPlayer2);
@@ -1389,7 +1423,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				try
 				{
 					Rectangle rMissile = new Rectangle(missile1s.get(j).getX(), missile1s.get(j).getY(), 5 , 5);
-					Rectangle rTank2 = new Rectangle( (int) tank2X - 20, (int) tank2Y - 87, 30, 35);
+					Rectangle rTank2 = new Rectangle( (int) tank2X - 30 / 2, (int) tank2Y - 65, 30, 35);
 							
 					//If a Bomb Hits a player it will remove Health
 					if (rMissile.intersects(rTank2))
@@ -1417,7 +1451,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				try
 				{
 					Rectangle rMissile = new Rectangle(missile2s.get(j).getX(), missile2s.get(j).getY(), 5 , 5);
-					Rectangle rTank1 = new Rectangle( (int) tank1X - 20, (int) tank1Y - 84, 30, 40);
+					Rectangle rTank1 = new Rectangle( (int) tank1X - 40 / 2, (int) tank1Y - 76, 29, 40);
 								
 					//If a Bomb Hits a player it will remove Health
 					if (rMissile.intersects(rTank1))
@@ -1445,7 +1479,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				try
 				{
 					Rectangle rLazer = new Rectangle(lazer1s.get(j).getX(), lazer1s.get(j).getY(), 5 , 5);
-					Rectangle rTank2 = new Rectangle( (int) tank2X - 20, (int) tank2Y - 87, 30, 35);
+					Rectangle rTank2 = new Rectangle( (int) tank2X - 30 / 2, (int) tank2Y - 65, 30, 35);
 									
 					//If a Bomb Hits a player it will remove Health
 					if (rLazer.intersects(rTank2))
@@ -1473,7 +1507,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				try
 				{
 					Rectangle rLazer = new Rectangle(lazer2s.get(j).getX(), lazer2s.get(j).getY(), 5 , 5);
-					Rectangle rTank1 = new Rectangle( (int) tank1X - 20, (int) tank1Y - 84, 30, 40);
+					Rectangle rTank1 = new Rectangle( (int) tank1X - 40 / 2, (int) tank1Y - 76, 29, 40);
 								
 					//If a Bomb Hits a player it will remove Health
 					if (rLazer.intersects(rTank1))
@@ -1527,6 +1561,13 @@ public class Main extends JFrame implements ActionListener, KeyListener
 					    		
 					    		tank1X = 41;
 					    		tank1Y = 284;
+					    		
+					    		w = false;
+					    		timer.start();
+					    		
+					    		lblWin.setVisible(true);
+					    		lblPlayer1.setVisible(true);
+								lblPlayer2.setVisible(true);
 					    		
 					    		PLAYER1KILLS = 0;
 					    		PLAYER2KILLS = 0;
