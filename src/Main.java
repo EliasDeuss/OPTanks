@@ -56,16 +56,20 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private int tankspawn = 0;
 	private int spawnT = 0;
 	private boolean playerHUD = true;
-	private int PLAYER1KILLS = 0;
-	private int PLAYER2KILLS = 0;
-	private String win = "Player 1";
+	private int PLAYER1KILLS = 0; //Tank1 Kills
+	private int PLAYER2KILLS = 0; //Tank2 Kills
+	private int PLAYER3KILLS = 0; //Tank3 Kills (Multiplayer)
+	private int PLAYER4KILLS = 0; //Tank4 Kills (Multiplayer)
+	private int PLAYER5KILLS = 0; //Tank5 Kills (Multiplayer)
+	private int PLAYER6KILLS = 0; //Tank6 Kills (Multiplayer)
+	private String win = "Player 1"; //Player that won the game
 	private boolean w = false;
 	
 	//Images
-	private ImageIcon imgLogoMain = new ImageIcon(getClass().getResource("logo.png"));
-	private ImageIcon imgStartMain = new ImageIcon(getClass().getResource("startMain.png"));
-	private ImageIcon imgLeadMain = new ImageIcon(getClass().getResource("leadMain.png"));
-	private ImageIcon imgSettMain = new ImageIcon(getClass().getResource("settMain.png"));
+	private ImageIcon imgLogoMain = new ImageIcon(getClass().getResource("logo.png")); //Game Logo
+	private ImageIcon imgStartMain = new ImageIcon(getClass().getResource("startMain.png")); //Start image for Button for main menu
+	private ImageIcon imgLeadMain = new ImageIcon(getClass().getResource("leadMain.png")); //Multiplayer image for button for main menu
+	private ImageIcon imgSettMain = new ImageIcon(getClass().getResource("settMain.png")); //Settings image for button for main menu
 	private ImageIcon imgSGMain = new ImageIcon(getClass().getResource("sgMain.png"));
 	private ImageIcon imgNormalMain = new ImageIcon(getClass().getResource("normalMain.png"));
 	private ImageIcon imgPlMain = new ImageIcon(getClass().getResource("plMain.png"));
@@ -96,7 +100,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	private int lazer2T = 0;
 	private int tank2tm = 0;
 	private boolean lazer2F = false, lazer2S = false;
-	private Image lazer2image = new ImageIcon(getClass().getResource("lazer.png")).getImage(); //Lazer1 Image
+	private Image lazer2image = new ImageIcon(getClass().getResource("lazer.png")).getImage(); //Lazer2 Image
 		
 	
 	//Tank1
@@ -127,6 +131,19 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	private boolean tank2M = false, T2missileFired = false, T2STOP = false;
 	private boolean twopressedLeft = false, twopressedRight = false, twopressedUp = false, twopressedDown = false;
+	
+	//Multiplayer Tank
+	private double tankMX = 400, tankMY = 400; //X & Y for Tank 2
+	private double tankMA = 1.56; //Angle of the tank2 (0-6)
+	private boolean MultiwallUp = false;
+	private boolean MultiwallDown = false;
+	private boolean Multiright = false, Multileft = false;
+	private JLabel lblMulti = new JLabel("Player 2");
+	private Image imageM = new ImageIcon(getClass().getResource("tank2down.png")).getImage(); //Tank2 Image 
+	private boolean tankMM = false, T3missileFired = false, T3STOP = false;
+	private boolean MultipressedLeft = false, MultipressedRight = false, MultipressedUp = false, MultipressedDown = false;
+		
+	
 	//Tank Size info
 	private double sizeX = 1.0, sizeY = 1.0;
 	private boolean controlKeyPressed = false;
@@ -299,7 +316,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 					    {
 					    	if (e.getActionCommand().equals("multiplayer"))
 							{
-					    		
+					    		joinMulti();
 							}
 						}
 				  }
@@ -472,6 +489,21 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		tank2move = false;
 	}
 	
+	// TODO Multiplayer
+	public void joinMulti()
+	{
+		
+	}
+	
+	public void setUpMap1M()
+	{
+		
+	}
+	
+	public void MainMulti()
+	{
+		
+	}
 	
 	public void keyPressed(KeyEvent event) {
 		
