@@ -34,6 +34,9 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	public static final int FIELD_HEIGHT = 600;
 	public static final int SHOOTER_SPEED = 1;
 	
+	//Lan Game
+	public boolean online = false;
+	
 	
 	//Timer
 	private final int TIMER_SPEED = 10;
@@ -130,7 +133,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	
 	//JLable and Buttons
 	public JLabel lblGameTitle, lblGameSelectorTitle, lblGamePlayerSTitle, lblKillsTank2, lblKillsTank1, lblMap, mLabel, lblKillsTank1img, lblKillsTank2img, lblAbout, lblEliasDeuss, lblNickJohnson, lblWin;
-	public JButton startGame, leaderboardMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN, startGame2;
+	public JButton startGame, multiplayerMainBTN, settingsMainBTN, normalGamemodeBTN, player1BTN, player2BTN, startGame2;
 	
 	//Menu Bar
 	private JMenuBar menuBar;
@@ -283,14 +286,25 @@ public class Main extends JFrame implements ActionListener, KeyListener
 				);
 		startGame.setVisible(true);
 		
-		leaderboardMainBTN = new JButton(imgLeadMain);
-		leaderboardMainBTN.setFont(new Font("Serif", Font.PLAIN, 25));
-		leaderboardMainBTN.setSize(181, 46);
-		leaderboardMainBTN.setLocation(345, 219);
-		leaderboardMainBTN.setFocusable(false);
-		leaderboardMainBTN.setActionCommand("leaderBoard");
-		//startGame.addActionListener(this);
-		leaderboardMainBTN.setVisible(false);
+		multiplayerMainBTN = new JButton(imgLeadMain);
+		multiplayerMainBTN.setFont(new Font("Serif", Font.PLAIN, 25));
+		multiplayerMainBTN.setSize(181, 46);
+		multiplayerMainBTN.setLocation(345, 219);
+		multiplayerMainBTN.setFocusable(false);
+		multiplayerMainBTN.setActionCommand("multiplayer");
+		multiplayerMainBTN.addActionListener(
+				  new ActionListener() 
+						{
+					    public void actionPerformed(ActionEvent e) 
+					    {
+					    	if (e.getActionCommand().equals("multiplayer"))
+							{
+					    		
+							}
+						}
+				  }
+				);
+		multiplayerMainBTN.setVisible(true);
 		
 		settingsMainBTN = new JButton(imgSettMain);
 		settingsMainBTN.setFont(new Font("Serif", Font.PLAIN, 25));
@@ -304,7 +318,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		//Add Items to Frame
 		add(lblGameTitle);
 		add(startGame);
-		add(leaderboardMainBTN);
+		add(multiplayerMainBTN);
 		add(settingsMainBTN);
 		fx = true;
 		
@@ -315,7 +329,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	{
 		lblGameTitle.setVisible(false);
 		startGame.setVisible(false);
-		leaderboardMainBTN.setVisible(false);
+		multiplayerMainBTN.setVisible(false);
 		settingsMainBTN.setVisible(false);
 	}
 	
