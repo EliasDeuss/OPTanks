@@ -15,7 +15,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -156,8 +155,8 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		//SetUp Game
 		MenuBar();
 		setUpGameFrame();
-		StartScreen();
-		infoBoard();
+		StartScreenSingle();
+		infoBoardSingle();
 		
 		try {
 			image = ImageIO.read(file);
@@ -222,7 +221,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	}
 	
 	//Info of player kills in game
-	public void infoBoard()
+	public void infoBoardSingle()
 	{
 		lblKillsTank1img = new JLabel(imgTank1Score);
 		lblKillsTank1img.setSize(35, 45);
@@ -254,7 +253,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		
 	}
 	
-	public void StartScreen()
+	public void StartScreenSingle()
 	{
 		lblGameTitle = new JLabel(imgLogoMain);
 		lblGameTitle.setSize(310, 70);
@@ -276,7 +275,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 					    {
 					    	if (e.getActionCommand().equals("startGame"))
 							{
-					    		hideStartScreen();
+					    		hideStartScreenSingle();
 								gamemodeSelector();
 							}
 						}
@@ -312,7 +311,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		repaint();
 	}
 	
-	public void hideStartScreen()
+	public void hideStartScreenSingle()
 	{
 		lblGameTitle.setVisible(false);
 		startGame.setVisible(false);
@@ -405,7 +404,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 	{
 		setUpTank1();
 		setUpTank2();
-		infoBoard();
+		infoBoardSingle();
 		
 		if (MAP == 1)
 		{
@@ -636,7 +635,7 @@ public class Main extends JFrame implements ActionListener, KeyListener
 		
 		if (w == true)
 		{
-			lblWin = new JLabel(win + " won");
+			lblWin = new JLabel(win + "has won");
 			lblWin.setSize(400, 50);
 			lblWin.setFont(new Font("Serif", Font.PLAIN, 40));
 			lblWin.setForeground(Color.RED);
